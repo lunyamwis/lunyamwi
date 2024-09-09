@@ -15,8 +15,8 @@ build
 cachetools
 certifi
 charset-normalizer
-chroma-hnswlib
-chromadb
+#chroma-hnswlib
+#chromadb
 click
 coloredlogs
 contourpy
@@ -50,7 +50,7 @@ googleapis-common-protos
 greenlet
 grpcio
 h11
-hnswlib
+#hnswlib
 httpcore
 httplib2
 httptools
@@ -146,6 +146,8 @@ sympy
 tenacity
 tiktoken
 tokenizers
+transformers
+torch
 tomli
 tornado
 tqdm
@@ -166,7 +168,7 @@ wcwidth
 webencodings
 websocket-client
 websockets
-wikipedia
+#wikipedia
 wrapt
 xyzservices
 yarl
