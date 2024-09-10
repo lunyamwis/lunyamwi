@@ -15,8 +15,8 @@ build
 cachetools
 certifi
 charset-normalizer
-#chroma-hnswlib
-#chromadb
+chroma-hnswlib
+chromadb
 click
 coloredlogs
 contourpy
@@ -123,6 +123,7 @@ Pygments
 pyparsing
 PyPika
 pyproject_hooks
+pysqlite3-binary
 python-dateutil
 python-dotenv
 python-multipart
@@ -134,6 +135,7 @@ requests
 requests-oauthlib
 rich
 rsa
+sentencepiece
 shellingham
 six
 sniffio

@@ -56,6 +56,12 @@ from django.core.mail import send_mail
 from .models import Agent as AgentModel,Task as TaskModel,Tool, Department
 import os
 from typing import List,Optional
+from transformers import pipeline
+import google.protobuf
+import sentencepiece
+from huggingface_hub import login
+login(token="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")
+
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
 os.environ["OPENAI_MODEL_NAME"] = 'gpt-4-1106-preview'
@@ -279,6 +285,17 @@ class generateResponse(APIView):
             "response": response
         }, status=status.HTTP_200_OK)
 
+class OpenSourceLLMTool(BaseTool):
+    name: str = "open_source_llm"
+    description: str = "Tool for open-source LLM inference using Hugging Face models."
+   # model: pipeline = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
+
+    def _run(self, prompt: str):
+        model = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.3")
+
+        response = model(prompt, max_length=50, do_sample=True)[0]['generated_text']
+        print(response)
+        return response
 
 class SentimentAnalysisTool(BaseTool):
     name: str ="Sentiment Analysis Tool"
@@ -730,8 +747,8 @@ TOOLS = {
     "fetch_pending_inbox_tool":FetchDirectPendingInboxTool(),
     "approve_requests_tool":ApproveRequestTool(),
     "qualifying_tool":lead_qualify_tool,
-    "human_takeover_tool":HumanTakeOverTool()
-
+    "human_takeover_tool":HumanTakeOverTool(),
+    "opesource_llm_tool":OpenSourceLLMTool()
 }
 
 class agentSetup(APIView):

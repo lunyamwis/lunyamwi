@@ -1,3 +1,3 @@
-from prompt.views import AgentSetup as setupAgent
+from .model_setup import setup_agent
 
-__all__ = ['setupAgent']
+__all__ = ['setup_agent']

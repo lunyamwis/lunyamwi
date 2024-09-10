@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name='lunyamwi',
-    version='1.0.0',
+    version='1.0.1',
     author='Martin Luther Bironga',
-    description='Lunyamwi is a data science library that assists one in model selection and data pipeline creation',
+    description='Lunyamwi is a data science library that assists one in data generation, pipeline setup, model selection and setup.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/LUNYAMWIDEVS/lunyamwi.git',
