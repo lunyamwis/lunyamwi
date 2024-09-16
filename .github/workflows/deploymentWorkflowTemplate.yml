@@ -1,0 +1,106 @@
+name: Push to Holding Repo for main branch
+
+# Define global variables
+# Whenever this file is updated, ensure that is is also updated in all the microservice repos
+# For now this can still be done manually
+env:
+  SERVICE_NAME: "prompt" # change this for each service
+  REPO_NAME: "create-boostedchat-instance"
+  # BRANCH: "dev"
+  LOCAL_BRANCH: "main"
+
+# on:
+#   push:
+#     branches:
+#       - dev
+#     tags:
+#       - "v*"
+on:
+  push:        # on merge & push. But we would only like it to work on merge.
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+    build-linux-packages:
+      name: "Push to Holding Repo for main"
+      runs-on: "ubuntu-latest"
+      steps: 
+        - name: Extract branch from tag
+          id: extract-branch
+          run: |
+            # TAG=${{ github.ref }}
+            # if [[ $TAG =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            #   BRANCH=main
+            # elif [[ $TAG =~ ^refs/tags/v([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            #   BRANCH=dev
+            # else
+            #   echo "Tag format is not recognized. Exiting..."
+            #   exit 1
+            # fi
+            # echo "Branch extracted from tag: $BRANCH"
+            # echo "LOCAL_BRANCH=$BRANCH" >> $GITHUB_ENV
+            # echo "BRANCH=${{ env.SERVICE_NAME }}-$BRANCH" >> $GITHUB_ENV
+            echo "BRANCH=${{ env.SERVICE_NAME }}-${{ env.LOCAL_BRANCH }}" >> $GITHUB_ENV
+        - uses: actions/checkout@v4
+          with:
+            ref: ${{ env.LOCAL_BRANCH }}
+        - name: Add repo to held repos list
+          run: |
+            dir=$(pwd)
+            cd /tmp
+            git clone https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.REPO_NAME }}.git repo
+            cd repo 
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git config user.name "GitHub Actions"
+            # held repos are now updated manually
+            # echo "" >> heldrepos.md
+            # echo  "- [${{ github.repository_owner }}/${{ github.event.repository.name }}](https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }})" >> heldrepos.md
+            # sort -u heldrepos.md > /tmp/heldrepos.md
+            # mv /tmp/heldrepos.md heldrepos.md
+            # echo "" >> heldrepos.md
+            # echo  "- [${{ github.repository_owner }}/${{ github.event.repository.name }}](https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }})" >> heldrepos.md
+            # sort -u heldrepos.md > /tmp/heldrepos.md
+            # mv /tmp/heldrepos.md heldrepos.md
+            commit_url="https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/commit/${{ github.sha }}"
+            if [[ -z "$(git status -s)" ]]; then
+              echo "No changes detected."
+            else
+              echo "Changes detected."
+              git add . && git commit -m "Update from $commit_url"
+              git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.REPO_NAME }}.git master
+            fi
+
+        - name: Check if branch exists
+          run: |
+            cd /tmp/repo
+            # if git ls-remote --exit-code origin "refs/heads/${{ env.BRANCH }}" &>/dev/null; then
+            #     git pull origin ${{ env.BRANCH }}:${{ env.BRANCH }}
+            #     git checkout ${{ env.BRANCH }}
+            # else
+            #     echo "Branch does not exist remotely"
+            #     git checkout -b ${{ env.BRANCH }}
+            #     git push -f https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.REPO_NAME }}.git ${{ env.BRANCH }}
+            # fi
+            git checkout -b ${{ env.BRANCH }}
+            git push -f https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.REPO_NAME }}.git ${{ env.BRANCH }}
+            
+        - name: Push to destination branch
+          id: check-branch
+          run: |
+            ## Replace cpina with commands below
+            # cd $dir
+            rm -rf .git
+            cp -r /tmp/repo/.git ./
+            rm -rf .github
+            mkdir -p .github/workflows
+            rsync -av /tmp/repo/deploymentTemplates/ .github/workflows/
+            ls -lha
+            if [[ -z "$(git status -s)" ]]; then
+              echo "No changes detected."
+            else
+              commit_url="https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/commit/${{ github.sha }}"
+              git add . && git commit -m "Update from $commit_url"
+              git push https://${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository_owner }}/${{ env.REPO_NAME }}.git ${{ env.BRANCH }}
+            
+            fi

@@ -1,0 +1,230 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-04-24 11:35:12.306409+00:00
+  dag_id: scrapUsersInfoInsertEnrichTheCutThree
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: adf
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: -NwEsqDcfwnzcJBhnxGA
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '@daily'
+  schedule_interval: 10 8 5 4 *
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  updated_at: 2024-04-24 11:35:12.306447+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+data_seconds:
+  '2': 720.0
+operators:
+- created_at: 2024-04-24 11:34:42.699871+00:00
+  data:
+    chain: true
+    index: 0
+    query:
+    - psychologistswithoutborders
+    round: 11
+  deleted_at: null
+  endpoint: instagram/scrapUsers/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsj10s8ZaRVtqZxwf
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getUsers
+  updated_at: 2024-04-24 11:34:42.699890+00:00
+  url: https://example.com
+  xcom_push: false
+- created_at: 2024-04-24 11:34:45.417126+00:00
+  data:
+    accounts: 18
+    chain: true
+    delay_after_requests: 14
+    delay_before_requests: 4
+    index: 0
+    round: 11
+    step: 3
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsjgVpEGz410gA3LP
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getInfo
+  updated_at: 2024-04-24 11:34:45.417141+00:00
+  url: https://example.com
+  xcom_push: false
+- created_at: 2024-04-24 11:34:48.077651+00:00
+  data:
+    chain: true
+    keywords_to_check:
+    - psychologists
+    round: 11
+  deleted_at: null
+  endpoint: instagram/insertAndEnrich/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEskKw5pAAb84804qY
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: enrich
+  updated_at: 2024-04-24 11:34:48.077671+00:00
+  url: https://example.com
+  xcom_push: false
+- created_at: 2024-04-24 11:34:50.779285+00:00
+  data:
+    num_tasks: ''
+    start_hour: 3
+    start_minute: 30
+    tasks_per_day: 24
+  deleted_at: null
+  endpoint: /v1/outreaches/tasks/reschedule_all/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsl-ENamr7gag-PmD
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: reschedule
+  updated_at: 2024-04-24 11:34:50.779317+00:00
+  url: https://example.com
+  xcom_push: false
+- created_at: 2024-04-24 11:34:53.975112+00:00
+  data:
+    chain: true
+    index: 0
+    round: 11
+  deleted_at: null
+  endpoint: instagram/getMediaIds/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsljaoM_LsKYkYx_r
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getMediaIds
+  updated_at: 2024-04-24 11:34:53.975151+00:00
+  url: https://example.com
+  xcom_push: true
+- created_at: 2024-04-24 11:34:57.049241+00:00
+  data: null
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsmWAoMmDg8mtL8F3
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: like
+  updated_at: 2024-04-24 11:34:57.049292+00:00
+  url: https://mqtt.booksy.us.boostedchat.com/like
+  xcom_push: true
+- created_at: 2024-04-24 11:35:00.223701+00:00
+  data:
+    chain: true
+    index: 0
+    round: 11
+  deleted_at: null
+  endpoint: instagram/getMediaComments/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsnGB1xZM2y6j-4b5
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getMediaComments
+  updated_at: 2024-04-24 11:35:00.223778+00:00
+  url: https://example.com
+  xcom_push: true
+- created_at: 2024-04-24 11:35:03.336001+00:00
+  data: null
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEso1djMzzIGigTW0F
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: comment
+  updated_at: 2024-04-24 11:35:03.336043+00:00
+  url: https://mqtt.booksy.us.boostedchat.com/comment
+  xcom_push: true
+- created_at: 2024-04-24 11:35:06.138982+00:00
+  data:
+    chain: true
+    index: 0
+    round: 11
+  deleted_at: null
+  endpoint: instagram/getAccounts/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEsokDn6VaqePJgE9c
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getAccounts
+  updated_at: 2024-04-24 11:35:06.139041+00:00
+  url: https://example.com
+  xcom_push: false
+- created_at: 2024-04-24 11:35:09.436062+00:00
+  data: null
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NwEspXEP9qc6sLBjEP6
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: reactToStory
+  updated_at: 2024-04-24 11:35:09.436122+00:00
+  url: https://mqtt.booksy.us.boostedchat.com/reactToStory
+  xcom_push: true

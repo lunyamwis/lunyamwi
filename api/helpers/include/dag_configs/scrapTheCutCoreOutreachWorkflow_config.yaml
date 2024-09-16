@@ -1,0 +1,211 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-05-06 11:33:49.086181+00:00
+  dag_id: scrapTheCutCoreOutreachWorkflow
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: adf
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: -NxCfaxMbbY_lfObmILe
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '@daily'
+  schedule_interval: 10 8 5 4 *
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  trigger_url: https://httpbin.org/get
+  trigger_url_expected_response: https://httpbin.org/get
+  updated_at: 2024-05-06 11:33:49.086222+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+data_seconds:
+  '2': 720.0
+operators:
+- created_at: 2024-05-06 11:33:38.161224+00:00
+  data:
+    chain: true
+    index: 0
+    query:
+    - The Deluxe Cut
+    round: 111
+  deleted_at: null
+  endpoint: instagram/scrapUsers/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NxCfZHK4t04Z0DMA-It
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getUsers
+  updated_at: 2024-05-06 11:33:38.161240+00:00
+  urls: null
+  xcom_push: false
+- created_at: 2024-05-06 11:33:40.515596+00:00
+  data:
+    accounts: 18
+    chain: true
+    delay_after_requests: 14
+    delay_before_requests: 4
+    index: 0
+    round: 121
+    step: 3
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NxCfZs_NWS9UXflrnC_
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getInfo
+  updated_at: 2024-05-06 11:33:40.515656+00:00
+  urls: null
+  xcom_push: false
+- created_at: 2024-05-06 11:33:42.562328+00:00
+  data:
+    chain: true
+    keywords_to_check:
+    - hair
+    - appointment
+    - appointments
+    - book
+    - call
+    - book.thecut.co
+    - licensed
+    - cutz
+    - kutz
+    - cuts
+    - cut
+    - hairstylist
+    - salon
+    - salons
+    - educator
+    - specialist
+    - beauty
+    - barber
+    - walk
+    - text
+    - stylist
+    - colour
+    - colouring
+    - loreal
+    - olaplex
+    - hairspray
+    - mousse
+    - pomade
+    - hair oil
+    - hair serum
+    - scissors
+    - comb
+    - brush
+    - blow dryer
+    - flat iron
+    - curling iron
+    - hair rollers
+    - hair clips
+    - hair ties
+    - headbands
+    - hair accessories
+    - updos
+    - braids
+    - twists
+    - buns
+    - ponytails
+    - curls
+    - waves
+    - volume
+    - texture
+    - shine
+    - frizz control
+    - breakage
+    - dryness
+    - oiliness
+    - thinning
+    - hair loss
+    - dandruff
+    - scalp problems
+    round: 12
+  deleted_at: null
+  endpoint: instagram/insertAndEnrich/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NxCf_OI2X389RRYNaNf
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: enrich
+  updated_at: 2024-05-06 11:33:42.562357+00:00
+  urls: null
+  xcom_push: false
+- created_at: 2024-05-06 11:33:44.687311+00:00
+  data:
+    chain: true
+    index: 0
+    round: 12
+  deleted_at: null
+  endpoint: instagram/getAccounts/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NxCf_unuskmWZZ8BQG-
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getAccounts
+  updated_at: 2024-05-06 11:33:44.687343+00:00
+  urls: null
+  xcom_push: false
+- created_at: 2024-05-06 11:33:46.785772+00:00
+  data: null
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NxCfaP8hjJg8Oksz9Az
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: reactToStory
+  updated_at: 2024-05-06 11:33:46.785786+00:00
+  urls:
+  - '{"set_of_urls": [{"url": "https://mqtt.booksy.us.boostedchat.com/like", "delay":
+    105}, {"url": "https://mqtt.booksy.us.boostedchat.com/comment", "delay": 60}],
+    "attempt": 1, "delay": 24}'
+  - '{"set_of_urls": [{"conditional_url": "https://api.booksy.us.boostedchat.com/v1/instagram/has-client-responded/"},
+    {"url": "https://mqtt.booksy.us.boostedchat.com/reactToStory", "delay": 230}],
+    "attempt": 2, "delay": 24}'
+  - '{"set_of_urls": [{"conditional_url": "https://api.booksy.us.boostedchat.com/v1/instagram/has-client-responded/"},
+    {"url": "https://mqtt.booksy.us.boostedchat.com/like", "delay": 105}], "attempt":
+    3, "delay": 24}'
+  xcom_push: true
+trigger_url: https://httpbin.org/get
+trigger_url_expected_response: https://httpbin.org/get

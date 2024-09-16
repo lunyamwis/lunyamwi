@@ -1,0 +1,82 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-07-26 13:13:46.329799+00:00
+  dag_id: QualifyingDepartment
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: purpose of this department is to qualify leads
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: -O2jAFqnoJQ0cqivj8Eg
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '@daily'
+  schedule_interval: 47,17 8-21 * * *
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  trigger_url: https://httpbin.org/get
+  trigger_url_expected_response: https://httpbin.org/get
+  updated_at: 2024-07-26 13:13:46.329839+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+data_seconds:
+  '2': 720.0
+operators:
+- created_at: 2024-07-26 13:13:41.157199+00:00
+  data:
+    chain: true
+    index: 0
+    round: 1908
+  deleted_at: null
+  endpoint: instagram/qualifyingPayload/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -O2jAEbuPPJXfcV4l1_l
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getUnqualifiedUsers
+  updated_at: 2024-07-26 13:13:41.157238+00:00
+  urls: null
+  xcom_push: false
+- created_at: 2024-07-26 13:13:43.639125+00:00
+  data: null
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -O2jAFBkcRFNp4WLxJUw
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: kickstart_Qualifying_Agents
+  updated_at: 2024-07-26 13:13:43.639137+00:00
+  urls:
+  - '{"set_of_urls": [{"url": "https://promptemplate.booksy.us.boostedchat.com/agentSetup/",
+    "delay": 105}], "attempt": 1, "delay": 24}'
+  xcom_push: true
+trigger_url: https://httpbin.org/get
+trigger_url_expected_response: https://httpbin.org/get

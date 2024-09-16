@@ -1,0 +1,247 @@
+import requests
+import time
+from airflow import DAG
+from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.operators.python_operator import PythonOperator  # Import PythonOperator
+from airflow.sensors.time_delta import TimeDeltaSensor
+from airflow.utils.dates import days_ago
+from datetime import timedelta
+from airflow.providers.slack.notifications.slack import send_slack_notification
+from airflow.utils.task_group import TaskGroup
+
+import json
+
+def check_api_response():
+    while True:
+        try:
+            response = requests.get(url='{{trigger_url}}')
+            if response.status_code == 200:
+                response_json = response.json()
+                if response_json['url'] == '{{trigger_url_expected_response}}':
+                    response_status = True
+                    print('API response is true')
+                    break
+                else:
+                    print('API response is not true, retrying in 60 seconds...')
+                    time.sleep(60)
+            else:
+                print('API request failed with status code', response.status_code)
+                time.sleep(60)
+        except Exception as err:
+            time.sleep(60)
+            print(err)
+
+default_args = {
+    'owner': 'me',
+    'start_date': days_ago(1),
+    'retries': 0,  # Set to None for unlimited retries
+    'retry_delay': timedelta(seconds=30),
+}
+
+{% for dag_ in dag %}
+dag = DAG(
+    "{{ dag_.dag_id }}",
+    default_args=default_args,
+    schedule_interval='{{dag_.schedule_interval}}',
+    catchup={{ dag_.catchup or False }}
+)
+{% endfor %}
+
+def task_success_callback(**context):
+    """
+    Callback function to check the task's state and decide whether to retry or not.
+    """
+    task_instance = context['task_instance']
+    task_state = task_instance.current_state()
+    if task_state == "success":
+        return True
+    else:
+        return False
+
+check_api = PythonOperator(
+    task_id='check_api',
+    python_callable=check_api_response,
+    dag=dag
+    # retries=0,  # Set to 0, as we are handling retries manually
+    # retry_delay=timedelta(seconds=30),  # Delay between retries
+    # Callback function to decide whether to retry or not
+)
+
+
+{% set delay_durations = data_seconds %}
+duration_data = {{ data_seconds }}
+
+{% set http_tasks = [] %}
+http_tasks = []
+{% set prev_response = None %}
+
+# Define the first HTTP operator separately
+http_task_1 = SimpleHttpOperator(
+    task_id="{{ operators[0].task_id }}",
+    http_conn_id="{{ operators[0].http_conn_id }}",
+    endpoint="{{ operators[0].endpoint }}",
+    method="{{ operators[0].method }}",
+    headers={{ operators[0].headers | tojson }},  # Assuming headers is a dictionary, convert it to JSON
+    data=json.dumps({{ operators[0].data}}),
+    log_response={{ operators[0].log_response }},
+    dag=dag,
+    do_xcom_push=True,
+    on_failure_callback=[
+        send_slack_notification(
+            text="The task {{ operators[0].task_id }} failed",
+            channel="#airflow-error",
+            username="airflow",
+        )
+    ],
+)
+http_tasks.append(http_task_1)
+
+# Set up task dependencies with dynamic delay durations
+{% if operators|length > 1 %}
+{% for i in range(1, operators|length) %}
+
+# Downstream task to retrieve XCom value
+{% if i >= 1 %}
+# Define the HTTP operator
+{% if operators[i].urls is none %}
+http_task_{{ i }} = SimpleHttpOperator(
+    task_id="{{ operators[i].task_id }}",
+    http_conn_id="{{ operators[i].http_conn_id }}",
+    endpoint="{{ operators[i].endpoint }}",
+    method="{{ operators[i].method }}",
+    headers={{ operators[i].headers | tojson }},  # Assuming headers is a dictionary, convert it to JSON
+    data=json.dumps({{ operators[i].data }}),
+    log_response={{ operators[i].log_response }},
+    do_xcom_push=True,  # Enable pushing response to XCom
+    dag=dag,
+    on_failure_callback=[
+        send_slack_notification(
+            text="The task {{ operators[i].task_id }} failed",
+            channel="#airflow-error",
+            username="airflow",
+        )
+    ],
+)
+
+http_tasks.append(http_task_{{ i }})
+{% endif %}
+
+{% if operators[i].urls is not none %}
+
+def process_json_response_{{i}}(**context):
+    ti = context['task_instance']
+    prev_json_data = ti.xcom_pull(task_ids='{{ operators[i-1].task_id }}', key='return_value')
+    time_counter = 0
+    chunk_size = 1
+    if prev_json_data:
+        response = None
+        print(prev_json_data)
+        if "data" in prev_json_data:
+            print(json.loads(prev_json_data).get("data", []))
+            data_list = json.loads(prev_json_data).get("data", [])  # Get the list of dictionaries under "data" key
+            if data_list:
+                
+                for i in range(0, len(data_list), chunk_size):
+                    for set_of_urls in [json.loads(url_data) for url_data in {{operators[i].urls}}]:
+                        #print(set_of_urls)
+                        for k,v in set_of_urls.items():
+                            if k == "delay":
+                                time.sleep(int(v))
+                            #print(set_of_urls['set_of_urls'])
+                            if isinstance(v,list):
+                                for index in v:
+                                    if "conditional_url" in index:
+                                        print("condition being tested")
+                                        chunk = data_list[i:i + chunk_size]
+                                        response = requests.post(url=index['conditional_url'], json=chunk)
+                                        if response.status_code == 200:
+                                            if response.json()['has_responded']:
+                                                break
+
+                                    else:
+                                        print(index['url'])
+                                        chunk = data_list[i:i + chunk_size]
+                                        if isinstance(chunk,list):
+                                            chunk  = chunk.pop()
+                                        print(chunk)
+                                        # Send the chunk of requests
+                                        response = requests.post(url=index['url'], json=chunk)
+                                    
+                                        # Check the response status code
+                                        if response.status_code == 200:
+                                            print(response.json())
+                                            json_data = response.json()
+                                            # context['task_instance'].xcom_push(key='json_response', value=json_data)
+                                        else:
+                                            print(f'Request failed with status code {response.status_code}')
+                                    
+                                        # Wait for 20 seconds before sending the next chunk
+                                        time.sleep(int(index['delay']))
+                    
+            else:
+                raise Exception("the dataset is empty")
+                
+            
+        
+            
+        
+
+process_response_{{i}}_task = PythonOperator(
+    task_id='process_response_{{ operators[i].task_id }}',
+    python_callable=process_json_response_{{i}},
+    provide_context=True,
+    retries=1,  # Override the retries for this task
+    retry_delay=timedelta(minutes=1), 
+    dag=dag,
+    on_failure_callback=[
+        send_slack_notification(
+            text="The task {{ operators[i].task_id }} failed",
+            channel="#airflow-error",
+            username="airflow",
+        )
+    ],
+)
+
+    
+{% endif %}
+
+
+{% endif %}
+
+
+# Set up task dependencies with dynamic delay durations
+
+
+
+
+{% endfor %}
+
+
+{% for i in range(1, operators|length) %}
+
+print({{loop.index}})
+
+{% if loop.index > 1 and operators[loop.index].data is not none%}
+http_task_{{ loop.index - 1 }} >> http_task_{{ loop.index }}
+{% elif loop.index|string not in delay_durations and loop.index > 1 and operators[loop.index].data is none %}
+http_task_{{ loop.index - 1 }} >> http_task_{{ loop.index }} >> process_response_{{loop.index}}_task 
+
+{% endif %}
+
+{% if loop.index == 1 and loop.length == 2%}
+
+http_task_{{ loop.index }} >> process_response_{{loop.index}}_task >> http_task_{{ loop.index + 1}}
+
+{% endif %}
+
+# extra condition to check for length of operator with 1
+
+{% if loop.length == 1 and operators[loop.index].data is not none %}
+http_task_{{ loop.index }}
+{% elif loop.index|string not in delay_durations and loop.length and operators[loop.index].data is none %}
+http_task_{{ loop.index }} >> process_response_{{loop.index}}_task
+{% endif %}
+
+{% endfor %}
+
+{% endif %}

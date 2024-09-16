@@ -1,15 +1,14 @@
 server {
     listen 80;
     listen [::]:80;
-    
+
     location ~ /.well-known  {
         allow all;
     }
 
-    location /static {
-        alias /www/static;
+    location /static/ {
+        alias /www/static/;
     }
-    
 
     location / {
         proxy_pass http://web:8000;

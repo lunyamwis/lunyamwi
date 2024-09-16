@@ -1,10 +1,259 @@
-django
-djangorestframework
-django-softdelete
+aiohttp
+aiosignal
+amqp
+annotated-types
+anyio
+asgiref
+asn1crypto
+asttokens
+async-timeout
+attrs
+Automat
+backoff
+bcrypt
+beautifulsoup4
+billiard
+bitsandbytes==0.43.*
+cachetools
+celery
+certifi
+cffi
+cfgv
+charset-normalizer
+chroma-hnswlib
+chromadb
+click
+click-didyoumean
+click-plugins
+click-repl
+colorama
+coloredlogs
+contourpy
+coverage
+crewai
+crewai-tools
+cron-descriptor
+cryptography
+cssselect
+dataclasses-json
+datasets
+decorator
+Deprecated
+distlib
+distro
+Django
+django-allauth
+django-auditlog
+django-celery-beat
 django-cors-headers
-# psycopg2
-psycopg2-binary
-google-api-python-client 
-google-auth-httplib2 
+django-role-permissions
+django-snowflake
+django-softdelete
+django-timezone-field
+djangorestframework
+djangorestframework-simplejwt
+dnspython
+docarray
+email_validator
+emoji
+et-xmlfile
+exceptiongroup
+executing
+fastapi==0.112.4
+fastapi-cli
+filelock
+flatbuffers
+frozenlist
+fsspec
+google-api-core
+google-api-python-client
+google-auth
+google-auth-httplib2
 google-auth-oauthlib
-numpy
+google-cloud-dialogflow-cx
+googleapis-common-protos
+greenlet
+grpcio
+grpcio-status
+gunicorn
+h11
+httplib2
+httpcore
+httptools
+httpx
+huggingface-hub
+humanfriendly
+hyperlink
+idna
+identify
+importlib-metadata
+importlib_resources
+incremental
+ipython
+itemadapter
+itemloaders
+jedi
+Jinja2==3.1.4
+jmespath
+jsonpatch
+jsonpointer
+kombu
+kubernetes
+langchain
+langchain-community
+langchain-core
+langchain-openai
+langchain-text-splitters
+langsmith
+linkify-it-py
+lm_eval==0.3.0
+lxml
+mailchimp-marketing
+Markdown
+markdown-it-py
+MarkupSafe
+marshmallow
+matplotlib-inline
+mdit-py-plugins
+mdurl
+mmh3
+monotonic
+mpmath
+multidict
+mypy-extensions
+numpy==1.26.*
+oauthlib
+onnxruntime
+openai
+openpyxl
+optimum==1.17.*
+orjson
+outcome
+overrides
+packaging
+pandas
+panel
+param
+parso
+pexpect
+Pillow>=9.5.0
+platformdirs
+pre-commit
+prompt-toolkit
+Protego
+proto-plus
+protobuf
+psycopg2-binary
+ptyprocess
+pure-eval
+pyasn1
+pyasn1-modules
+pycparser
+pycryptodomex
+pydantic
+pydantic_core
+PyDispatcher
+Pygments
+PyJWT
+pyOpenSSL
+pyparsing
+PyPika
+pyproject_hooks
+pysqlite3-binary
+python-crontab
+python-dateutil
+python-dotenv
+python-multipart
+pytz
+pyviz_comms
+PyYAML
+queuelib
+redis
+regex
+requests
+requests-file
+requests-oauthlib
+robotframework
+rsa
+Scrapy
+selenium
+sentry-sdk
+service-identity
+six
+sniffio
+snowflake-connector-python
+sortedcontainers
+soupsieve
+SQLAlchemy
+sqlparse
+stack-data
+starlette
+sympy
+tenacity
+tiktoken
+tokenizers
+transformers==4.44.*
+torch
+tomli
+tornado
+tqdm
+traitlets
+typer
+types-requests
+typing-inspect
+typing_extensions
+tzdata
+uc-micro-py
+ujson
+uritemplate
+urllib3
+uvicorn
+uvloop
+watchfiles
+wcwidth
+webdriver-manager
+webencodings
+websocket-client
+websockets
+wrapt
+xyzservices
+yarl
+zipp
+
+# API
+SpeechRecognition==3.10.0
+flask_cloudflared==0.0.14
+sse-starlette==1.6.5
+tiktoken
+
+# GitHub links
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/cpu/llama_cpp_python-0.2.89+cpuavx2-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/cpu/llama_cpp_python-0.2.89+cpuavx2-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/cpu/llama_cpp_python-0.2.89+cpuavx2-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/cpu/llama_cpp_python-0.2.89+cpuavx2-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda-0.2.89+cu121-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda-0.2.89+cu121-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda-0.2.89+cu121-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda-0.2.89+cu121-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda_tensorcores-0.2.89+cu121-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda_tensorcores-0.2.89+cu121-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda_tensorcores-0.2.89+cu121-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/llama-cpp-python-cuBLAS-wheels/releases/download/textgen-webui/llama_cpp_python_cuda_tensorcores-0.2.89+cu121-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8-py3-none-any.whl; platform_system == "Linux" and platform_machine != "x86_64"
+https://github.com/oobabooga/flash-attention/releases/download/v2.6.1/flash_attn-2.6.1+cu122torch2.2.2cxx11abiFALSE-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/flash-attention/releases/download/v2.6.1/flash_attn-2.6.1+cu122torch2.2.2cxx11abiFALSE-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.1/flash_attn-2.6.1+cu123torch2.2cxx11abiFALSE-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.1/flash_attn-2.6.1+cu123torch2.2cxx11abiFALSE-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/AutoAWQ/releases/download/0.2.6/autoawq-0.2.6-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/AutoAWQ/releases/download/0.2.6/autoawq-0.2.6-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/AutoAWQ/releases/download/0.2.6/autoawq-0.2.6-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/AutoAWQ/releases/download/0.2.6/autoawq-0.2.6-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+https://github.com/oobabooga/AutoAWQ_kernels/releases/download/0.0.7/autoawq_kernels-0.0.7-cp311-cp311-win_amd64.whl; platform_system == "Windows" and python_version == "3.11"
+https://github.com/oobabooga/AutoAWQ_kernels/releases/download/0.0.7/autoawq_kernels-0.0.7-cp310-cp310-win_amd64.whl; platform_system == "Windows" and python_version == "3.10"
+https://github.com/oobabooga/AutoAWQ_kernels/releases/download/0.0.7/autoawq_kernels-0.0.7-cp311-cp311-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.11"
+https://github.com/oobabooga/AutoAWQ_kernels/releases/download/0.0.7/autoawq_kernels-0.0.7-cp310-cp310-linux_x86_64.whl; platform_system == "Linux" and platform_machine == "x86_64" and python_version == "3.10"
+
