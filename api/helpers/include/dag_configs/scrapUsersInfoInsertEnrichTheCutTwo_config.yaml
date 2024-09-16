@@ -1,0 +1,381 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-04-08 22:52:12.062685+00:00
+  dag_id: scrapUsersInfoInsertEnrichTheCutTwo
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: adf
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: 123fasdxmaaasdfsdfopoasdpf
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '@daily'
+  schedule_interval: 10 8 5 4 *
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  updated_at: 2024-04-08 22:52:12.062707+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+data_seconds:
+  '1': 1080.0
+  '2': 720.0
+operators:
+- created_at: 2024-04-08 22:52:01.516365+00:00
+  data:
+    chain: true
+    index: 0
+    query:
+    - Next Level Barber Studio
+    - Razor Fade & Beard/Shave
+    - FADE ++\ud83d\ude4b\ud83c\udffb\u200d\u2642\ufe0f\ud83d\ude4b\ud83c\udffc\u200d\u2642\ufe0f
+    - The Works \ud83d\udd25
+    - Gfxdez
+    - Teen Lining
+    - oliver cepeda
+    - House Of Cutz Bareber Studios
+    - carlos ruiz
+    - Wash, Retwist & Barrels ( Braid To Back Shoulder Length)
+    - Bald Head & Face
+    - Cutsbylek \ud83d\udc88
+    - Adult Haircut With Facial Grooming
+    - Retwist & style Full Head
+    - Stater Locks
+    - WHO\'S NEXT NOW BARBER AND BEAUTY STUDIO
+    - Hair Cut with with\ud83d\udd25eyebrows
+    - Teen Lining & Taper
+    - kid haircuts
+    - Youth Caesar (17 & Under)
+    - After Cut Shampoo
+    - Mike barber
+    - ICY MJ \ud83c\udf2c
+    - Mens Edgeup Hair Only W/Razor
+    - Kids Cut 9 Years Old And Down
+    - Senior Citizen 65+
+    - Womans Undercut
+    - Kids Skin fade
+    - Lines&Shaves
+    - Knotless
+    - Shave And A Haircut
+    - Barber Lifestyle
+    - Beard Trim/ Styles
+    - Wash, Retwist & 4 Strand ( Middle Back )
+    - Line Up & Beard Combo
+    - Haircuts On Mondays
+    - Jose Aguillon
+    - Adult shape-up W Face
+    - Des!gn !ntell!gence/ Hard In The Paint Barbershop
+    - Fade With Beard \ud83e\uddd4\u200d\u2642\ufe0f
+    - Adult Monthly Subscription Please Read
+    - Beard Work
+    - Mens Haircut And Facial Hair
+    - Men\u2019s Drop Fades(Philly Fade) w/facial hair
+    - Dreads Shapeup( W/temple Tapper)
+    - Tapeup With Lineup
+    - Blessed Handz Barber Kids (15 and under)
+    - Ambition Barbershop Portage
+    - DeMar Colbert
+    - Hair Dye Color Black, Brown
+    - FS Studio, Hair Studio And Bar\ud83c\udf7b
+    - Fade With Beard
+    - TayGotchu\u2019
+    - Fly City Barbershop
+    - Simple Designs Only
+    - Line Up (ONLY)
+    - Women Eye Brow Arch
+    - anthony lobato
+    - Jaycees ChopShop
+    - Exclusive Haircut(children)
+    - Beard grooming only
+    - Beard Deluxe
+    - '[ Sunday Only ] Men Haircuts With Beard  (18 & Up)'
+    - Retwist, Cut, And Beard Trim
+    - Hair Blonding Package
+    - Dweezy cuts
+    - Kids 12 And Under Flat Top
+    - BlendsByLos
+    - \ud83d\udc88Razor Dread Lox Edge
+    - Lil HOMMIES & TEENz LINE UP
+    - Men,women And Kids (Edgeups Only No Face Hair)
+    - 'Teens Cut (Ages: 13-15)'
+    - Beards Trim
+    - Kids Low And Dark
+    - Jairo Martinez
+    - HouseCalls/Before&After Hours
+    - Men\'s Hair Replacement Maintenance
+    - Flat Twist For Twist Out
+    - Beard Treatment/ Maintenance
+    - House Call Mondays Only Please Call Me
+    - College Line Up \ud83d\udd25
+    - Haircut With Beard Appointment
+    - O.G - Wash & Cut
+    - All Scissors Haircuts
+    - Mori ( Master Barber  Tattoo Artist
+    - DrippyCuttz
+    - Hair Replacement System (HRS)
+    - Fresh And Clean
+    - Men\'s Haircut Without Beard
+    - Mikethebarbers
+    - Mens Hair Cut/Beard
+    - Bald Razor Shave
+    - Tape Up Men
+    - 1st Impressions Phase 2
+    - Low Caesar
+    - Teenager Taper Or Fade(ages13to17)
+    - (AFTER HOURS) 7pm -10pm
+    - Unfadeable Cuts
+    - Golden Service Cut
+    - (Kids)Fade,Taper&orMohawk\u2702\ufe0f
+    - shaquille coleman
+    - Neal aka Cornflake Cutz it
+    - StrikeZone kid\u2019s - $30 Kids Haircuts
+    - Regular Women\'s Haircut, Fade
+    - Haircut + Dye
+    - Mr Freestyle 340
+    - Relaxer Curl Texturizer (Additional Price Only)
+    - Bald Razor Shave And Beard
+    - Scalp Cleansing Treatment
+    - Skin Fade With Beard
+    - Temp W/line Up (Cut Not Included)
+    - Alvo The Barber
+    - Lining w/ out Beard Or Enhancements
+    - Touch of Precision
+    - Haircut With Blade Shave
+    - Million Dollar Cut
+    - V I P
+    - Taper (Ages 13-16)
+    - Shampoo Service Add On
+    - Men\u2019s cut @beard
+    - luisito barbershop \ud83d\udc88
+    - College Cut
+    - Kids Reg 10 Yrs Or Younger
+    - Estephan Lara
+    - gregory pouncy
+    - Men\u2019s haircut W/ design (large)
+    - Taper & Edge Up (Available)
+    - CMAC\u2019S  Child First Haircut
+    - Speciality Haircut
+    - Maintaining Locks/braids Cut~ [Cutting Down Extra Hair / Cut.  With Line Up]
+      Only
+    - Hot Oil Treatments
+    - Dominican Luxury Gentleman Salon
+    - Men\u2019s Haircut W/ Beard \ud83d\udc88
+    - Barberz Inc \ud83d\udc88
+    - Derde Cut(18+)
+    - Fade/Beard
+    - Adult Line Up/ Edge Up/ Facial Hair
+    - NappyCutz
+    - \u2694\ufe0fBig Chop
+    - House-Call Line up
+    - Loc Retwist ONLY (half of head)
+    - Mobile Cut \ud83d\ude97\ud83d\udc88
+    - \ud83e\uddd4\ud83c\udffbBeard Line Up/trim\ud83e\uddd4\ud83c\udffd\u200d\u2642\ufe0f
+    - Arkansas College Of Barbering
+    - Female Braiding Session - Jumbo Box Braids \ud83d\udc86\ud83c\udffb\u200d\u2640\ufe0f\u203c\ufe0f
+    - Haircut With Straight Razor Finish
+    - Anthony \u201cSkoolie\u201d Mascuilli
+    - After Hours /late Night Haircuts
+    - Blazin Men\u2019s Even All Over With Beard
+    - Fade W/beard & Design
+    - Adult Haircut With Shave
+    - Kids Shape Ups
+    - Dj Package
+    - Sanctuaire Combo
+    - Perfections Barbershop
+    - Line Up + Shave\u2757\ufe0f
+    - zay
+    - Haircut  (no Beard)
+    - OT
+    - Brian
+    - Brow Waxing (Adult)
+    - Kid Cuts
+    - \ud83e\ude92Beard Trims & Edge Ups
+    - Kids 12 & Under Regular Haircut
+    - FRESH
+    - Teen Cut + Head Wash If Needed
+    - Quadir Evans
+    - rayshaun Rayshaun Hutchison
+    - Teen Cut Ages 13-19
+    - Men Line And Beard Shape Up
+    - Head Shave / And Beard \ud83e\uddd4\u200d\u2642\ufe0f
+    - Starting Locs
+    - TRU
+    - EARLY MORNING HOURS
+    - JNBCUTS
+    - All Tapers
+    - 2 Kids ( 12 and Under)
+    - Wardz Barbershop
+    - Pre-teens Cuts 12yrs-15yrs
+    - Dean Littlejohn
+    - Starter Locs + Style (Shampoo Included)
+    - Bald Heads Including Facial Hair
+    - Oya\'s Barbershop
+    - Haircut & Fade With Beard
+    - Black Sparrow Barbershop
+    - Prices have changed due to tax Increase/ Los precios an cambiado debido al aumento
+      de impuesto
+    - ty
+    - All Hair Cuts
+    - Taper Fade
+    - \ud83d\udc88Edge Up \ud83d\udc88
+    - \u2b50\ufe0f HAIRCUT \u2b50\ufe0f
+    - Grade School(K-8th) and Senior(55+)
+    - Silver Package
+    - Slits In Eye Brows
+    - Beard Lineup
+    - JD
+    - Teenager Haircut 13 Yrs And Up
+    - The Blvck Experience
+    - Dapper lounge
+    - \ud83d\udccdMUST ADD EYEBROWS OR DESIGN!
+    round: 10
+  deleted_at: null
+  endpoint: instagram/scrapUsers/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGricGaaas7pp8dfgwrfsdfOLs1235
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getUsers
+  updated_at: 2024-04-08 22:52:01.516448+00:00
+  xcom_push: false
+- created_at: 2024-04-08 22:52:04.178146+00:00
+  data:
+    accounts: 18
+    chain: true
+    delay_after_requests: 14
+    delay_before_requests: 4
+    index: 0
+    round: 10
+    step: 3
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobx78vdg12sfgadsfdfOLs5
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getInfo
+  updated_at: 2024-04-08 22:52:04.178186+00:00
+  xcom_push: false
+- created_at: 2024-04-08 22:52:06.943416+00:00
+  data:
+    chain: true
+    keywords_to_check:
+    - hair
+    - appointment
+    - appointments
+    - book
+    - call
+    - book.thecut.co
+    - licensed
+    - cutz
+    - kutz
+    - cuts
+    - cut
+    - hairstylist
+    - salon
+    - salons
+    - educator
+    - specialist
+    - beauty
+    - barber
+    - walk
+    - text
+    - stylist
+    - colour
+    - colouring
+    - loreal
+    - olaplex
+    - hairspray
+    - mousse
+    - pomade
+    - hair oil
+    - hair serum
+    - scissors
+    - comb
+    - brush
+    - blow dryer
+    - flat iron
+    - curling iron
+    - hair rollers
+    - hair clips
+    - hair ties
+    - headbands
+    - hair accessories
+    - updos
+    - braids
+    - twists
+    - buns
+    - ponytails
+    - curls
+    - waves
+    - volume
+    - texture
+    - shine
+    - frizz control
+    - breakage
+    - dryness
+    - oiliness
+    - thinning
+    - hair loss
+    - dandruff
+    - scalp problems
+    round: 10
+  deleted_at: null
+  endpoint: instagram/insertAndEnrich/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGrO78La23asdf5zxsdfgcvfs5
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: enrich
+  updated_at: 2024-04-08 22:52:06.943460+00:00
+  xcom_push: false
+- created_at: 2024-04-08 22:52:09.502837+00:00
+  data:
+    num_tasks: ''
+    start_hour: 3
+    start_minute: 30
+    tasks_per_day: 24
+  deleted_at: null
+  endpoint: https://api.booksy.us.boostedchat.com/v1/outreaches/tasks/reschedule_all/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobiGUGO7asdf8Lasd2sdfg35zxcv
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: reschedule
+  updated_at: 2024-04-08 22:52:09.502873+00:00
+  xcom_push: false

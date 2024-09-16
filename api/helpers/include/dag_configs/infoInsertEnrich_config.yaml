@@ -1,0 +1,138 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-04-03 23:04:35.518803+00:00
+  dag_id: infoInsertEnrich
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: adf
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: 123fasdxmaopoasdpsocxvlxopcvsdf
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '@daily'
+  schedule_interval: 10 8 5 4 *
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  updated_at: 2024-04-03 23:04:35.518827+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+operators:
+- created_at: 2024-04-03 23:04:30.409726+00:00
+  data:
+    accounts: 18
+    chain: true
+    delay_after_requests: 14
+    delay_before_requests: 4
+    index: 0
+    round: 8
+    step: 3
+  deleted_at: null
+  endpoint: instagram/scrapInfo/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGricGaasdnsdwtfasdfUGweraasxvdgwrfsdfOLs5
+  log_response: true
+  method: POST
+  response_check: ''
+  task_id: getInfo
+  updated_at: 2024-04-03 23:04:30.409761+00:00
+  xcom_push: false
+- created_at: 2024-04-03 23:04:32.969589+00:00
+  data:
+    chain: true
+    keywords_to_check:
+    - hair
+    - appointment
+    - appointments
+    - book
+    - call
+    - book.thecut.co
+    - licensed
+    - cutz
+    - kutz
+    - cuts
+    - cut
+    - hairstylist
+    - salon
+    - salons
+    - educator
+    - specialist
+    - beauty
+    - barber
+    - walk
+    - text
+    - stylist
+    - colour
+    - colouring
+    - loreal
+    - olaplex
+    - hairspray
+    - mousse
+    - pomade
+    - hair oil
+    - hair serum
+    - scissors
+    - comb
+    - brush
+    - blow dryer
+    - flat iron
+    - curling iron
+    - hair rollers
+    - hair clips
+    - hair ties
+    - headbands
+    - hair accessories
+    - updos
+    - braids
+    - twists
+    - buns
+    - ponytails
+    - curls
+    - waves
+    - volume
+    - texture
+    - shine
+    - frizz control
+    - breakage
+    - dryness
+    - oiliness
+    - thinning
+    - hair loss
+    - dandruff
+    - scalp problems
+    round: 8
+  deleted_at: null
+  endpoint: instagram/insertAndEnrich/
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGrimlpasasdfabcklklafdiGUpoGOLasdzxcvfs5
+  log_response: true
+  method: GET
+  response_check: ''
+  task_id: enrich
+  updated_at: 2024-04-03 23:04:32.969612+00:00
+  xcom_push: false

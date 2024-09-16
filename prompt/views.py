@@ -69,6 +69,29 @@ os.environ["SERPER_API_KEY"] = os.getenv('SERPER_API_KEY')
 db_url = f"postgresql://{os.getenv('POSTGRES_USERNAME')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DBNAME')}"
 print(db_url)
 
+from llama_cpp import Llama
+def reproduce_llama(outsourced_info):
+    llm = Llama(model_path="../llama-model.gguf", chat_format="chatml")
+    resp = llm.create_chat_completion(
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that outputs in JSON.",
+            },
+            {"role": "user", "content": f"Given the following data:{outsourced_info} tell me their career, choose from the following list of careers ['barber','nail technician','career not mentioned']"},
+        ],
+        response_format={
+            "type": "json_object",
+            "schema": {
+                "type": "object",
+                "properties": {"career": {"type": "string"},"username":{"type":"string"}},
+                "required": ["career","username"],
+            },
+        },
+        temperature=0.7,
+    )
+    return resp
+
 def index(request):
     prompts = Prompt.objects.all()
     return render(request, 'prompt/index.html', {'prompts': prompts})

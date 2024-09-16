@@ -1,0 +1,73 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-04-03 19:29:53.873833+00:00
+  dag_id: afdf
+  dagrun_timeout: null
+  default_args: null
+  default_view: ''
+  deleted_at: null
+  description: adf
+  doc_md: ''
+  end_date: null
+  fail_stop: false
+  full_filepath: ''
+  id: 123fasdxmaopoasdpsocxvclopvsdf
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: ''
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '23213'
+  schedule_interval: '1233'
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: ''
+  template_undefined: ''
+  timetable: ''
+  updated_at: 2024-04-03 19:29:53.873862+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+operators:
+- created_at: 2024-04-03 19:29:36.773519+00:00
+  data:
+    mateso: ni
+    mengi: sana
+  deleted_at: null
+  endpoint: send/again
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGricGaasdnsdfasdfUlopGweraasxvdgwrfsdfOLs5
+  log_response: true
+  method: GET
+  response_check: ''
+  task_id: asdfasdflop
+  updated_at: 2024-04-03 19:29:36.773540+00:00
+  xcom_push: false
+- created_at: 2024-04-03 19:29:44.965190+00:00
+  data:
+    mateso: ni
+    mengi: sana
+  deleted_at: null
+  endpoint: send/again
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: your_http_connection
+  id: -NgcH1oobGrimlpasasdfabcklklafdiGUlopGOLasdzxcvfs5
+  log_response: true
+  method: GET
+  response_check: ''
+  task_id: kjasdflopp
+  updated_at: 2024-04-03 19:29:44.965208+00:00
+  xcom_push: false

@@ -1,12 +1,16 @@
 import requests
-
+import os
+import json
+from .constants import LUNYAMWI_ML_BASE_URL
 
 
 def setup_agent(payload = None):
-    url = os.getenv("SCRIPTING_URL") + '/agentSetup/'
+    url = LUNYAMWI_ML_BASE_URL + '/agentSetup/'
     print(url)
-    # import pdb;pdb.set_trace()
-    resp = requests.post(url, data=json.dumps(payload),headers = {'Content-Type': 'application/json'})
-    response = resp.json()
+    response = None
+    try:
+      resp = requests.post(url, data=json.dumps(payload),headers = {'Content-Type': 'application/json'})
+      response = resp.json()
+    except Exception as err:
+      print(err)
     return response
-

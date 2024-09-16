@@ -9,9 +9,6 @@ RUN apt-get update && \
 # Copy your custom nginx configurations
 COPY sites-enabled/ /etc/nginx/sites-enabled
 COPY sites-enabled/ /etc/nginx/sites-available
-# Example line to copy static files from the web image
-# COPY --from=web /usr/src/static /usr/src/static
-
 
 # Command to start nginx (if not started by default)
 CMD ["nginx", "-g", "daemon off;"]
