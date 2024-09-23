@@ -774,6 +774,13 @@ TOOLS = {
     "opesource_llm_tool":OpenSourceLLMTool()
 }
 
+class opensourceAgent(APIView):
+    def post(self, request):
+      prompt = request.data.get("prompt")
+      resp = generate_chat_resp(prompt)
+      print(resp)
+      return Response({"result":resp})
+
 class agentSetup(APIView):
     def post(self,request):
         # workflow_data = request.data.get("workflow_data")

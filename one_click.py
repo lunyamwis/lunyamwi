@@ -23,7 +23,7 @@ TORCHAUDIO_VERSION = "2.2.2"
 # Environment
 script_dir = os.getcwd()
 conda_env_path = os.path.join(script_dir, "installer_files", "env")
-
+#print(conda_env_path)
 # Command-line flags
 cmd_flags_path = os.path.join(script_dir, "CMD_FLAGS.txt")
 if os.path.exists(cmd_flags_path):
