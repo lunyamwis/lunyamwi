@@ -41,7 +41,7 @@ decorator
 Deprecated
 distlib
 distro
-Django
+Django==4.2.6
 django-allauth
 django-auditlog
 django-celery-beat

@@ -1,7 +1,7 @@
 from django.db import models, connections
 from django.shortcuts import get_object_or_404
 from base.models import BaseModel
-from product.models import Product, Company, Problem, Solution, GsheetSetting
+#from product.models import Product, Company, Problem, Solution, GsheetSetting
 from helpers.db.connection import connect_to_external_database
 from helpers.gsheet.utils import execute_gsheet_formula
 # Create your models here.

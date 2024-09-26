@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PromptViewSet, RoleViewSet, index, add, getAgent,update, detail, delete, getPrompt, saveResponse, generateResponse, agentSetup,opensourceAgent
+from .views import PromptViewSet, RoleViewSet, index, add, getAgent,update, detail, delete, getPrompt, saveResponse, generateResponse, agentSetup,opensourceAgent,useMistralClient
 
 router = DefaultRouter()
 router.register(r"prompts", PromptViewSet, basename="prompts")
@@ -20,5 +20,6 @@ urlpatterns = [
     path("agentSetup/",agentSetup.as_view()),
     path("openSource/",opensourceAgent.as_view()),
     path("getAgent/",getAgent.as_view()),
+    path("useMistral/",useMistralClient.as_view()),
     path("", include(router.urls))
 ]

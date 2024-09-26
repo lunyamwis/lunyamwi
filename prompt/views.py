@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from datetime import datetime
 
 from django.shortcuts import redirect, get_object_or_404
-from product.models import Product, Company
+#from product.models import Product, Company
 from prompt.serializers import CreatePromptSerializer, CreateRoleSerializer, PromptSerializer, RoleSerializer
 from .factory import PromptFactory
 from .models import Prompt, Role, ChatHistory
@@ -59,8 +59,8 @@ from typing import List,Optional
 from transformers import pipeline
 import google.protobuf
 import sentencepiece
-from huggingface_hub import login
-login(token="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")
+from huggingface_hub import login,InferenceClient
+login(token=os.getenv("HF_TOKEN"))
 
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
@@ -68,6 +68,57 @@ os.environ["OPENAI_MODEL_NAME"] = 'gpt-4-1106-preview'
 os.environ["SERPER_API_KEY"] = os.getenv('SERPER_API_KEY')
 db_url = f"postgresql://{os.getenv('POSTGRES_USERNAME')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DBNAME')}"
 print(db_url)
+
+import io
+import sys
+from contextlib import contextmanager
+
+@contextmanager
+def capture_output():
+    new_out, new_err = io.StringIO(), io.StringIO()
+    old_out, old_err = sys.stdout, sys.stderr
+    try:
+        sys.stdout, sys.stderr = new_out, new_err
+        yield sys.stdout, sys.stderr
+    finally:
+        sys.stdout, sys.stderr = old_out, old_err
+
+
+
+def use_mistral_client(outsourced_info):
+    client = InferenceClient(
+        "mistralai/Mistral-7B-Instruct-v0.3",
+        token=os.getenv("HF_TOKEN"),
+    )
+
+    with capture_output() as (out,err):
+        for message in client.chat_completion(messages=[{"role": "user", "content": f"give me a json with the is_barber set to true or false in thefollowing json: {outsourced_info} "}],
+            max_tokens=500,stream=True,
+        ):
+            print(message.choices[0].delta.content, end="")
+    captured_output = out.getvalue()
+    json_start = captured_output.find('{')
+    json_end = captured_output.rfind('}') + 1
+    json_str = captured_output[json_start:json_end]
+    result = json.loads(json_str)
+    if result['is_barber']:
+        inbound_qualify_data = {
+            "username": result['username'],
+            "qualify_flag": result['is_barber'],
+            "relevant_information": json.dumps(result),
+            "scraped":True
+        }
+        response = requests.post("https://api.booksy.us.boostedchat.com/v1/instagram/account/qualify-account/",data=inbound_qualify_data)
+        if response.status_code in [200,201]:
+            print("Successfully qualified account")
+        else:
+            print("Failed to qualify account")
+    return json_str
+
+
+class useMistralClient(APIView):
+    def post(self,request,*args,**kwargs):
+      return Response({'result':use_mistral_client(request.data.get('outsourced_info'))})
 
 from llama_cpp import Llama
 def reproduce_llama(outsourced_info):

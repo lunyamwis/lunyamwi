@@ -5,15 +5,18 @@ from base.models import BaseModel
 class Company(BaseModel):
     name = models.CharField(max_length=255)
     index = models.IntegerField(default=1)
-
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.name
-    
+
 class GsheetSetting(BaseModel):
     name = models.CharField(max_length=255)
     spreadsheet_id = models.CharField(max_length=255)
     company = models.ForeignKey(Company, on_delete=models.CASCADE,
                                 null=True, blank=True)
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.name
 
@@ -27,7 +30,8 @@ class DatabaseCredential(BaseModel):
     port = models.CharField(max_length=255)
     company = models.ForeignKey(Company, on_delete=models.CASCADE,
                                 null=True, blank=True)
-    
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.database
 
@@ -37,7 +41,8 @@ class Product(BaseModel):
     description = models.TextField()
     company = models.ForeignKey(Company,on_delete=models.CASCADE, 
                                       null=True, blank=True)
-    
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.name
     
@@ -56,7 +61,8 @@ class Problem(BaseModel):
     gsheet_range = models.TextField()
     gsheet_formula = models.TextField()
     outsourced = models.JSONField(default=dict)
-
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.name
 
@@ -67,7 +73,8 @@ class Solution(BaseModel):
     gsheet_formula = models.TextField()
     problem = models.ForeignKey(Problem,on_delete=models.CASCADE, 
                                       null=True, blank=True)
-    
+    class Meta:
+      app_label='product'
     def __str__(self) -> str:
         return self.name
     
