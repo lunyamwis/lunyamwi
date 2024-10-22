@@ -11,6 +11,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 # from seleniumwire import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from django.utils import timezone
+from api.instagram.models import InstagramUser
 
 
 def get_page_url_status_code(url, driver):
@@ -103,3 +105,9 @@ def generate_html(url):
     driver = setup_driver()
     driver.get(url)
     return driver
+
+
+def get_users_without_outsourced_info():
+    yesterday = timezone.now() - timezone.timedelta(days=1)
+    instagram_users = InstagramUser.objects.filter(created_at__gte=yesterday).exclude(info__isnull=True)
+    return (instagram_users,instagram_users.count())
