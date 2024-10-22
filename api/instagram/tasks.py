@@ -97,7 +97,8 @@ def load_info_to_database():
             try:
                 account_dict = {
                     "igname": user.username,
-                    "is_manually_triggered":True
+                    "is_manually_triggered":True,
+                    "relevant_information": user.info
                 }
                 response = requests.post(
                     "https://api.booksy.us.boostedchat.com/v1/instagram/account/",
@@ -109,7 +110,7 @@ def load_info_to_database():
                 # Save outsourced data
                 
                 outsourced_dict = {
-                    "results": json.dumps({**user.info,"media_id":user.item_id}), # yet to test
+                    "results": {**user.info,"media_id":user.item_id}, # yet to test
                     "source": "instagram"
                 }
                 # import pdb;pdb.set_trace()
