@@ -28,6 +28,11 @@ def scrap_users(query,round_,index):
 def scrap_info(delay_before_requests,delay_after_requests,step,accounts,round):
     inst = InstagramSpider(load_tables=load_tables,db_url=db_url)
     inst.scrap_info(delay_before_requests,delay_after_requests,step,accounts,round)
+    load_info_to = 1
+    if load_info_to == 1:
+        load_info_to_database()
+    elif load_info_to == 2:
+        load_info_to_csv()
     
 @shared_task()
 def insert_and_enrich(keywords_to_check,round_number):
@@ -150,10 +155,7 @@ def load_info_to_database():
 
 
 @shared_task()
-def scrap_media(media_links,load_info_to=1):
+def scrap_media(media_links):
     inst = InstagramSpider(load_tables=load_tables,db_url=db_url)
     inst.scrap_media(media_links)
-    if load_info_to == 1:
-        load_info_to_database()
-    elif load_info_to == 2:
-        load_info_to_csv()
+    
