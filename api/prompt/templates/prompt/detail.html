@@ -1,0 +1,23 @@
+{% extends 'prompt/base.html' %}
+
+{% block title %}Index - Django CRUD{% endblock %}
+
+{% block content %}
+<h1>Detail</h1>
+<ul>
+        <li>
+            {{ prompt.name }}
+            {{ prompt.data }}
+            {{ prompt.text_data }}
+            querying_info: {{prompt.querying_info}}
+            problems: {{prompt.get_problems}} 
+            solutions: {{prompt.get_solutions}}
+            steps: {{ prompt.product.steps }}
+            <a href="{% url 'update' prompt.id %}">Update</a>
+            <a href="{% url 'delete' prompt.id %}">Delete</a>
+        </li>
+    
+</ul>
+<a href="{% url 'add' %}">Add Prompt</a>
+<a href="{% url 'index' %}">Back to Index</a>
+{% endblock %}

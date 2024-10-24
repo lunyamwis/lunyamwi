@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'api.instagram',
     'api.scout', # had some issues
     'api.helpers',
+    'api.prompt',
     'rest_framework',
     'django_celery_beat',
     'softdelete',

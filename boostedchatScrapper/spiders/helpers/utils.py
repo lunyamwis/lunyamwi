@@ -13,7 +13,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 from django.utils import timezone
 from api.instagram.models import InstagramUser
-
+from django.db.models import Count,Min
 
 def get_page_url_status_code(url, driver):
     page_url_status_code = 500
@@ -111,3 +111,20 @@ def get_users_without_outsourced_info():
     yesterday = timezone.now() - timezone.timedelta(days=1)
     instagram_users = InstagramUser.objects.filter(created_at__gte=yesterday).exclude(info__isnull=True)
     return (instagram_users,instagram_users.count())
+
+def handle_duplicates_before_extracting_info():
+    yesterday = timezone.now() - timezone.timedelta(days=1)    
+    # Get the duplicate usernames
+    duplicate_usernames = InstagramUser.objects.filter(created_at__gte=yesterday).values('username').annotate(count=Count('username')).filter(count__gt=1)
+
+    # Get the duplicate objects
+    duplicate_objects = InstagramUser.objects.filter(created_at__gte=yesterday, username__in=[username['username'] for username in duplicate_usernames])
+
+    # Print the number of duplicates and their usernames
+    print(f"There are {len(duplicate_objects)} duplicates in the group of users created on or after the specified date.")
+    print("The duplicate usernames are:")
+    for obj in duplicate_objects:
+        print(obj.username)
+
+    # Remove the duplicates
+    duplicate_objects.exclude(id__in=duplicate_objects.values('username').annotate(min_id=Min('id')).values('min_id')).delete()

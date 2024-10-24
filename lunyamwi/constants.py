@@ -1,0 +1,3 @@
+import os
+
+LUNYAMWI_ML_BASE_URL = os.getenv('LUNYAMWI_ML_BASE_URL')
