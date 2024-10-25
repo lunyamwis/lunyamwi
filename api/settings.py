@@ -43,27 +43,27 @@ ALLOWED_HOSTS = [
     "booksy.us.boostedchat.com",
     "scrapper.booksy.boostedchat.com",
     "airflow.booksy.boostedchat.com",
+    "lunyamwi.localhost",
 ]
 CSRF_TRUSTED_ORIGINS = [
     f"https://api.{os.environ.get('DOMAIN1', '')}.boostedchat.com",
     f"https://api.{os.environ.get('DOMAIN2', '')}.boostedchat.com",
     f"https://scrapper.{os.environ.get('DOMAIN1', '')}.boostedchat.com",
     f"https://scrapper.{os.environ.get('DOMAIN2', '')}.boostedchat.com",
-    "http://34.28.104.255"]
+    "http://34.28.104.255",
+    "http://lunyamwi.localhost/"
+]
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = [
+    'django_tenants',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api.instagram',
-    'api.scout', # had some issues
-    'api.helpers',
-    'api.prompt',
     'rest_framework',
     'django_celery_beat',
     'softdelete',
@@ -71,7 +71,13 @@ INSTALLED_APPS = [
     'sitemaps',
 ]
 
+TENANT_APPS = ['api.instagram','api.scout', 'api.helpers','api.prompt']
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+TENANT_MODEL = "boostedchatScrapper.Client"
+TENANT_DOMAIN_MODEL = "boostedchatScrapper.Domain"
+
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -83,7 +89,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'api.urls'
+PUBLIC_SCHEMA_URLCONF = 'boostedchatScrapper.urls'
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 TEMPLATES = [
     {
@@ -110,7 +121,7 @@ AIRFLOW_API_BASE_URL = 'http://localhost:8080/api/v1'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django_tenants.postgresql_backend",
         "NAME": os.getenv("POSTGRES_DBNAME_ETL").strip(),
         "USER": os.getenv("POSTGRES_USERNAME_ETL").strip(),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD_ETL").strip(),
@@ -118,6 +129,10 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT_ETL").strip(),
     }
 }
+
+DATABASE_ROUTERS = (
+    "django_tenants.routers.TenantSyncRouter",
+) 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
