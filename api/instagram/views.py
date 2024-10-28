@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404,render
 from django.utils import timezone
 from .tasks import scrap_followers,scrap_info,scrap_users,insert_and_enrich,scrap_mbo,scrap_media
 from api.helpers.dag_generator import generate_dag
@@ -20,6 +20,7 @@ from api.helpers.date_helper import datetime_to_cron_expression
 from boostedchatScrapper.spiders.helpers.thecut_scrapper import scrap_the_cut
 from boostedchatScrapper.spiders.helpers.instagram_helper import fetch_pending_inbox,approve_inbox_requests,send_direct_answer
 from django.db.models import Q
+from django.views.generic import View
 
 from .models import InstagramUser
 
@@ -27,13 +28,52 @@ from rest_framework import viewsets
 from boostedchatScrapper.models import ScrappedData
 from instagrapi import Client
 
+
+from .forms import DagModelForm, SimpleHttpOperatorModelForm, WorkflowModelForm, dagFormSet, simpleHttpOperatorFormSet
 from .models import Score, QualificationAlgorithm, Scheduler, InstagramUser, LeadSource,DagModel,SimpleHttpOperatorModel,WorkflowModel
 from .serializers import ScoreSerializer, InstagramLeadSerializer,  QualificationAlgorithmSerializer, SchedulerSerializer, LeadSourceSerializer, SimpleHttpOperatorModelSerializer, WorkflowModelSerializer
+
+from django.shortcuts import render, redirect
+from .forms import WorkflowModelForm
+from .utils import generate_dag_script
+
+def display_workflows(request):
+    workflows = WorkflowModel.objects.all()
+    return render(request, 'workflows.html', {'workflows': workflows})
+
+
+
+def generate_workflow(request):
+    if request.method == 'POST':
+        workflow_form = WorkflowModelForm(request.POST)
+        simplehttpoperator_formset = simpleHttpOperatorFormSet(request.POST)
+        dag_formset = dagFormSet(request.POST)
+        # import pdb;pdb.set_trace()
+        if workflow_form.is_valid() and simplehttpoperator_formset.is_valid() and dag_formset.is_valid():
+            workflow = workflow_form.save()
+            simplehttpoperators = simplehttpoperator_formset.save()
+            dags = dag_formset.save()
+            workflow.simplehttpoperators.set(simplehttpoperators)
+            for dag in dags:
+                workflow.dag = dag  # assuming WorkflowModel.dag is a ManyToManyField
+                workflow.save()
+            generate_dag_script(workflow)
+            return redirect("workflows")  # replace with your actual success page
+        
+    else:
+        workflow_form = WorkflowModelForm()
+        simplehttpoperator_formset = simpleHttpOperatorFormSet(queryset=SimpleHttpOperatorModel.objects.none())
+        dag_formset = dagFormSet(queryset=DagModel.objects.none())
+
+    return render(request, 'workflow.html', {'workflow_form': workflow_form, 'simplehttpoperator_formset': simplehttpoperator_formset, 'dag_formset': dag_formset})
+
 
 class PaginationClass(PageNumberPagination):
     page_size = 20  # Set the number of items per page
     page_size_query_param = 'page_size'
     max_page_size = 100
+
+
 
 
 class InstagramLeadViewSet(viewsets.ModelViewSet):

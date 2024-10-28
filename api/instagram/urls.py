@@ -13,6 +13,8 @@ router.register(r'workflows',views.WorkflowViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('displayWorkflow/', views.display_workflows,name="workflows"),
+    path('generateWorkflow/', views.generate_workflow,name="create_workflow"),
     path('scrapFollowers/', views.ScrapFollowers.as_view()),
     path('scrapGmaps/', views.ScrapGmaps.as_view()),
     path('scrapTheCut/', views.ScrapTheCut.as_view()),
