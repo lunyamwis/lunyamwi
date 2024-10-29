@@ -1,0 +1,60 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-10-29 08:25:53.822926+00:00
+  dag_id: dagadfsf
+  dagrun_timeout: null
+  default_args: null
+  default_view: null
+  deleted_at: null
+  description: cxcvsdf
+  doc_md: null
+  end_date: null
+  fail_stop: false
+  full_filepath: null
+  id: -OAMNP5TDrySsbC_pnKN
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: ''
+  on_success_callback: ''
+  orientation: null
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '2025-01-01'
+  schedule_interval: hourly
+  sla_miss_callback: ''
+  start_date: null
+  tags: []
+  template_searchpath: null
+  template_undefined: ''
+  timetable: null
+  trigger_url: null
+  trigger_url_expected_response: ''
+  updated_at: 2024-10-29 08:25:53.823068+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+data_seconds: 14
+operators:
+- created_at: 2024-10-29 08:25:52.513560+00:00
+  data:
+    asdf: 124
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    adsf: adf
+  http_conn_id: your_http_connection
+  id: -OAMNOor8rZwLQvpQVuq
+  log_response: true
+  method: POST
+  response_check: null
+  task_id: fkakadf11
+  updated_at: 2024-10-29 08:25:52.513621+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true

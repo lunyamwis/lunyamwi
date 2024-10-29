@@ -6,7 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Workflows</h1>
+    <a href="{% url 'workflows' %}">
+        <h1>Workflows</h1>
+    </a>
     <form method="post">
         {% csrf_token %}
         {{ workflow_form.as_p }}

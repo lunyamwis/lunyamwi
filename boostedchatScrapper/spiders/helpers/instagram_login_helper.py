@@ -89,28 +89,11 @@ def login_user(scout: Scout):
 
         
     # cl.login_by_sessionid()
-    # index = 1
-    # before_ip = cl._send_public_request("https://api.ipify.org/")
-    #username = 'user-sp8zty8v3u-sessionduration-1-country-us-zip-02893'
-    #password = 'ysg6wa+6pGs6CG9Pde'
-    #proxy = f"http://{username}:{password}@gate.smartproxy.com:10001"
-    # username = 'user-sp8zty8v3u-sessionduration-1'
-    # password = 'ysg6wa+6pGs6CG9Pde'
-    username = 'sp8zty8v3u'
-    password = 'o0ulmi8HwgC4H2=dxW'
+    username = os.getenv('PROXY_USERNAME')
+    password = os.getenv('PROXY_PASSWORD')
     proxy = f"http://{username}:{password}@ke.smartproxy.com:45001"
-    # username = 'instagramUser'
-    # password = 'ww~IsJcgn87EqD0s4d'
-    # proxy = f"http://{username}:{password}@ke.smartproxy.com:45001"
-    # username = 'user-instagramUser-country-us-zip-02893'
-    # password = 'ww~IsJcgn87EqD0s4d'
-    # proxy = f"http://{username}:{password}@us.smartproxy.com:10001"
     
     cl.set_proxy(
-        # f"https://lunyamwi;country=KE;city=Nairobi:8213ae-6228c7-550488-c480ad-0f7eb4@premium.residential.proxyrack.net:10000"
-        # f"http://Sql8t2uRG3XRvQrO:wifi;{device.scout.country.lower()};starlink;;{device.scout.city.lower()}@proxy.soax.com:9000"
-        # "http://NQkWIMtrprYfgFH5:mobile;ke;safaricom;;nairobi@proxy.soax.com:9000"
-        # "http://Sql8t2uRG3XRvQrO:wifi;ke;starlink;nairobi+county;nairobi@proxy.soax.com:9004"
         proxy
     )
     # after_ip = cl._send_public_request("https://api.ipify.org/")

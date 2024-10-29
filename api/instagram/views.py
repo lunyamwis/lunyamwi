@@ -55,15 +55,15 @@ def generate_workflow(request):
             dags = dag_formset.save()
             workflow.simplehttpoperators.set(simplehttpoperators)
             for dag in dags:
-                workflow.dag = dag  # assuming WorkflowModel.dag is a ManyToManyField
+                workflow.dag = dag  # WorkflowModel.dag is a foreign key
                 workflow.save()
             generate_dag_script(workflow)
             return redirect("workflows")  # replace with your actual success page
         
     else:
         workflow_form = WorkflowModelForm()
-        simplehttpoperator_formset = simpleHttpOperatorFormSet(queryset=SimpleHttpOperatorModel.objects.none())
-        dag_formset = dagFormSet(queryset=DagModel.objects.none())
+        simplehttpoperator_formset = simpleHttpOperatorFormSet(queryset=SimpleHttpOperatorModel.objects.all())
+        dag_formset = dagFormSet(queryset=DagModel.objects.all())
 
     return render(request, 'workflow.html', {'workflow_form': workflow_form, 'simplehttpoperator_formset': simplehttpoperator_formset, 'dag_formset': dag_formset})
 

@@ -22,5 +22,5 @@ class WorkflowModelForm(forms.ModelForm):
 
     
 
-simpleHttpOperatorFormSet = forms.modelformset_factory(SimpleHttpOperatorModel, fields='__all__', extra=1)
-dagFormSet = forms.modelformset_factory(DagModel, fields='__all__', extra=1)
+simpleHttpOperatorFormSet = forms.modelformset_factory(SimpleHttpOperatorModel, exclude=['id'], extra=1)
+dagFormSet = forms.modelformset_factory(DagModel, exclude=['id'], extra=1)
