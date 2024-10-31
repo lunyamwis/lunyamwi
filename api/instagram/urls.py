@@ -13,8 +13,19 @@ router.register(r'workflows',views.WorkflowViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    path('workflow/list', views.WorkflowList.as_view(), name='list_workflows'),
+    path('workflow/create/', views.WorkflowCreate.as_view(), name='create_workflow'),
+    path('workflow/update/<str:pk>/', views.WorkflowUpdate.as_view(), name='update_workflow'),
+    path('workflow/delete-operator/<str:pk>/', views.delete_httpoperator, name='delete_httpoperator'),
+    path('workflow/delete-dag/<str:pk>/', views.delete_dag, name='delete_dag'),
+    path('workflow/runner/<str:pk>/', views.WorkflowRunner.as_view(), name='workflow_runner'),
+    path('connection/', views.ConnectionListView.as_view(), name='connection_list'),
+    path('connection/create/', views.ConnectionCreateView.as_view(), name='connection_create'),
+    path('connection/update/<str:pk>/', views.ConnectionUpdateView.as_view(), name='connection_update'),
+    path('connection/delete/<str:pk>/', views.ConnectionDeleteView.as_view(), name='connection_delete'),
     path('displayWorkflow/', views.display_workflows,name="workflows"),
-    path('generateWorkflow/', views.generate_workflow,name="create_workflow"),
+    path('generateWorkflow/', views.generate_workflow,name="create_workflowset"),
     path('scrapFollowers/', views.ScrapFollowers.as_view()),
     path('scrapGmaps/', views.ScrapGmaps.as_view()),
     path('scrapTheCut/', views.ScrapTheCut.as_view()),

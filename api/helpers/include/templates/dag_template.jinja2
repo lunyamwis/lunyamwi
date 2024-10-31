@@ -10,6 +10,8 @@ from airflow.providers.slack.notifications.slack import send_slack_notification
 from airflow.utils.task_group import TaskGroup
 
 import json
+#print(operators)
+#print(dag)
 
 def check_api_response():
     while True:
@@ -99,7 +101,6 @@ http_tasks.append(http_task_1)
 # Set up task dependencies with dynamic delay durations
 {% if operators|length > 1 %}
 {% for i in range(1, operators|length) %}
-
 # Downstream task to retrieve XCom value
 {% if i >= 1 %}
 # Define the HTTP operator

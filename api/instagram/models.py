@@ -105,6 +105,19 @@ class InstagramUser(BaseModel):
         return self.username if self.username else 'cursor'
 
 
+class AirflowCreds(BaseModel):
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    schema_name = models.CharField(max_length=255)
+    airflow_base_url = models.URLField()
+
+    def __str__(self) -> str:
+        return self.schema_name
+
+class WorkflowModel(BaseModel):
+    name = models.CharField(max_length=255,null=True, blank=True)
+    delay_durations = models.JSONField(null=True,blank=True)
+    airflow_creds = models.ForeignKey(AirflowCreds,on_delete=models.CASCADE,null=True, blank=True)
 
 class DagModel(BaseModel):
     dag_id = models.CharField(max_length=255)
@@ -140,12 +153,24 @@ class DagModel(BaseModel):
     owner_links = models.JSONField(null=True,blank=True)
     auto_register = models.BooleanField(default=False)
     fail_stop = models.BooleanField(default=False)
-    trigger_url = models.URLField(null=True, blank=True)
-    trigger_url_expected_response = models.TextField(null=True,blank=True)
+    trigger_url = models.URLField(null=True, blank=True,default="https://example.com")
+    trigger_url_expected_response = models.TextField(null=True,blank=True,default='{"status": "ok"}')
+    workflow = models.ForeignKey(WorkflowModel,on_delete=models.CASCADE,null=True, blank=True)
 
     def __str__(self) -> str:
         return self.dag_id
     
+
+class HttpOperatorConnectionModel(BaseModel):
+    connection_id = models.CharField(max_length=255)
+    conn_type = models.CharField(max_length=255)
+    host = models.CharField(max_length=255)
+    port = models.IntegerField(null=True,blank=True)
+    login = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.connection_id
 
 class SimpleHttpOperatorModel(BaseModel):
     METHODS = (
@@ -153,6 +178,7 @@ class SimpleHttpOperatorModel(BaseModel):
         ("POST","POST")
     )
     task_id = models.CharField(max_length=255,null=True, blank=True)
+    connection = models.ForeignKey(HttpOperatorConnectionModel,on_delete=models.CASCADE,null=True, blank=True)
     http_conn_id=models.CharField(max_length=144,default="your_http_connection")
     endpoint = models.CharField(max_length=255)
     method = models.CharField(max_length=20, choices=METHODS, default="POST")
@@ -163,13 +189,9 @@ class SimpleHttpOperatorModel(BaseModel):
     xcom_push = models.BooleanField(default=True)
     log_response = models.BooleanField(default=False)
     urls = ArrayField(models.JSONField(null=True, blank=True), blank=True, null=True)
-    
+    dag = models.ForeignKey(DagModel,on_delete=models.CASCADE,null=True, blank=True)
+
     def __str__(self) -> str:
         return self.endpoint
 
 
-class WorkflowModel(BaseModel):
-    name = models.CharField(max_length=255,null=True, blank=True)
-    simplehttpoperators = models.ManyToManyField(SimpleHttpOperatorModel)
-    dag = models.ForeignKey(DagModel,on_delete=models.CASCADE,null=True, blank=True)
-    delay_durations = models.JSONField(null=True,blank=True)

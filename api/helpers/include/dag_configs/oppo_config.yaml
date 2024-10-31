@@ -1,0 +1,82 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-10-31 10:45:41.734354+00:00
+  dag_id: oppo
+  dagrun_timeout: null
+  default_args: null
+  default_view: null
+  deleted_at: null
+  description: klkklk
+  doc_md: null
+  end_date: null
+  fail_stop: false
+  full_filepath: null
+  id: -OAXA_YZW9dac_bj6H-P
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: null
+  on_success_callback: null
+  orientation: null
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '2025-01-01'
+  schedule_interval: hourly
+  sla_miss_callback: null
+  start_date: null
+  tags: null
+  template_searchpath: null
+  template_undefined: null
+  timetable: null
+  trigger_url: https://example.com
+  trigger_url_expected_response: '{"status": "ok"}'
+  updated_at: 2024-10-31 10:45:41.734420+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+  workflow_id: -OAXA_MDQxq9D81cvpXl
+data_seconds:
+- '30'
+operators:
+- created_at: 2024-10-31 10:45:46.565256+00:00
+  dag_id: -OAXA_YZW9dac_bj6H-P
+  data:
+    dsfa: sadf
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    dsfa: sadf
+  http_conn_id: your_http_connection
+  id: -OAXAa_9MO-tjgmIBwF0
+  log_response: true
+  method: POST
+  response_check: null
+  task_id: adfadf
+  updated_at: 2024-10-31 10:45:46.565271+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true
+- created_at: 2024-10-31 10:45:48.900806+00:00
+  dag_id: -OAXA_YZW9dac_bj6H-P
+  data:
+    cxvsf: sdfaf
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    cxvsf: sdfaf
+  http_conn_id: your_http_connection
+  id: -OAXAb7O-YpnuDTIiKsV
+  log_response: true
+  method: POST
+  response_check: null
+  task_id: opadf
+  updated_at: 2024-10-31 10:45:48.900857+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true

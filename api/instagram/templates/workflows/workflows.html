@@ -1,0 +1,42 @@
+<!-- product_list.html -->
+{% extends "workflows/main.html" %}
+
+
+{% block content %}
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header card-header-secondary">
+        <h4 class="card-title">workflows</h4>
+        <a href="{% url 'create_workflow' %}">Add more workflows</a>
+    </div>
+    
+    <ul>
+            {% for workflow in workflows %}
+                {% for dag in data.dags %}
+                    {% if dag.dag_id == workflow.dagmodel_set.last.dag_id %}
+                        <li class="card-body">dag_id=>{{ dag.dag_id }}</li>
+                        <li class="card-body">active=>{{ dag.is_active }}</li>
+                        <li class="card-body">paused=>{{ dag.is_paused }}</li>
+                        <li class="card-body">subdag=>{{ dag.is_subdag }}</li>
+                        <li class="card-body">last_expired=>{{ dag.last_expired }}</li>
+                        <li class="card-body">last_parsed_time=>{{ dag.last_parsed_time }}</li>
+                        <li class="card-body">next-dag-run=>{{ dag.next_dagrun }}</li>
+                        <li class="card-body">next_dagrun_create_after=>{{ dag.next_dagrun_create_after }}</li>
+                    {% else %}
+                        <li class="card-body">not yet in airflow</li>
+                    {% endif %}
+                   
+                {% endfor %}
+                <li class="card-body">{{ workflow.name }} | <a href="{% url 'update_workflow' workflow.id %}">Edit</a></li>
+                <a href="{% url 'workflow_runner' workflow.id %}">push file</a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

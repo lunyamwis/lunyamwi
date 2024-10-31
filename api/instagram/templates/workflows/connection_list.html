@@ -1,0 +1,42 @@
+{% extends "workflows/main.html" %}
+{% block content %}
+<h1>Http Operator Connections</h1>
+
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+<a href="{% url 'list_workflows' %}">back to workflows</a>
+<a href="{% url 'connection_create' %}" class="btn btn-primary mb-3">Add Connection</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Connection ID</th>
+            <th>Type</th>
+            <th>Host</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for connection in connections %}
+        <tr>
+            <td>{{ connection.connection_id }}</td>
+            <td>{{ connection.conn_type }}</td>
+            <td>{{ connection.host }}</td>
+            <td>{{ connection.login }}</td>
+            <td>{{ connection.password }}</td>
+            <td>
+                <a href="{% url 'connection_update' connection.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'connection_delete' connection.pk %}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

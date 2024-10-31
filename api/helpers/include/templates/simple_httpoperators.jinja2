@@ -1,0 +1,49 @@
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.operators.python_operator import PythonOperator
+
+# Define default arguments for the DAG
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2023, 10, 31),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+
+# Initialize the DAG
+dag = DAG(
+    'http_operator_jinja_dag',
+    default_args=default_args,
+    description='A simple DAG using HTTP operator with Jinja templating',
+    schedule_interval=timedelta(days=1),
+)
+
+# Define a Python function to process the HTTP response
+def process_response(response):
+    print(f"Response from API: {response}")
+
+# Define the HTTP task to make a GET request using Jinja templating
+http_task = SimpleHttpOperator(
+    task_id="{{task_id}}",
+    http_conn_id="{{connection_id}}",  # This should be set in Airflow connections
+    endpoint="{{endpoint}}",    # Replace with your specific endpoint
+    method="{{endpoint_method}}",
+    headers="{{endpoint_headers}}",
+    response_check=lambda response: response.status_code == 200,
+    dag=dag,
+)
+
+# Define a task to process the response from the HTTP request using Jinja templating
+process_task = PythonOperator(
+    task_id='process_http_response',
+    python_callable=process_response,
+    op_kwargs={
+        'response': '{{ task_instance.xcom_pull(task_ids="http_get_request") }}'
+    },
+    dag=dag,
+)
+
+# Set task dependencies
+http_task >> process_task
