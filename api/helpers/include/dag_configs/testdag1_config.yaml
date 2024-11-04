@@ -3,18 +3,18 @@ dag:
   auto_register: false
   catchup: false
   concurrency: null
-  created_at: 2024-10-31 10:46:16.550002+00:00
-  dag_id: dagtrial
+  created_at: 2024-11-04 08:25:15.136991+00:00
+  dag_id: testdag1
   dagrun_timeout: null
   default_args: null
   default_view: null
   deleted_at: null
-  description: klkklk
+  description: testdesc
   doc_md: null
   end_date: null
   fail_stop: false
   full_filepath: null
-  id: -OAXAi1-THHOVGUKhShf
+  id: -OAqGnIQPeXq3XAuz1gC
   is_paused_upon_creation: false
   jinja_environment_kwargs: null
   max_active_runs: null
@@ -35,48 +35,48 @@ dag:
   timetable: null
   trigger_url: https://example.com
   trigger_url_expected_response: '{"status": "ok"}'
-  updated_at: 2024-10-31 10:46:16.550029+00:00
+  updated_at: 2024-11-04 08:25:15.137036+00:00
   user_defined_filters: null
   user_defined_macros: null
-  workflow_id: -OAXAhpgucIanwwX1OBk
+  workflow_id: -OAqGnAbY2-0GM_e91l8
 data_seconds:
-- '30'
+- '1412'
 operators:
-- created_at: 2024-10-31 10:46:19.157264+00:00
-  dag_id: -OAXAi1-THHOVGUKhShf
-  data:
-    dsfa: sadf
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 08:25:15.928259+00:00
+  dag_id: -OAqGnIQPeXq3XAuz1gC
+  data: null
   deleted_at: null
   endpoint: https://example.com
   extra_options: null
   headers:
-    dsfa: sadf
+    workl: workl
   http_conn_id: your_http_connection
-  id: -OAXAifatyRM83y8caF0
-  log_response: true
+  id: -OAqGnVMC09AC07SzWvG
+  log_response: false
   method: POST
   response_check: null
-  task_id: adfadf
-  updated_at: 2024-10-31 10:46:19.157341+00:00
+  task_id: first_endpoint
+  updated_at: 2024-11-04 08:25:15.928276+00:00
   urls:
   - - https://example.com
   xcom_push: true
-- created_at: 2024-10-31 10:46:20.339220+00:00
-  dag_id: -OAXAi1-THHOVGUKhShf
-  data:
-    cxvsf: sdfaf
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 08:25:16.758180+00:00
+  dag_id: -OAqGnIQPeXq3XAuz1gC
+  data: null
   deleted_at: null
   endpoint: https://example.com
   extra_options: null
   headers:
-    cxvsf: sdfaf
+    lasdf: cvsfd
   http_conn_id: your_http_connection
-  id: -OAXAixDksxnTJgnomjY
-  log_response: true
+  id: -OAqGngGCnVLZhUqNjHV
+  log_response: false
   method: POST
   response_check: null
-  task_id: opadf
-  updated_at: 2024-10-31 10:46:20.339294+00:00
+  task_id: second_endpoint
+  updated_at: 2024-11-04 08:25:16.758227+00:00
   urls:
   - - https://example.com
   xcom_push: true

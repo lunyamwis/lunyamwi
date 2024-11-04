@@ -1,0 +1,82 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-11-04 08:17:54.509064+00:00
+  dag_id: majoer123
+  dagrun_timeout: null
+  default_args: null
+  default_view: null
+  deleted_at: null
+  description: loppaie
+  doc_md: null
+  end_date: null
+  fail_stop: false
+  full_filepath: null
+  id: -OAqF6cLYLI3EdE0N1Xs
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: null
+  on_success_callback: null
+  orientation: null
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '2025-01-01'
+  schedule_interval: hourly
+  sla_miss_callback: null
+  start_date: null
+  tags: null
+  template_searchpath: null
+  template_undefined: null
+  timetable: null
+  trigger_url: https://example.com
+  trigger_url_expected_response: '{"status": "ok"}'
+  updated_at: 2024-11-04 08:17:54.509119+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+  workflow_id: -OAqF6Lk4JrMverBVHI0
+data_seconds:
+- '1200'
+operators:
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 08:17:56.568323+00:00
+  dag_id: -OAqF6cLYLI3EdE0N1Xs
+  data: null
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    workl: workl
+  http_conn_id: your_http_connection
+  id: -OAqF784YFM5Cj1VktV7
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: first_endpoint
+  updated_at: 2024-11-04 08:17:56.568337+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 08:17:58.190481+00:00
+  dag_id: -OAqF6cLYLI3EdE0N1Xs
+  data: null
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    cxvsf: sdfaf
+  http_conn_id: your_http_connection
+  id: -OAqF7XAGjRPJwvba6Qh
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: second_endpoint
+  updated_at: 2024-11-04 08:17:58.190523+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true

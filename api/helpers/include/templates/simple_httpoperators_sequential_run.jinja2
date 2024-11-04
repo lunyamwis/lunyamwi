@@ -1,0 +1,45 @@
+import json
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.providers.http.operators.http import SimpleHttpOperator
+from airflow.operators.python_operator import PythonOperator
+from airflow.utils.dates import days_ago
+from airflow.models.baseoperator import chain
+
+
+# Define default arguments for the DAG
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': days_ago(1),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+}
+{% set http_tasks = [] %}
+http_tasks = []
+# Initialize the DAG
+{% for dag_ in dag %}
+with DAG(
+    "{{dag_.dag_id}}",
+    default_args=default_args,
+    description="{{dag_.description}}",
+    schedule_interval="{{dag_.schedule_interval}}"
+) as dag:
+
+    {% for operator in operators %}
+    # Define the HTTP task to make a GET request using Jinja templating
+    http_task_{{operator.task_id}} = SimpleHttpOperator(
+        task_id="{{ operator.task_id }}",
+        http_conn_id="{{ operator.http_conn_id }}",
+        endpoint="{{ operator.endpoint }}",
+        method="{{ operator.method }}",
+        headers={{ operator.headers | tojson }},  # Assuming headers is a dictionary, convert it to JSON
+        data=json.dumps({{ operator.data }}),
+        log_response={{ operator.log_response }},
+        do_xcom_push=True,  # Enable pushing response to XCom
+    )
+    http_tasks.append(http_task_{{operator.task_id}})
+    {% endfor %}
+    # Unpack the http tasks and chain them together to run sequentially
+    chain(*http_tasks)
+{% endfor %}

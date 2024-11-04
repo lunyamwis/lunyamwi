@@ -3,18 +3,18 @@ dag:
   auto_register: false
   catchup: false
   concurrency: null
-  created_at: 2024-10-31 11:06:43.533032+00:00
-  dag_id: passtriala
+  created_at: 2024-11-04 10:43:20.960281+00:00
+  dag_id: testdag5
   dagrun_timeout: null
   default_args: null
   default_view: null
   deleted_at: null
-  description: klkklk
+  description: testdesc
   doc_md: null
   end_date: null
   fail_stop: false
   full_filepath: null
-  id: -OAXFO_qkZXaYR33UOIx
+  id: -OAqlPEAXT2MOtD_ZVXm
   is_paused_upon_creation: false
   jinja_environment_kwargs: null
   max_active_runs: null
@@ -26,7 +26,7 @@ dag:
   params: null
   render_template_as_native_obj: false
   schedule: '2025-01-01'
-  schedule_interval: hourly
+  schedule_interval: 0 0 * * *
   sla_miss_callback: null
   start_date: null
   tags: null
@@ -35,48 +35,70 @@ dag:
   timetable: null
   trigger_url: https://example.com
   trigger_url_expected_response: '{"status": "ok"}'
-  updated_at: 2024-10-31 11:06:43.533051+00:00
+  updated_at: 2024-11-04 10:43:20.960296+00:00
   user_defined_filters: null
   user_defined_macros: null
-  workflow_id: -OAXFOSlZm6hutoIyU0n
+  workflow_id: -OAqlP5DxFNtUvhiDWiY
 data_seconds:
-- '30'
+- '129'
 operators:
-- created_at: 2024-10-31 11:06:44.762126+00:00
-  dag_id: -OAXFO_qkZXaYR33UOIx
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:43:21.855839+00:00
+  dag_id: -OAqlPEAXT2MOtD_ZVXm
   data:
-    dsfa: sadf
+    foo: bar
   deleted_at: null
   endpoint: https://example.com
   extra_options: null
   headers:
-    dsfa: sadf
+    content-type: application/json
   http_conn_id: your_http_connection
-  id: -OAXFOss0LVCuObwnlOA
+  id: -OAqlPQflWTSKrmySxR1
   log_response: true
   method: POST
   response_check: null
-  task_id: adfadf
-  updated_at: 2024-10-31 11:06:44.762173+00:00
+  task_id: first_endpoint
+  updated_at: 2024-11-04 10:43:21.855886+00:00
   urls:
   - - https://example.com
   xcom_push: true
-- created_at: 2024-10-31 11:06:46.195906+00:00
-  dag_id: -OAXFO_qkZXaYR33UOIx
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:43:22.608221+00:00
+  dag_id: -OAqlPEAXT2MOtD_ZVXm
   data:
-    cxvsf: sdfaf
+    foo: bar
   deleted_at: null
   endpoint: https://example.com
   extra_options: null
   headers:
-    cxvsf: sdfaf
+    content-type: application/json
   http_conn_id: your_http_connection
-  id: -OAXFPED5Pi8hrN8bDxb
+  id: -OAqlPcfUDjxDDWxuncM
   log_response: true
   method: POST
   response_check: null
-  task_id: opadf
-  updated_at: 2024-10-31 11:06:46.195953+00:00
+  task_id: second_endpoint
+  updated_at: 2024-11-04 10:43:22.608271+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:43:23.299965+00:00
+  dag_id: -OAqlPEAXT2MOtD_ZVXm
+  data:
+    foo: bar
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    content-type: application/json
+  http_conn_id: your_http_connection
+  id: -OAqlPnfkP6l8MhIErHb
+  log_response: true
+  method: POST
+  response_check: null
+  task_id: third_endpoint
+  updated_at: 2024-11-04 10:43:23.300014+00:00
   urls:
   - - https://example.com
   xcom_push: true

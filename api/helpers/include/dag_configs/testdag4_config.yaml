@@ -1,0 +1,104 @@
+dag:
+- access_control: null
+  auto_register: false
+  catchup: false
+  concurrency: null
+  created_at: 2024-11-04 10:38:09.357929+00:00
+  dag_id: testdag4
+  dagrun_timeout: null
+  default_args: null
+  default_view: null
+  deleted_at: null
+  description: testdesc
+  doc_md: null
+  end_date: null
+  fail_stop: false
+  full_filepath: null
+  id: -OAqkD8B6ewZ7EhovkS2
+  is_paused_upon_creation: false
+  jinja_environment_kwargs: null
+  max_active_runs: null
+  max_active_tasks: null
+  on_failure_callback: null
+  on_success_callback: null
+  orientation: null
+  owner_links: null
+  params: null
+  render_template_as_native_obj: false
+  schedule: '2025-01-01'
+  schedule_interval: 0 0 * * *
+  sla_miss_callback: null
+  start_date: null
+  tags: null
+  template_searchpath: null
+  template_undefined: null
+  timetable: null
+  trigger_url: https://example.com
+  trigger_url_expected_response: '{"status": "ok"}'
+  updated_at: 2024-11-04 10:38:09.357992+00:00
+  user_defined_filters: null
+  user_defined_macros: null
+  workflow_id: -OAqkD-8H420PX4GyxQC
+data_seconds:
+- '121'
+operators:
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:38:10.104325+00:00
+  dag_id: -OAqkD8B6ewZ7EhovkS2
+  data:
+    foo: bar
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    content-type: application/json
+  http_conn_id: your_http_connection
+  id: -OAqkDKbRiYlC0r78WO-
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: first_endpoint
+  updated_at: 2024-11-04 10:38:10.104391+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:38:10.901034+00:00
+  dag_id: -OAqkD8B6ewZ7EhovkS2
+  data:
+    foo: bar
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    content-type: application/json
+  http_conn_id: your_http_connection
+  id: -OAqkDWQ3DCN4BdQ5S0u
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: second_endpoint
+  updated_at: 2024-11-04 10:38:10.901072+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true
+- connection_id: -OAXZ5H9XRswXPE9-6jE
+  created_at: 2024-11-04 10:38:11.712634+00:00
+  dag_id: -OAqkD8B6ewZ7EhovkS2
+  data:
+    foo: bar
+  deleted_at: null
+  endpoint: https://example.com
+  extra_options: null
+  headers:
+    content-type: application/json
+  http_conn_id: your_http_connection
+  id: -OAqkDhc7rRREADx_N-s
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: third_endpoint
+  updated_at: 2024-11-04 10:38:11.712654+00:00
+  urls:
+  - - https://example.com
+  xcom_push: true

@@ -7,11 +7,11 @@ import os
 import subprocess
 import paramiko
 
-def generate_dag():
+def generate_dag(workflow_type="simple_httpoperators_sequential_run"):
     file_dir  = os.path.dirname(os.path.abspath(f"{__file__}/"))
     print(file_dir)
     env = Environment(loader=FileSystemLoader(file_dir))
-    template = env.get_template('include/templates/dag_template.jinja2')
+    template = env.get_template(f'include/templates/{workflow_type}.jinja2')
 
     for filename in os.listdir(f"{file_dir}/include/dag_configs"):
         print(filename)
