@@ -38,13 +38,21 @@ class SimpleHttpOperatorModelForm(forms.ModelForm):
 class WorkflowModelForm(forms.ModelForm):
     class Meta:
         model = WorkflowModel
-        fields = ['name', 'delay_durations','airflow_creds']
+        fields = ['name', 'delay_durations','airflow_creds','workflow_type']
         extra_kwargs = {
             "id": {"required": False, "allow_null": True},
         }
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Name"}),
             "delay_durations": forms.TextInput(attrs={"class": "form-control", "placeholder": "Delay Durations"}),
+            "airflow_creds": forms.Select(attrs={"class": "form-control", "placeholder": "Airflow Creds"}),
+            "workflow_type": forms.Select(
+                choices=[
+                    ("simple_httpoperators_sequential_run", "Simple HTTP Operators Sequential Run"),
+                    ("simple_httpoperators_parallel_run", "Simple HTTP Operators Parallel Run"),
+                ],
+                attrs={"class": "form-control"}
+            )
         }
         
 

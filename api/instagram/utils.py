@@ -34,7 +34,7 @@ def generate_dag_script(workflow):
             print(str(error))
 
     try:
-        generate_dag()
+        generate_dag(workflow_type=workflow.workflow_type)
     except Exception as error:
         print(str(error))
 

@@ -7,7 +7,7 @@ import os
 import subprocess
 import paramiko
 
-def generate_dag(workflow_type="simple_httpoperators_sequential_run"):
+def generate_dag(workflow_type=None):
     file_dir  = os.path.dirname(os.path.abspath(f"{__file__}/"))
     print(file_dir)
     env = Environment(loader=FileSystemLoader(file_dir))
