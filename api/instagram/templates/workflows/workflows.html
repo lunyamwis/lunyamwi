@@ -35,7 +35,9 @@
                    
                 {% endfor %}
                 <li class="card-body">{{ workflow.name }} | <a href="{% url 'update_workflow' workflow.id %}">Edit</a></li>
-                <a href="{% url 'workflow_runner' workflow.id %}">push file</a>
+                |||<a href="{% url 'workflow_runner' workflow.id %}">push file</a>|||
+                <a href="{% url 'trigger_workflow' workflow.id %}">trigger run</a>|||
+                
             {% endfor %}
         </ul>
     </div>

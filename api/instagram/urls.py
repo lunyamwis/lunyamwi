@@ -20,6 +20,7 @@ urlpatterns = [
     path('workflow/delete-operator/<str:pk>/', views.delete_httpoperator, name='delete_httpoperator'),
     path('workflow/delete-dag/<str:pk>/', views.delete_dag, name='delete_dag'),
     path('workflow/runner/<str:pk>/', views.WorkflowRunner.as_view(), name='workflow_runner'),
+    path('workflow/trigger/<str:pk>/trigger', views.TriggerRun.as_view(), name='trigger_workflow'),
     path('connection/', views.ConnectionListView.as_view(), name='connection_list'),
     path('connection/create/', views.ConnectionCreateView.as_view(), name='connection_create'),
     path('connection/update/<str:pk>/', views.ConnectionUpdateView.as_view(), name='connection_update'),

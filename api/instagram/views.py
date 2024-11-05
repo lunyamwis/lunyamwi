@@ -1,6 +1,7 @@
 import yaml
 import os
 import json
+import uuid
 import logging
 import requests
 import pandas as pd
@@ -41,7 +42,7 @@ from .utils import generate_dag_script
 
 # 6th
 from django.contrib import messages
-from django.views.generic import ListView,DeleteView,DetailView
+from django.views.generic import ListView,DeleteView,DetailView,View
 from django.views.generic.edit import (
     CreateView, UpdateView
 )
@@ -206,7 +207,7 @@ class WorkflowInline():
                         "Accept": "application/json",
                     }
                     dag_update_data = {
-                        "is_paused": True
+                        "is_paused": False
                     }
                     resp = requests.patch(f"{airflowcreds.airflow_base_url}/api/v1/dags/{dag.dag_id}", 
                                           data=json.dumps(dag_update_data),
@@ -341,6 +342,37 @@ class WorkflowRunner(DetailView):
         
         # If the form is not valid, re-render the page with the form errors
         return self.render_to_response(self.get_context_data(form=form))
+    
+
+class TriggerRun(View):
+    
+    def get(self, request, *args, **kwargs):
+        
+        workflow = WorkflowModel.objects.get(id=kwargs['pk'])
+        dag_id = workflow.dagmodel_set.latest('created_at').dag_id
+
+        # Trigger the DAG run
+        try:
+            airflowcreds = AirflowCreds.objects.latest('created_at')
+            headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+            dag_run_data = {'conf': {}, 'dag_run_id': f'{dag_id}_{str(uuid.uuid4())}', 'note': None}
+            resp = requests.post(
+                f"{airflowcreds.airflow_base_url}/api/v1/dags/{dag_id}/dagRuns",
+                data=json.dumps(dag_run_data),
+                auth=HTTPBasicAuth(airflowcreds.username, airflowcreds.password),
+                headers=headers
+            )
+            if resp.status_code == 200:
+                messages.success(request, "DAG run triggered successfully.")
+            else:
+                messages.error(request, f"Failed to trigger DAG run: {resp.text}")
+        except Exception as e:
+            messages.error(request, f"Failed to trigger DAG run: {str(e)}")
+        
+        return redirect('list_workflows')
 
 def delete_httpoperator(request, pk):
     try:
