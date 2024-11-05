@@ -118,7 +118,7 @@ class WorkflowModel(BaseModel):
     name = models.CharField(max_length=255,null=True, blank=True)
     delay_durations = models.JSONField(null=True,blank=True)
     airflow_creds = models.ForeignKey(AirflowCreds,on_delete=models.CASCADE,null=True, blank=True)
-    workflow_type = models.CharField(max_length=255, choices=(("simple_httpoperators_sequential_run","simple_httpoperators_sequential_run"),("simple_httpoperators_parallel_run","simple_httpoperators_parallel_run")), default="simple_httpoperators_sequential_run")
+    workflow_type = models.CharField(max_length=255, choices=(("simple_httpoperators_sequential_run","chain the endpoints and run them sequentially in a linear fashion"),("simple_httpoperators_parallel_run","chain the endpoints and run them in a parallel manner")), default="simple_httpoperators_sequential_run")
 
 class DagModel(BaseModel):
     dag_id = models.CharField(max_length=255)

@@ -387,14 +387,17 @@ class WorkflowList(ListView):
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+        context['data'] = []
         try:
-            resp = requests.get(f"{airflowcreds.airflow_base_url}/api/v1/dags", auth=HTTPBasicAuth(airflowcreds.username, airflowcreds.password),headers=headers)   
-            messages.success(self.request, "Fetched DAGs from Airflow successfully.")
+            print("Fetching DAGs from Airflow under construction")
+            # resp = requests.get(f"{airflowcreds.airflow_base_url}/api/v1/dags", auth=HTTPBasicAuth(airflowcreds.username, airflowcreds.password),headers=headers)   
+            # messages.success(self.request, "Fetched DAGs from Airflow successfully.")
+            # if resp.status_code == 200:
+            #     context['data'] = resp.json()
         except Exception as e:
             messages.error(self.request, f"Failed to fetch DAGs from Airflow: {str(e)}")
 
         # print(resp.json())
-        context['data'] = resp.json()
         return context
 
 

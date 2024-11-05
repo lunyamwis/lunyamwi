@@ -54,6 +54,7 @@ connexion==2.14.2
 constantly==23.10.4
 crewai==0.76.2
 crewai-tools==0.13.2
+crispy-bootstrap5==2024.10
 cron-descriptor==1.4.0
 croniter==2.0.1
 cryptography==43.0.3
@@ -68,7 +69,9 @@ distro==1.9.0
 Django==4.2.9
 django-celery-beat==2.5.0
 django-cors-headers==4.3.1
+django-crispy-forms==2.3
 django-softdelete==0.10.5
+django-tenants==3.7.0
 django-timezone-field==6.1.0
 djangorestframework==3.14.0
 dnspython==2.4.2

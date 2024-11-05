@@ -1,8 +1,9 @@
 import os
 import json
 import yaml
-from .models import SimpleHttpOperatorModel, WorkflowModel, DagModel
+from .models import SimpleHttpOperatorModel, WorkflowModel, DagModel,HttpOperatorConnectionModel
 from django.conf import settings
+
 from api.helpers.dag_generator import generate_dag
 
 def generate_dag_script(workflow):
@@ -18,9 +19,17 @@ def generate_dag_script(workflow):
     # else:
     dag_ = DagModel.objects.filter(workflow__id = workflow.id)
     dag = dag_.latest('created_at')
+    operators = [entry for entry in dag.simplehttpoperatormodel_set.filter().values()]
+    for operator in operators:
+        try:
+            operator['http_conn_id'] = HttpOperatorConnectionModel.objects.get(id=operator['connection_id']).connection_id
+        except Exception as error:
+            print(str(error))
+
+    
     data = {
         "dag":[entry for entry in dag_.values()],
-        "operators":[entry for entry in dag.simplehttpoperatormodel_set.filter().values()],
+        "operators":operators,
         "data_seconds":[str(workflow.delay_durations)]
     }
 

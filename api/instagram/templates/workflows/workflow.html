@@ -50,13 +50,12 @@
 
         <div class="table-responsive card mt-4">
             <div class="card-header card-header-secondary">
-                <h4 class="card-title">Add dags</h4>
+                <h4 class="card-title">Add Dag</h4>
             </div>
             <table class="table card-body">
                 <thead class="text-secondary">
-                    <th>dag <span style="color: red;" class="required">*</span></th>
-                    <th>Delete?</th>
-                    <th>Custom Delete btn</th>
+                    <th>Dag <span style="color: red;" class="required">*</span></th>
+                    
                 </thead>
                 <tbody id="item-dags">  <!-- id="item-inlineformsetname" -->
                     <!-- formset non forms errors -->
@@ -104,7 +103,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="#" id="add-dag-button" class="btn btn-secondary add-dags">Add More</a> <!-- id="add-inlineformsetname-button" -->
+            <!--<a href="#" id="add-dag-button" class="btn btn-secondary add-dags">Add More</a>--> <!-- id="add-inlineformsetname-button" -->
         </div>
     {% endwith %}
     <!-- inline form for dags end -->
@@ -129,18 +128,20 @@
         </script>
         <div class="table-responsive card mt-4">
             <div class="card-header card-header-secondary">
-                <h4 class="card-title">Add httpoperators</h4>
+                <h4 class="card-title">Add Httpoperators</h4>
                 <a href="{% url 'connection_list' %}">
-                    <h5>Add connection </h5>
+                    <h5>Add Connection </h5>
                 </a>
             </div>
             <table class="table card-header">
                 <thead class="text-secondary">
-                    <th>Size <span style="color: red;" class="required">*</span></th>
-                    <th>Quantity <span style="color: red;" class="required">*</span></th>
-                    <th>Price <span style="color: red;" class="required">*</span></th>
-                    <th>Delete?</th>
-                    <th>Custom Delete btn</th>
+                    <th>Http Operator <span style="color: red;" class="required">*</span></th>
+                    <th>Connection <span style="color: red;" class="required">*</span></th>
+                    <th>Endpoint</th>
+                    <th>Method <span style="color: red;" class="required">*</span></th>
+                    <th>Headers</th>
+                    <th>Body</th>
+                    
                 </thead>
                 <tbody id="item-httpoperators">  <!-- id="item-inlineformsetname" -->
                     <!-- formset non forms errors -->

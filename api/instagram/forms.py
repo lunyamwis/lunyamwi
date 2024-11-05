@@ -20,19 +20,14 @@ class DagModelForm(forms.ModelForm):
 class SimpleHttpOperatorModelForm(forms.ModelForm):
     class Meta:
         model = SimpleHttpOperatorModel
-        exclude = ['id','dag']
+        exclude = ['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls']
         widgets = {
             "task_id": forms.TextInput(attrs={"class": "form-control", "placeholder": "Task Id"}),
-            "http_conn_id": forms.TextInput(attrs={"class": "form-control", "placeholder": "Http Connection Id"}),
-            "method": forms.TextInput(attrs={"class": "form-control", "placeholder": "Method"}),
+            "connection": forms.Select(attrs={"class": "form-control", "placeholder": "Connection"}),
+            "method": forms.Select(choices=[("GET","GET"),("POST","POST")],attrs={"class": "form-control"}),    
             "endpoint": forms.TextInput(attrs={"class": "form-control", "placeholder": "Endpoint"}),
             "data": forms.TextInput(attrs={"class": "form-control", "placeholder": "Data"}),
             "headers": forms.TextInput(attrs={"class": "form-control", "placeholder": "Headers"}),
-            "response_check": forms.TextInput(attrs={"class": "form-control", "placeholder": "Response Check"}),
-            "extra_options": forms.TextInput(attrs={"class": "form-control", "placeholder": "Extra Options"}),
-            "xcom_push": forms.CheckboxInput(attrs={"class": "form-control", "placeholder": "Xcom Push"}),
-            "log_response": forms.CheckboxInput(attrs={"class": "form-control", "placeholder": "Log Response"}),
-            "urls": forms.TextInput(attrs={"class": "form-control", "placeholder": "Urls"}),
         }
         
 class WorkflowModelForm(forms.ModelForm):
@@ -48,8 +43,8 @@ class WorkflowModelForm(forms.ModelForm):
             "airflow_creds": forms.Select(attrs={"class": "form-control", "placeholder": "Airflow Creds"}),
             "workflow_type": forms.Select(
                 choices=[
-                    ("simple_httpoperators_sequential_run", "Simple HTTP Operators Sequential Run"),
-                    ("simple_httpoperators_parallel_run", "Simple HTTP Operators Parallel Run"),
+                    ("simple_httpoperators_sequential_run", "simple_httpoperators_sequential_run"),
+                    ("simple_httpoperators_parallel_run", "simple_httpoperators_parallel_run"),
                 ],
                 attrs={"class": "form-control"}
             )
@@ -69,8 +64,8 @@ class DagModelBaseModelFormSet(forms.BaseInlineFormSet):
 
 
 
-SimpleHttpOperatorFormSet = forms.inlineformset_factory(DagModel,SimpleHttpOperatorModel, exclude=['id','dag'], extra=1,can_delete=True,can_delete_extra=False,formset=SimpleHttpOperatorBaseModelFormSet,form=SimpleHttpOperatorModelForm)
-DagFormSet = forms.inlineformset_factory(WorkflowModel,DagModel, exclude=dag_exclusions, extra=1,can_delete=True,can_delete_extra=False,formset=DagModelBaseModelFormSet,form=DagModelForm)
+SimpleHttpOperatorFormSet = forms.inlineformset_factory(DagModel,SimpleHttpOperatorModel, exclude=['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls'], extra=1,can_delete=True,can_delete_extra=False,form=SimpleHttpOperatorModelForm)
+DagFormSet = forms.inlineformset_factory(WorkflowModel,DagModel, exclude=dag_exclusions, extra=1,can_delete=True,can_delete_extra=False,form=DagModelForm)
 
 
 

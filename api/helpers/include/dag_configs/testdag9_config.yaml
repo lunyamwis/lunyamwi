@@ -3,8 +3,8 @@ dag:
   auto_register: false
   catchup: false
   concurrency: null
-  created_at: 2024-11-04 11:26:05.312847+00:00
-  dag_id: testdag7
+  created_at: 2024-11-05 10:25:47.591368+00:00
+  dag_id: testdag9
   dagrun_timeout: null
   default_args: null
   default_view: null
@@ -14,7 +14,7 @@ dag:
   end_date: null
   fail_stop: false
   full_filepath: null
-  id: -OAqvBDYQdArj0M0ql9M
+  id: -OAvqyns3l7PfeH9e6fc
   is_paused_upon_creation: false
   jinja_environment_kwargs: null
   max_active_runs: null
@@ -35,16 +35,16 @@ dag:
   timetable: null
   trigger_url: https://example.com
   trigger_url_expected_response: '{"status": "ok"}'
-  updated_at: 2024-11-04 11:26:05.312891+00:00
+  updated_at: 2024-11-05 10:25:47.591388+00:00
   user_defined_filters: null
   user_defined_macros: null
-  workflow_id: -OAqvB45tr_a6Nu9X5E-
+  workflow_id: -OAvqygzvrzQgbQZGAGZ
 data_seconds:
-- '134'
+- '23'
 operators:
-- connection_id: -OAXZ5H9XRswXPE9-6jE
-  created_at: 2024-11-04 11:26:06.685977+00:00
-  dag_id: -OAqvBDYQdArj0M0ql9M
+- connection_id: -OAXVyYdLLm5cpkAWuCn
+  created_at: 2024-11-05 10:25:48.270005+00:00
+  dag_id: -OAvqyns3l7PfeH9e6fc
   data:
     foo: bar
   deleted_at: null
@@ -53,12 +53,11 @@ operators:
   headers:
     content-type: application/json
   http_conn_id: your_http_connection
-  id: -OAqvBaBilLfxn-ldj9d
-  log_response: true
+  id: -OAvqyyVUqpzuHSwOtep
+  log_response: false
   method: POST
   response_check: null
   task_id: first_endpoint
-  updated_at: 2024-11-04 11:26:06.686021+00:00
-  urls:
-  - - https://example.com
+  updated_at: 2024-11-05 10:25:48.270082+00:00
+  urls: null
   xcom_push: true

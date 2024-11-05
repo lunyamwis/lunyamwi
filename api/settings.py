@@ -69,6 +69,8 @@ SHARED_APPS = [
     'softdelete',
     'boostedchatScrapper',
     'sitemaps',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 TENANT_APPS = ['api.instagram','api.scout', 'api.helpers','api.prompt']
@@ -108,6 +110,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'crispy_forms_tags': 'crispy_forms.templatetags.crispy_forms_tags',
+            },
         },
     },
 ]
@@ -155,7 +160,8 @@ AUTH_PASSWORD_VALIDATORS = [
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL_")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND_")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 MAILCHIMP_API_KEY = os.getenv("MAILCHIMP_API_KEY").strip()
 MAILCHIMP_DATA_CENTER = os.getenv("MAILCHIMP_DATA_CENTER").strip()
 MAILCHIMP_EMAIL_LIST_ID = os.getenv("MAILCHIMP_EMAIL_LIST_ID").strip()
