@@ -1,0 +1,13 @@
+{% extends 'workflows/main.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h1>{% if object %}Edit{% else %}Add{% endif %} Custom Field</h1>
+
+<form method="post">
+{% csrf_token %}
+{{ form | crispy }}
+<button type="submit">Submit</button>
+</form>
+
+<a href="{% url 'custom_field_list' %}">Back to List</a>
+{% endblock %}

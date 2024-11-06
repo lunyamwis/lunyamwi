@@ -1,7 +1,9 @@
 import os
 import json
 import yaml
-from .models import SimpleHttpOperatorModel, WorkflowModel, DagModel,HttpOperatorConnectionModel
+
+from django.contrib.contenttypes.models import ContentType
+from .models import SimpleHttpOperatorModel, WorkflowModel, Endpoint, CustomFieldValue, CustomField, DagModel,HttpOperatorConnectionModel
 from django.conf import settings
 
 from api.helpers.dag_generator import generate_dag
@@ -23,6 +25,18 @@ def generate_dag_script(workflow):
     for operator in operators:
         try:
             operator['http_conn_id'] = HttpOperatorConnectionModel.objects.get(id=operator['connection_id']).connection_id
+            endpoint = Endpoint.objects.get(id=operator['endpointurl_id'])
+            operator['endpoint'] = endpoint.url
+            operator['method'] = endpoint.method
+            # Get the content type for the Endpoint model
+            endpoint_content_type = ContentType.objects.get_for_model(Endpoint)
+            # Query to get all custom fields and their values for the given end
+            custom_fields_with_value = CustomFieldValue.objects.filter(
+                content_type=endpoint_content_type,
+                object_id=endpoint.id
+            ).select_related('field').latest('created_at')
+            operator['data'] = custom_fields_with_value.value
+            
         except Exception as error:
             print(str(error))
 
@@ -46,7 +60,6 @@ def generate_dag_script(workflow):
         generate_dag(workflow_type=workflow.workflow_type)
     except Exception as error:
         print(str(error))
-
 
 
 def dag_fields_to_exclude():

@@ -1,0 +1,12 @@
+{% extends 'workflows/main.html' %}
+{% block content %}
+    <h1>Confirm Deletion</h1>
+
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm Delete</button>
+        <a href="{% url 'custom_field_list' %}">Cancel</a>
+    </form>
+{% endblock %}

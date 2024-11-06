@@ -1,0 +1,13 @@
+{% extends 'workflows/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>{% if object %}Edit{% else %}Add{% endif %} Endpoint</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button class="btn btn-info" type="submit">{% if object %}Update{% else %}Create{% endif %}</button>
+    </form>
+
+    <a href="{% url 'endpoint_list' %}">Back to Endpoints</a>
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.db import models
 from api.helpers.models import BaseModel
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from api.scout.models import Scout
 import pytz
 
@@ -172,6 +174,43 @@ class HttpOperatorConnectionModel(BaseModel):
 
     def __str__(self) -> str:
         return self.connection_id
+    
+
+class CustomField(BaseModel):
+    name = models.CharField(max_length=255)
+    data_type = models.CharField(max_length=50, choices=[
+        ('text', 'Text'),
+        ('number', 'Number'),
+        ('date', 'Date'),
+        ('boolean', 'Boolean'),
+        ('json', 'JSON')
+    ])
+
+    def __str__(self):
+        return self.name
+
+class CustomFieldValue(BaseModel):
+    field = models.ForeignKey(CustomField, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.CharField(null=True, blank=True, max_length=255)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    value = models.JSONField()
+
+    def __str__(self):
+        return f"{self.field.name}: {self.value}"
+
+    
+class Endpoint(BaseModel):
+    base_url = models.URLField(null=True,blank=True)
+    url = models.CharField(null=True,blank=True)
+    method = models.CharField(max_length=10, choices=(('GET','GET'), ('POST','POST')),default='GET')
+    
+    def __str__(self):
+        return self.url
+
+    @property
+    def custom_fields(self):
+        return CustomFieldValue.objects.filter(content_type=ContentType.objects.get_for_model(self), object_id=self.id)
 
 class SimpleHttpOperatorModel(BaseModel):
     METHODS = (
@@ -181,6 +220,7 @@ class SimpleHttpOperatorModel(BaseModel):
     task_id = models.CharField(max_length=255,null=True, blank=True)
     connection = models.ForeignKey(HttpOperatorConnectionModel,on_delete=models.CASCADE,null=True, blank=True)
     http_conn_id=models.CharField(max_length=144,default="your_http_connection")
+    endpointurl = models.ForeignKey(Endpoint,on_delete=models.CASCADE,null=True, blank=True)
     endpoint = models.CharField(max_length=255)
     method = models.CharField(max_length=20, choices=METHODS, default="POST")
     data = models.JSONField(null=True,blank=True)
@@ -194,5 +234,6 @@ class SimpleHttpOperatorModel(BaseModel):
 
     def __str__(self) -> str:
         return self.endpoint
+
 
 

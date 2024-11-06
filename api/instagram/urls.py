@@ -13,7 +13,10 @@ router.register(r'workflows',views.WorkflowViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-
+    path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
+    path('endpoints/create/', views.EndpointCreateView.as_view(), name='endpoint_create'),
+    path('endpoints/update/<str:pk>/', views.EndpointUpdateView.as_view(), name='endpoint_update'),
+    path('endpoints/delete/<str:pk>/', views.EndpointDeleteView.as_view(), name='endpoint_delete'),
     path('workflow/list', views.WorkflowList.as_view(), name='list_workflows'),
     path('workflow/create/', views.WorkflowCreate.as_view(), name='create_workflow'),
     path('workflow/update/<str:pk>/', views.WorkflowUpdate.as_view(), name='update_workflow'),
@@ -25,6 +28,11 @@ urlpatterns = [
     path('connection/create/', views.ConnectionCreateView.as_view(), name='connection_create'),
     path('connection/update/<str:pk>/', views.ConnectionUpdateView.as_view(), name='connection_update'),
     path('connection/delete/<str:pk>/', views.ConnectionDeleteView.as_view(), name='connection_delete'),
+    path('custom-fields/create/', views.CustomFieldCreateView.as_view(), name='custom_field_create'),
+    path('custom-fields/update/<str:pk>/', views.CustomFieldUpdateView.as_view(), name='custom_field_update'),
+    path('custom-fields/delete/<str:pk>/', views.CustomFieldDeleteView.as_view(), name='custom_field_delete'),
+    path('custom-fields/list/', views.CustomFieldListView.as_view(), name='custom_field_list'),
+    path('endpoints/<str:endpoint_id>/custom-field/create/', views.CustomFieldValueCreateView.as_view(), name='custom_field_value_create'),
     path('displayWorkflow/', views.display_workflows,name="workflows"),
     path('generateWorkflow/', views.generate_workflow,name="create_workflowset"),
     path('scrapFollowers/', views.ScrapFollowers.as_view()),

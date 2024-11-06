@@ -1,0 +1,37 @@
+{% extends 'workflows/main.html' %}
+{% block content %}
+    <h1>Custom Fields</h1>
+
+    <a href="{% url 'custom_field_create' %}">Add New Custom Field</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Data Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for custom_field in custom_fields %}
+                <tr>
+                    <td>{{ custom_field.name }}</td>
+                    <td>{{ custom_field.get_data_type_display }}</td> <!-- Display the human-readable name for the data type -->
+                    <td>
+                        <a href="{% url 'custom_field_update' custom_field.id %}">Edit</a> | 
+                        <form action="{% url 'custom_field_delete' custom_field.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No custom fields available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'endpoint_list' %}">Back to Endpoints</a> <!-- Link back to the endpoint list -->
+{% endblock %}

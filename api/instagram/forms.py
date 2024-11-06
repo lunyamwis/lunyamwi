@@ -1,6 +1,6 @@
 from typing import Any
 from django import forms
-from .models import DagModel, SimpleHttpOperatorModel, WorkflowModel,HttpOperatorConnectionModel
+from .models import DagModel, SimpleHttpOperatorModel, WorkflowModel,HttpOperatorConnectionModel, Endpoint, CustomFieldValue, CustomField
 from .utils import dag_fields_to_exclude
 
 dag_exclusions = dag_fields_to_exclude()
@@ -20,12 +20,12 @@ class DagModelForm(forms.ModelForm):
 class SimpleHttpOperatorModelForm(forms.ModelForm):
     class Meta:
         model = SimpleHttpOperatorModel
-        exclude = ['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls']
+        exclude = ['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls','endpoint']
         widgets = {
             "task_id": forms.TextInput(attrs={"class": "form-control", "placeholder": "Task Id"}),
             "connection": forms.Select(attrs={"class": "form-control", "placeholder": "Connection"}),
             "method": forms.Select(choices=[("GET","GET"),("POST","POST")],attrs={"class": "form-control"}),    
-            "endpoint": forms.TextInput(attrs={"class": "form-control", "placeholder": "Endpoint"}),
+            "endpointurl": forms.Select(attrs={"class": "form-control", "placeholder": "Endpointurl"}),
             "data": forms.TextInput(attrs={"class": "form-control", "placeholder": "Data"}),
             "headers": forms.TextInput(attrs={"class": "form-control", "placeholder": "Headers"}),
         }
@@ -64,7 +64,7 @@ class DagModelBaseModelFormSet(forms.BaseInlineFormSet):
 
 
 
-SimpleHttpOperatorFormSet = forms.inlineformset_factory(DagModel,SimpleHttpOperatorModel, exclude=['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls'], extra=1,can_delete=True,can_delete_extra=False,form=SimpleHttpOperatorModelForm)
+SimpleHttpOperatorFormSet = forms.inlineformset_factory(DagModel,SimpleHttpOperatorModel, exclude=['id','dag','http_conn_id','response_check','extra_options','xcom_push','log_response','urls','endpoint'], extra=1,can_delete=True,can_delete_extra=False,form=SimpleHttpOperatorModelForm)
 DagFormSet = forms.inlineformset_factory(WorkflowModel,DagModel, exclude=dag_exclusions, extra=1,can_delete=True,can_delete_extra=False,form=DagModelForm)
 
 
@@ -80,3 +80,51 @@ class WorkflowRunnerForm(forms.Form):
 
     push_to = forms.ChoiceField(choices=[('gcp','Google Cloud Platform'),('ssh','Secure Shell')],widget=forms.Select(attrs={"class": "form-control"}))
        
+
+
+class EndpointForm(forms.ModelForm):
+    class Meta:
+        model = Endpoint
+        fields = ['base_url','url', 'method']
+
+
+# forms.py
+
+
+class CustomFieldForm(forms.ModelForm):
+    class Meta:
+        model = CustomField
+        fields = ['name', 'data_type']
+
+
+
+
+class CustomFieldValueForm(forms.ModelForm):
+    class Meta:
+        model = CustomFieldValue
+        fields = ['field', 'value']
+
+    def __init__(self, *args, **kwargs):
+        endpoint_id = kwargs.pop('endpoint_id', None)
+        super().__init__(*args, **kwargs)
+        
+        # Filter fields if necessary
+        if endpoint_id:
+            self.fields['field'].queryset = CustomField.objects.all()  # Adjust as needed
+        
+        # Dynamically set widget based on field type
+        if 'field' in self.data:
+            try:
+                field = CustomField.objects.get(id=self.data.get('field'))
+                if field.data_type == 'text':
+                    self.fields['value'] = forms.CharField(label='Value')
+                elif field.data_type == 'number':
+                    self.fields['value'] = forms.IntegerField(label='Value')
+                elif field.data_type == 'date':
+                    self.fields['value'] = forms.DateField(label='Value', widget=forms.SelectDateWidget())
+                elif field.data_type == 'boolean':
+                    self.fields['value'] = forms.BooleanField(label='Value', required=False)
+                elif field.data_type == 'json':
+                    self.fields['value'] = forms.CharField(label='Value')  # Accept JSON as string
+            except CustomField.DoesNotExist:
+                pass

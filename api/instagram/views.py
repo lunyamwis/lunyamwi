@@ -13,7 +13,6 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.conf import settings
-from django.shortcuts import get_object_or_404,render
 from django.utils import timezone
 from django.contrib import messages
 from .tasks import scrap_followers,scrap_info,scrap_users,insert_and_enrich,scrap_mbo,scrap_media
@@ -32,10 +31,10 @@ from boostedchatScrapper.models import ScrappedData
 from instagrapi import Client
 
 
-from .models import Score, QualificationAlgorithm, Scheduler, AirflowCreds, InstagramUser, LeadSource,DagModel,SimpleHttpOperatorModel,HttpOperatorConnectionModel, WorkflowModel
+from .models import Score, QualificationAlgorithm, Scheduler, AirflowCreds, InstagramUser, LeadSource,DagModel,SimpleHttpOperatorModel,HttpOperatorConnectionModel, WorkflowModel, Endpoint,CustomField,CustomFieldValue
 from .serializers import ScoreSerializer, InstagramLeadSerializer,  QualificationAlgorithmSerializer, SchedulerSerializer, LeadSourceSerializer, SimpleHttpOperatorModelSerializer, WorkflowModelSerializer
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import WorkflowModelForm
 from .utils import generate_dag_script
 
@@ -48,9 +47,79 @@ from django.views.generic.edit import (
 )
 
 from .forms import (
-    WorkflowModelForm, SimpleHttpOperatorFormSet, DagFormSet,HttpOperatorConnectionForm,WorkflowRunnerForm
+    WorkflowModelForm, SimpleHttpOperatorFormSet, DagFormSet,HttpOperatorConnectionForm,WorkflowRunnerForm,EndpointForm,CustomFieldForm,CustomFieldValueForm
 )
 from django.urls import reverse_lazy
+
+
+# views.py
+class CustomFieldCreateView(CreateView):
+    model = CustomField
+    form_class = CustomFieldForm
+    template_name = 'workflows/custom_field_form.html'
+    success_url = reverse_lazy('custom_field_list')  # Redirect after creation
+
+
+class CustomFieldUpdateView(UpdateView):
+    model = CustomField
+    form_class = CustomFieldForm
+    template_name = 'workflows/custom_field_form.html'
+    success_url = reverse_lazy('custom_field_list')  # Redirect after creation
+
+class CustomFieldDeleteView(DeleteView):
+    model = CustomField
+    template_name = 'workflows/custom_field_confirm_delete.html'
+    success_url = reverse_lazy('custom_field_list')  # Redirect after deletion
+
+class CustomFieldListView(ListView):
+    model = CustomField
+    template_name = 'workflows/custom_field_list.html'
+    context_object_name = 'custom_fields'
+
+class CustomFieldValueCreateView(CreateView):
+    model = CustomFieldValue
+    form_class = CustomFieldValueForm
+    template_name = 'workflows/custom_field_value_form.html'
+    success_url = reverse_lazy('custom_field_list')  # Redirect after creation
+
+    def form_valid(self, form):
+        # Associate the custom field value with an endpoint (or other model)
+        endpoint_id = self.kwargs['endpoint_id']
+        endpoint = Endpoint.objects.get(id=endpoint_id)
+        form.instance.content_object = endpoint  # Link to the endpoint
+        # Create a JSON-like dictionary for saving
+        field_name = form.cleaned_data['field'].name  # Get the name of the selected custom field
+        field_value = form.cleaned_data['value']      # Get the input value
+        
+        # Constructing a dictionary to save as JSON
+        json_value = {field_name: field_value}
+        
+        # Save the constructed JSON object in the value field
+        form.instance.value = json_value
+        return super().form_valid(form)
+
+
+class EndpointListView(ListView):
+    model = Endpoint
+    template_name = 'workflows/endpoint_list.html'  # Template for listing endpoints
+    context_object_name = 'endpoints'  # Variable name for the template context
+
+class EndpointCreateView(CreateView):
+    model = Endpoint
+    form_class = EndpointForm
+    template_name = 'workflows/endpoint_form.html'  # Template for creating an endpoint
+    success_url = reverse_lazy('endpoint_list')  # Redirect URL after successful creation
+
+class EndpointUpdateView(UpdateView):
+    model = Endpoint
+    form_class = EndpointForm
+    template_name = 'workflows/endpoint_form.html'  # Template for updating an endpoint
+    success_url = reverse_lazy('endpoint_list')  # Redirect URL after successful update
+
+class EndpointDeleteView(DeleteView):
+    model = Endpoint
+    template_name = 'workflows/endpoint_confirm_delete.html'  # Template for confirming deletion
+    success_url = reverse_lazy('endpoint_list')  # Redirect URL after successful deletion
 
 class ConnectionListView(ListView):
     model = HttpOperatorConnectionModel

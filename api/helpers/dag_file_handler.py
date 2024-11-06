@@ -1,12 +1,13 @@
 import paramiko
 import subprocess
+import os
 
 def push_file(filename):
     # Define the server and authentication details
-    hostname = '84.247.184.136'  # Replace with your server's IP address or hostname
-    port = 22                            # Default SSH port
-    username = 'root'           # Replace with your username
-    password = 'boostchats'           # Replace with your password (or use a private key)
+    hostname = os.getenv('HOSTNAME')  # Replace with your server's IP address or hostname
+    port = os.getenv('PORT')                            # Default SSH port
+    username = os.getenv('USERNAME')           # Replace with your username
+    password = os.getenv('PASSWORD')           # Replace with your password (or use a private key)
 
     # Define local and remote file paths
     local_file_path = f'/opt/airflow/dags/{filename}.py'  # Path to the local file you want to upload

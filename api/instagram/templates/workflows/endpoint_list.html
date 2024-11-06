@@ -1,0 +1,22 @@
+{% extends 'workflows/main.html' %}
+{% block content %}
+    <h1>Endpoints</h1>
+    
+    <a href="{% url 'endpoint_create' %}">Add New Endpoint</a>
+
+    <ul>
+        {% for endpoint in endpoints %}
+            <li>
+                {{endpoint.base_url}}--{{ endpoint.url }}: {{ endpoint.data }}
+                <a href="{% url 'endpoint_update' endpoint.pk %}">Edit</a>
+                <form action="{% url 'endpoint_delete' endpoint.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+                <a href="{% url 'custom_field_value_create' endpoint.pk %}">Add data points</a>
+            </li>
+        {% empty %}
+            <li>No endpoints available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

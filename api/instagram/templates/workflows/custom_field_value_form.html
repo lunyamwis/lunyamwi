@@ -1,0 +1,56 @@
+{% extends 'workflows/main.html' %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<h1>Add Value for {{ endpoint.url }}</h1>
+
+<form method="post" id="custom-field-value-form">
+    {% csrf_token %}
+    {{ form.field.label_tag }} {{ form.field }}  <!-- Dropdown for selecting custom fields -->
+    <div id="dynamic-input-container">
+        {{ form.value.label_tag }} <input type="text" name="value" id="dynamic-input" />  <!-- Default input -->
+    </div>
+    <button type="submit">Add Value</button>
+</form>
+
+<a href="{% url 'endpoint_list' %}">Back to Endpoints</a>
+
+{% if form.errors %}
+<div style="color: red;">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fieldSelect = document.querySelector('select[name="field"]');
+    const dynamicInputContainer = document.getElementById('dynamic-input-container');
+    const dynamicInput = document.getElementById('dynamic-input');
+
+    fieldSelect.addEventListener('change', function() {
+        const selectedFieldId = this.value;
+
+        // Fetch data type of selected custom field using AJAX
+        fetch(`/api/custom-fields/${selectedFieldId}/`)  // Adjust URL as needed
+            .then(response => response.json())
+            .then(data => {
+                // Clear previous input
+                dynamicInputContainer.innerHTML = '';
+
+                // Create new input based on data type
+                if (data.data_type === 'text') {
+                    dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="text" name="value" required />`;
+                } else if (data.data_type === 'number') {
+                    dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="number" name="value" required />`;
+                } else if (data.data_type === 'date') {
+                    dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="date" name="value" required />`;
+                } else if (data.data_type === 'boolean') {
+                    dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="checkbox" name="value" value="true" />`;
+                } else if (data.data_type === 'json') {
+                    dynamicInputContainer.innerHTML = `<label>${data.name}</label><textarea name="value" required></textarea>`;
+                }
+            });
+    });
+});
+</script>
+{% endblock %}
