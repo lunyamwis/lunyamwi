@@ -4,10 +4,19 @@ import json
 import yaml
 from datetime import timedelta
 from rest_framework import serializers
-from .models import Score, InstagramUser, QualificationAlgorithm, Scheduler, LeadSource,SimpleHttpOperatorModel,WorkflowModel,DagModel
+from .models import Score, InstagramUser, QualificationAlgorithm, Scheduler, LeadSource,SimpleHttpOperatorModel,WorkflowModel,DagModel,Media
 from django.conf import settings
 from django.db import IntegrityError
 from api.helpers.dag_generator import generate_dag
+
+
+class MediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Media
+        fields = '__all__'
+        extra_kwargs = {
+            "id": {"required": False, "allow_null": True},
+        }
 
 class InstagramLeadSerializer(serializers.ModelSerializer):
     class Meta:

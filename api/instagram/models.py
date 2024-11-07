@@ -237,3 +237,23 @@ class SimpleHttpOperatorModel(BaseModel):
 
 
 
+class Media(BaseModel):
+    MEDIA_TYPES = (
+        ('image', 'Image'),
+        ('video', 'Video'),
+        ('carousel', 'Carousel'),
+        ('story', 'Story'),
+        ('igtv', 'IGTV'),
+    )
+    media_type = models.CharField(max_length=255, choices=MEDIA_TYPES)
+    media_url = models.URLField()
+    caption = models.TextField()
+    user = models.ForeignKey(InstagramUser, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
+    item_id = models.CharField(max_length=255,null=True,blank=True)
+    item_type = models.CharField(max_length=255,null=True,blank=True)
+    download_url = models.URLField(null=True,blank=True)
+    
+
+    def __str__(self) -> str:
+        return self.media_url
