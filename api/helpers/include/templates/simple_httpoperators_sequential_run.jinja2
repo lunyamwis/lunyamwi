@@ -35,7 +35,7 @@ with DAG(
         method="{{ operator.method }}",
         headers={{ operator.headers | tojson }},  # Assuming headers is a dictionary, convert it to JSON
         data=json.dumps({{ operator.data }}),
-        log_response={{ operator.log_response }},
+        log_response=True,
         do_xcom_push=True,  # Enable pushing response to XCom
     )
     http_tasks.append(http_task_{{operator.task_id}})
