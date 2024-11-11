@@ -8,6 +8,28 @@ from django.conf import settings
 
 from api.helpers.dag_generator import generate_dag
 
+def flatten_dict(d, parent_key='', sep='_'):
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, dict):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
+
+
+def flatten_dict_list(dict_list, parent_key='', sep='_'):
+    items = []
+    for d in dict_list:
+        if isinstance(d, dict):
+            items.extend(flatten_dict(d, parent_key, sep=sep).items())
+        else:
+            items.append((parent_key, d))
+    return dict(items)
+
+
+
 def generate_dag_script(workflow):
     # if "trigger_url" in dag_data:
         
@@ -22,6 +44,7 @@ def generate_dag_script(workflow):
     dag_ = DagModel.objects.filter(workflow__id = workflow.id)
     dag = dag_.latest('created_at')
     operators = [entry for entry in dag.simplehttpoperatormodel_set.filter().values()]
+    data_points = []
     for operator in operators:
         try:
             operator['http_conn_id'] = HttpOperatorConnectionModel.objects.get(id=operator['connection_id']).connection_id
@@ -34,8 +57,12 @@ def generate_dag_script(workflow):
             custom_fields_with_value = CustomFieldValue.objects.filter(
                 content_type=endpoint_content_type,
                 object_id=endpoint.id
-            ).select_related('field').latest('created_at')
-            operator['data'] = custom_fields_with_value.value
+            ).select_related('field')
+
+            for custom_field_value in custom_fields_with_value:
+                data_points.append({custom_field_value.field.name:custom_field_value.value})
+
+            operator['data'] = flatten_dict_list(data_points)
             
         except Exception as error:
             print(str(error))
