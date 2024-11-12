@@ -46,7 +46,9 @@ operators:
   created_at: 2024-11-08 06:17:03.421416+00:00
   dag_id: -OB9PoCA6xL8Yv8F2VO9
   data:
-    job: data scientist
+    job: lieutenant
+    number_of_review: 2
+    userId: 32
   deleted_at: null
   endpoint: /api/users
   endpointurl_id: -OB9P7qhfrdY1xady3Ff
@@ -60,5 +62,27 @@ operators:
   response_check: null
   task_id: addUsers
   updated_at: 2024-11-08 06:17:03.421438+00:00
+  urls: null
+  xcom_push: true
+- connection_id: -OB9OjIGlpSH2d8v6eWo
+  created_at: 2024-11-12 09:07:13.784873+00:00
+  dag_id: -OB9PoCA6xL8Yv8F2VO9
+  data:
+    job: lieutenant
+    number_of_review: 2
+    userId: 32
+  deleted_at: null
+  endpoint: /api/users
+  endpointurl_id: -OB9P7qhfrdY1xady3Ff
+  extra_options: null
+  headers:
+    Content-Type: application/json
+  http_conn_id: demo_again_connection
+  id: -OBUc79uBPDM4p2BYHjd
+  log_response: false
+  method: POST
+  response_check: null
+  task_id: addUserAgain
+  updated_at: 2024-11-12 09:07:13.784948+00:00
   urls: null
   xcom_push: true

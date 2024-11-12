@@ -392,7 +392,10 @@ class InstagramSpider:
             # Create a DataFrame for the likers and comments    
             df_likers = pd.DataFrame([{**liker.dict(), "media_link": media_info.id, "media_caption_text": media_info.caption_text} for liker in media_likers])
             df_comments = pd.DataFrame([{**comment.dict(), "media_link": media_info.id, "media_caption_text": media_info.caption_text} for comment in media_comments])
-            df_comments['username'] = df_comments['user'].apply(lambda x: x['username'] if isinstance(x, dict) else None)
+            try:
+                df_comments['username'] = df_comments['user'].apply(lambda x: x['username'] if isinstance(x, dict) else None)
+            except Exception as err:
+                print("There are no comments attached to media most likely", err)
             df = pd.concat([df_likers, df_comments],ignore_index=True)
             # Append the results to the CSV file
             df.to_csv("prequalified.csv", index=False, mode='a', header=False)
@@ -429,7 +432,7 @@ class InstagramSpider:
         yesterday = timezone.now().date() - timezone.timedelta(days=1)
         yesterday_start = timezone.make_aware(timezone.datetime.combine(yesterday, timezone.datetime.min.time()))
         # the instagram users who are manually triggered need to be given first priority
-        instagram_users = InstagramUser.objects.filter(Q(created_at__gte=yesterday_start) & Q(is_manually_triggered=True))
+        instagram_users = InstagramUser.objects.filter(Q(created_at__gte=yesterday_start) & Q(is_manually_triggered=True)).distinct('username')
         if instagram_users.exists():
             # manually qualify and assign those accounts
             headers = {

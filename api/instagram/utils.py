@@ -8,10 +8,31 @@ from django.conf import settings
 
 from api.helpers.dag_generator import generate_dag
 
+import pandas as pd
+
+
+
+def combine_dicts(group):
+    combined_dict = {}
+    for _, row in group.iterrows():
+        combined_dict.update(row.dropna().to_dict())
+    return combined_dict
+
+
+def merge_lists_by_timestamp(dict_list):
+    df = pd.DataFrame(dict_list)
+    df['created_at'] = pd.to_datetime(df['created_at'])
+
+    # Round the created_at values to the nearest minute
+    df['created_at'] = df['created_at'].dt.round('min')
+    return df.groupby('created_at').apply(combine_dicts).tolist()
+
+
+
 def flatten_dict(d, parent_key='', sep='_'):
     items = []
     for k, v in d.items():
-        new_key = parent_key + sep + k if parent_key else k
+        new_key = parent_key + sep + k if not parent_key else k
         if isinstance(v, dict):
             items.extend(flatten_dict(v, new_key, sep=sep).items())
         else:
@@ -27,6 +48,14 @@ def flatten_dict_list(dict_list, parent_key='', sep='_'):
         else:
             items.append((parent_key, d))
     return dict(items)
+
+def remove_timestamp(dict_):
+    if "_created_at" in dict_:
+        try:
+            del dict_['_created_at']
+        except Exception as err:
+            print(err)
+    return dict_
 
 
 
@@ -60,9 +89,12 @@ def generate_dag_script(workflow):
             ).select_related('field')
 
             for custom_field_value in custom_fields_with_value:
-                data_points.append({custom_field_value.field.name:custom_field_value.value})
+                data_points.append({
+                    custom_field_value.field.name: custom_field_value.value,
+                    "created_at": custom_field_value.created_at
+                })
 
-            operator['data'] = flatten_dict_list(data_points)
+            operator['data'] = remove_timestamp(flatten_dict_list(merge_lists_by_timestamp(data_points)))
             
         except Exception as error:
             print(str(error))
