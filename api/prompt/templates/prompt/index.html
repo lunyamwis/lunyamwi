@@ -14,5 +14,7 @@
         </li>
     {% endfor %}
 </ul>
-<a href="{% url 'add' %}">Add Prompt</a>
+<a href="{% url 'fetch_logs' %}">Logs</a><br>
+<a href="{% url 'add' %}">Add Prompt</a><br>
+<a href="{% url 'agentSetup' %}">Test Agent Setup</a>
 {% endblock %}

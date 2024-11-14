@@ -6,6 +6,7 @@ def home(request):
     return HttpResponse("Welcome to the homepage")
 
 urlpatterns = [
+    path('admin/', admin.site.urls),  # Admin URL
     path('', home),  # Root URL
     # path('',include('boostedchatScrapper.urls')),
     path('instagram/',include('api.instagram.urls')),

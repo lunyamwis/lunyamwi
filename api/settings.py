@@ -51,7 +51,8 @@ CSRF_TRUSTED_ORIGINS = [
     f"https://scrapper.{os.environ.get('DOMAIN1', '')}.boostedchat.com",
     f"https://scrapper.{os.environ.get('DOMAIN2', '')}.boostedchat.com",
     "http://34.28.104.255",
-    "http://lunyamwi.localhost/"
+    "http://lunyamwi.localhost/",
+    "http://lunyamwi.localhost"
 ]
 
 # Application definition
@@ -64,7 +65,7 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    # 'rest_framework',
     'django_celery_beat',
     'softdelete',
     'boostedchatScrapper',
@@ -73,7 +74,7 @@ SHARED_APPS = [
     "crispy_bootstrap5",
 ]
 
-TENANT_APPS = ['api.instagram','api.scout', 'api.helpers','api.prompt']
+TENANT_APPS = ['api.instagram','api.scout', 'api.helpers','api.prompt','rest_framework']
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 TENANT_MODEL = "boostedchatScrapper.Client"
 TENANT_DOMAIN_MODEL = "boostedchatScrapper.Domain"

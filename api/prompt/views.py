@@ -5,6 +5,7 @@ from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import datetime
+from django_tenants.utils import schema_context
 
 from django.shortcuts import redirect, get_object_or_404
 from .serializers import CreatePromptSerializer, CreateRoleSerializer, PromptSerializer, RoleSerializer
@@ -14,6 +15,7 @@ from .forms import PromptForm
 import os
 import openai
 import base64
+import time
 import random
 import uuid
 import logging
@@ -24,6 +26,7 @@ from dotenv import load_dotenv, find_dotenv
 from langchain.tools import tool
 import requests
 import re
+import wandb
 from typing import Dict, Any, Type
 from pydantic import BaseModel, Field
 from langchain.schema.runnable import RunnablePassthrough
@@ -107,14 +110,6 @@ def delete(request, prompt_id):
 class saveResponse(APIView):
 
     def post(self, request):
-        data = request.data
-        company = Company.objects.get(name=data.get("company_name"))
-        product = Product.objects.get(
-            name=data.get("product_name"), company=company)
-        prompt = Prompt.objects.filter(
-            index=int(data.get("prompt_index")) + 1, product=product).last()
-        prompt.data = data
-        prompt.save()
 
         return Response({
             "success": True,
@@ -739,101 +734,179 @@ class GeneratedTextOutput(BaseModel):
     confirmed_problems: str
     human_takeover: bool
 
+class WandbLoggingHandler(logging.Handler):
+    def emit(self, record):
+        log_entry = self.format(record)
+        wandb.log({"langchain_log": log_entry})
+
 
 class agentSetup(APIView):
-    def post(self,request):
-        # workflow_data = request.data.get("workflow_data")
-        workflow = None
-        department = Department.objects.filter(name = request.data.get("department")).last()
+    # @schema_context("lunyamwi")
+    def log_scrapping_logs(self, log_file_path):
+        """Logs the contents of scrappinglogs.txt to W&B and deletes the file."""
+        try:
+            with open(log_file_path, 'r') as file:
+                logs = file.read()
+                # Log the entire content of the log file
+                wandb.log({"scrapping_logs": logs})
+                print("Scrapping logs logged successfully.")
+            
+            # Delete the log file after logging
+            os.remove(log_file_path)
+            print(f"{log_file_path} has been deleted.")
+        
+        except Exception as e:
+            print(f"Error logging scrapping logs: {e}")
 
-        info = request.data.get(department.baton.start_key)
-        agents = []
-        tasks = []
-        
-        department_agents = None
-        if department.agents.filter(name = request.data.get('agent_name','agent')).exists():
-            department_agents = department.agents.filter(name = request.data.get('agent_name'))
-        else:
-            department_agents = department.agents.exclude(name__icontains='monitoring')
+    def post(self,request):
+        # print(request.tentant.schema_name)
+        # print(f"Received request data: {request.data}")
+        print(f"Current tenant schema: {request.tenant.schema_name}")
+        data = json.loads(request.data.get('_content'))
+        wandb.init(
+            project="boostedchat",  # replace with your WandB project name
+            entity="lutherlunyamwi",       # replace with your WandB username or team
+            name=f"crewai_run_{data.get('department')}",  # custom name for each run
+            config=data           # optionally log the request data as run config
+        )
+
+        wandb_handler = WandbLoggingHandler()
+        wandb_handler.setLevel(logging.INFO)
+        wandb_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+
+        langchain_logger = logging.getLogger("langchain")
+        langchain_logger.addHandler(wandb_handler)
+        langchain_logger.setLevel(logging.INFO)
+        # with schema_context("lunyamwi"):
+
+        # workflow_data = data.get("workflow_data")
+        workflow = None
+        with schema_context(request.tenant.schema_name):
+
+            # import pdb;pdb.set_trace()          
+            department = Department.objects.filter(name = data.get("department")).last()
+            info = data.get(department.baton.start_key)
+            agents = []
+            tasks = []
             
-        for agent in department_agents:
-            print(agent)
-            # import pdb;pdb.set_trace()
-            if agent.tools.filter().exists():
-                agents.append(Agent(
-                    role=agent.role.description + " " + agent.role.tone_of_voice if agent.role else department.name,
-                    goal=agent.goal,
-                    backstory=agent.prompt.last().text_data,
-                    tools = [TOOLS.get(tool.name) for tool in agent.tools.all()],
-                    allow_delegation=False,
-                    verbose=True
-                ))
+            department_agents = None
+            if department.agents.filter(name = data.get('agent_name','agent')).exists():
+                department_agents = department.agents.filter(name = data.get('agent_name'))
             else:
-                agents.append(Agent(
-                    role=agent.role.description + " " + agent.role.tone_of_voice if agent.role else department.name,
-                    goal=agent.goal,
-                    backstory=agent.prompt.last().text_data,
-                    allow_delegation=False,
-                    verbose=True
-                ))
-            
-        tasks = []
-        department_agent_tasks = None
-        if department.tasks.filter(agent__name = request.data.get('agent_name')).order_by('index'):
-            department_agent_tasks = department.tasks.filter(name = request.data.get('agent_task')).order_by('index')
-        else:
-            department_agent_tasks = department.tasks.exclude(name__icontains='monitoring').order_by('index')
-        
-        for task in department_agent_tasks:
-            print(task)
-            agent_ = None
-            for agent in agents:
-                if task.agent.goal == agent.goal:
-                    agent_ = agent
-            if  agent_:
-                if task.tools.filter().exists():
-                    tasks.append(Task(
-                        description=task.prompt.last().text_data if task.prompt.exists() else "perform agents task",
-                        expected_output=task.expected_output,
-                        tools=[TOOLS.get(tool.name) for tool in task.tools.all()],
- 
-                       agent=agent_,
-                       output_json=GeneratedTextOutput
+                department_agents = department.agents.exclude(name__icontains='monitoring')
+                
+            for agent in department_agents:
+                print(agent)
+                # import pdb;pdb.set_trace()
+                if agent.tools.filter().exists():
+                    agents.append(Agent(
+                        role=agent.role.description + " " + agent.role.tone_of_voice if agent.role else department.name,
+                        goal=agent.goal,
+                        backstory=agent.prompt.last().text_data,
+                        tools = [TOOLS.get(tool.name) for tool in agent.tools.all()],
+                        allow_delegation=False,
+                        verbose=True
                     ))
                 else:
-                    tasks.append(Task(
-                        description=task.prompt.last().text_data if task.prompt.exists() else "perform agents task",
-                        expected_output=task.expected_output,
-                        agent=agent_,
-                        output_json=GeneratedTextOutput
+                    agents.append(Agent(
+                        role=agent.role.description + " " + agent.role.tone_of_voice if agent.role else department.name,
+                        goal=agent.goal,
+                        backstory=agent.prompt.last().text_data,
+                        allow_delegation=False,
+                        verbose=True
                     ))
                 
-          
-        
-        crew = Crew(
-            agents=agents,
+            tasks = []
+            department_agent_tasks = None
+            if department.tasks.filter(agent__name = data.get('agent_name')).order_by('index'):
+                department_agent_tasks = department.tasks.filter(name = data.get('agent_task')).order_by('index')
+            else:
+                department_agent_tasks = department.tasks.exclude(name__icontains='monitoring').order_by('index')
             
-            tasks=tasks,
-            # process=Process.sequential,
-            verbose=True,
-            memory=True,
-            # output_log_file='scrappinglogs.txt'
-        )
-        
-        # if workflow_data:
-            # workflow_tool = TOOLS.get("workflow_tool")
-            # response = workflow_tool._run(workflow_data)
-            # inputs.update({"workflow_data":workflow_data})
-        # import pdb;pdb.set_trace()
-        
-        result = crew.kickoff(inputs=info)
+            for task in department_agent_tasks:
+                print(task)
+                agent_ = None
+                for agent in agents:
+                    if task.agent.goal == agent.goal:
+                        agent_ = agent
+                if  agent_:
+                    if task.tools.filter().exists():
+                        tasks.append(Task(
+                            description=task.prompt.last().text_data if task.prompt.exists() else "perform agents task",
+                            expected_output=task.expected_output,
+                            tools=[TOOLS.get(tool.name) for tool in task.tools.all()],
 
-        # if isinstance(result, dict):
-            # kickstart new workflow
+                        agent=agent_,
+                        output_json=GeneratedTextOutput
+                        ))
+                    else:
+                        tasks.append(Task(
+                            description=task.prompt.last().text_data if task.prompt.exists() else "perform agents task",
+                            expected_output=task.expected_output,
+                            agent=agent_,
+                            output_json=GeneratedTextOutput
+                        ))
+                    
                 
-        return Response({"result":result.json_dict})
+            logging_filename = f"scrappinglogs-{str(uuid.uuid4())}.txt"
+            crew = Crew(
+                agents=agents,
+                
+                tasks=tasks,
+                # process=Process.sequential,
+                verbose=True,
+                memory=True,
+                output_log_file=logging_filename
+            )
+            
+            
+            # if workflow_data:
+                # workflow_tool = TOOLS.get("workflow_tool")
+                # response = workflow_tool._run(workflow_data)
+                # inputs.update({"workflow_data":workflow_data})
+            
+            result = crew.kickoff(inputs=info)
+            # import pdb;pdb.set_trace()
+
+            # if isinstance(result, dict):
+                # kickstart new workflow
+            wandb.log({"result": result.json_dict})  # log the final result
+
+            # Optionally, log additional information about agents and tasks
+            wandb.log({
+                "agents": [{"role": agent.role, "goal": agent.goal, "tools": str(agent.tools)} for agent in agents],
+                "tasks": [{"description": task.description, "expected_output": task.expected_output} for task in tasks]
+            })
+
+            # End wandb run
+            time.sleep(2)
+            self.log_scrapping_logs(logging_filename)
+            wandb.finish()
+            return Response({"result":result.json_dict})
         # else:
         #     return Response({"result":result})
+
+
+from django.shortcuts import render
+
+
+def fetch_logs(request):
+    api = wandb.Api()
+    entity = "lutherlunyamwi"
+    project = "boostedchat"
+    runs = api.runs(f"{entity}/{project}")
+
+    run_data = []
+    for run in runs:
+        if run.state == "finished":
+            history = run.history()
+            run_data.append({
+                'name': run.name,
+                'summary': run.summary,
+                'history': history.to_dict(orient='records'),
+            })
+
+    return render(request, 'prompt/logs.html', {'run_data': run_data})
 
 
 

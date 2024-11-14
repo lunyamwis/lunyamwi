@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>W&B Logs</title>
+</head>
+<body>
+    <h1>W&B Project Logs</h1>
+    {% for run in run_data %}
+        <h2>{{ run.name }}</h2>
+        <p>Summary: {{ run.summary }}</p>
+        <h3>History:</h3>
+        <ul>
+            {% for entry in run.history %}
+                <li>{{ entry.timestamp }} - Accuracy: {{ entry.accuracy }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PromptViewSet, RoleViewSet, index, add, getAgent,update, detail, delete, saveResponse, generateResponse, agentSetup
+from .views import PromptViewSet, RoleViewSet, index, add, getAgent,update, detail, delete, saveResponse, generateResponse, agentSetup,fetch_logs
 
 router = DefaultRouter()
 router.register(r"prompts", PromptViewSet, basename="prompts")
@@ -16,7 +16,8 @@ urlpatterns = [
     path('delete/<str:prompt_id>/', delete, name='delete'),
     path('save-response/',saveResponse.as_view()),
     path("generateResponse/",generateResponse.as_view()),
-    path("agentSetup/",agentSetup.as_view()),
+    path("agentSetup/",agentSetup.as_view(),name="agentSetup"),
     path("getAgent/",getAgent.as_view()),
+    path('logs/', fetch_logs, name='fetch_logs'),
     path("", include(router.urls))
 ]
