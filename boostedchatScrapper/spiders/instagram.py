@@ -360,17 +360,64 @@ class InstagramSpider:
         return result
 
 
-    def scrap_media(self, media_links):
+    def scrap_media(self, media_links=None):
         latest_scout = Scout.objects.filter(available=True).first()
         client = login_user(latest_scout)
 
         # Initialize the CSV file with headers
         header = ['media_link', 'media_caption_text', 'user_id', 'username', 'full_name', 'profile_pic_url', 'is_private', 'is_verified', 'media_count', 'follower_count', 'following_count', 'biography', 'external_url', 'is_business']
         pd.DataFrame(columns=header).to_csv("prequalified.csv", index=False)
-
-        for media_link in media_links:
+        
+        if media_links:
+            for media_link in media_links:
+                try:
+                    media_pk = client.media_pk_from_url(media_link)
+                except Exception as error:
+                    print(error)
+                    
+                try:
+                    media_info = client.media_info(media_pk)
+                except Exception as error:
+                    print(error)
+                    
+                try:
+                    media_comments = client.media_comments(media_pk)
+                except Exception as error:
+                    print(error)
+                    
+                try:
+                    media_likers = client.media_likers(media_pk)
+                except Exception as error:
+                    print(error)
+                    
+                # Create a DataFrame for the likers and comments    
+                df_likers = pd.DataFrame([{**liker.dict(), "media_link": media_info.id, "media_caption_text": media_info.caption_text} for liker in media_likers])
+                df_comments = pd.DataFrame([{**comment.dict(), "media_link": media_info.id, "media_caption_text": media_info.caption_text} for comment in media_comments])
+                try:
+                    df_comments['username'] = df_comments['user'].apply(lambda x: x['username'] if isinstance(x, dict) else None)
+                except Exception as err:
+                    print("There are no comments attached to media most likely", err)
+                df = pd.concat([df_likers, df_comments],ignore_index=True)
+                # Append the results to the CSV file
+                df.to_csv("prequalified.csv", index=False, mode='a', header=False)
+                for i, row in df.iterrows():
+                    try:
+                        InstagramUser.objects.create(username=row['username'], item_id=media_info.id, is_manually_triggered=True)   
+                    except Exception as error:
+                        print(error)
+        else:
+            # try:
+                # info_dict = client.user_info_by_username("barbersince").dict()
+            client.user_info()
             try:
-                media_pk = client.media_pk_from_url(media_link)
+                user_media = client.user_medias(user_id=27971835,amount=1)
+            except Exception as error:
+            #     info_dict.update({"media_id":""})
+                print(error)
+            # except Exception as err:
+            #     print(err)
+            try:
+                media_pk = user_media[0].pk
             except Exception as error:
                 print(error)
                 
@@ -518,7 +565,7 @@ class InstagramSpider:
 
                     info_dict = client.user_info_by_username(user.username).dict()
                     try:
-                        user_medias = client.user_medias(info_dict.get("pk"),amount=5)
+                        user_medias = client.user_medias(info_dict.get("pk"),amount=1)
                         # comment = self.generate_comment(user_medias[0],user.username)
                         # info_dict.update({"media_comment":comment})
                         media_res = []
