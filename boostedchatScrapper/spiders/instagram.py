@@ -408,7 +408,7 @@ class InstagramSpider:
         else:
             # try:
                 # info_dict = client.user_info_by_username("barbersince").dict()
-            client.user_info()
+                
             try:
                 user_media = client.user_medias(user_id=27971835,amount=1)
             except Exception as error:
