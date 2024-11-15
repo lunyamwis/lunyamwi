@@ -11,4 +11,5 @@ urlpatterns = [
     # path('',include('boostedchatScrapper.urls')),
     path('instagram/',include('api.instagram.urls')),
     path('prompt/',include('api.prompt.urls')),
+    path('analyst/',include('api.analyst.urls')),
 ]

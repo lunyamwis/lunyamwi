@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Analysis Dashboard</title>
+    
+    <!-- Include Bokeh CSS -->
+    <link href="https://cdn.bokeh.org/bokeh/release/bokeh-3.6.1.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>Data Entries</h1>
+    
+    <h2>Matplotlib Chart</h2>
+    <img src="data:image/png;base64,{{ chart_mpl }}" alt="Matplotlib Chart"/>
+
+    <h2>Bokeh Chart</h2>
+    {{ chart_bokeh_div|safe }}  <!-- Render Bokeh plot -->
+    
+    <!-- Include Bokeh JS -->
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.6.1.min.js"></script>
+    
+    <!-- Include Bokeh Script -->
+    {{ chart_bokeh_script|safe }} <!-- Render Bokeh script -->
+</body>
+</html>
