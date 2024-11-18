@@ -1,10 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'prompt/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Prompt{% endblock %}
 
 {% block content %}
 <h1>Add Prompt</h1>
 <form method="post" action="">
   {% csrf_token %}
-  {{ form.as_p }}
+  {{ form | crispy}}
   <button type="submit">Add Prompt</button>
 </form>
 <a href="{% url 'index' %}">Back to Index</a>

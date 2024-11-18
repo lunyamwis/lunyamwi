@@ -1,20 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>W&B Logs</title>
-</head>
-<body>
-    <h1>W&B Project Logs</h1>
-    {% for run in run_data %}
-        <h2>{{ run.name }}</h2>
-        <p>Summary: {{ run.summary }}</p>
-        <h3>History:</h3>
-        <ul>
-            {% for entry in run.history %}
-                <li>{{ entry.timestamp }} - Accuracy: {{ entry.accuracy }}</li>
-            {% endfor %}
-        </ul>
-    {% endfor %}
-</body>
-</html>
+{% extends 'prompt/base.html' %}
+
+{% block title %}W&B Project Logs{% endblock %}
+
+{% block content %}
+<style>
+body {
+    background-color: #f8f9fa; /* Light background for better contrast */
+}
+
+h1 {
+    color: #343a40; /* Darker text color */
+}
+.card {
+    border: 1px solid #ced4da; /* Subtle border */
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
+.card-header {
+    background-color: #ebeef1; /* Bootstrap primary color */
+    color: rgb(5, 5, 5); /* White text for contrast */
+}
+
+.card-header button {
+    width: 100%; /* Full width button */
+    text-align: left; /* Align text to the left */
+}
+
+.card-body {
+    background-color: #ffffff; /* White background for content area */
+}
+
+.log-summary {
+    white-space: pre-wrap; /* Preserve formatting in log summary */
+    background-color: #e9ecef; /* Light grey background for summary */
+    padding: 10px; /* Padding around summary */
+    border-radius: 0.25rem; /* Rounded corners */
+}
+.text {
+    visibility: hidden; /* Initially hidden */
+}
+
+.parent:hover .text {
+    visibility: visible; /* Visible on hover */
+}
+</style>
+<h1 class="text-center my-4">Project Logs</h1>
+<div class="container">
+    <div class="accordion" id="runAccordion">
+        {% for run in run_data %}
+        <div class="card mb-3">
+            <div class="card-header" id="heading{{ forloop.counter }}">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                        <strong>{{ run.name }}</strong> - {{ run.datetime_obj }}
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}" data-parent="#runAccordion">
+                <div class="card-body">
+                    <pre class="log-summary">{{ run.summary }}</pre>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

@@ -75,7 +75,7 @@ def add(request):
         form = PromptForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('prompt_index')
     else:
         form = PromptForm()
     return render(request, 'prompt/add.html', {'form': form})
@@ -95,7 +95,7 @@ def update(request, prompt_id):
         form = PromptForm(request.POST, instance=prompt)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('prompt_index')
     else:
         form = PromptForm(instance=prompt)
     return render(request, 'prompt/update.html', {'form': form, 'prompt': prompt})
@@ -104,7 +104,7 @@ def update(request, prompt_id):
 def delete(request, prompt_id):
     prompt = get_object_or_404(Prompt, pk=prompt_id)
     prompt.delete()
-    return redirect('index')
+    return redirect('prompt_index')
 
 
 class saveResponse(APIView):
@@ -899,10 +899,13 @@ def fetch_logs(request):
     run_data = []
     for run in runs:
         if run.state == "finished":
+            timestampobj = run.summary.get('_timestamp')
+            datetime_obj = datetime.fromtimestamp(timestampobj)
             history = run.history()
             run_data.append({
                 'name': run.name,
                 'summary': run.summary,
+                'datetime_obj': datetime_obj,
                 'history': history.to_dict(orient='records'),
             })
 
