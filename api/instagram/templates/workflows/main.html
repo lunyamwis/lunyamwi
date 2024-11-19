@@ -18,7 +18,7 @@
         <div class="position-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'list_workflows' %}">
+              <a class="nav-link active" href="{% url 'dashboard' %}">
                 Home
               </a>
             </li>
@@ -40,6 +40,21 @@
             <li class="nav-item">
               <a href="{% url 'custom_field_list' %}" class="nav-link">
                 Custom Fields
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'prompt_index' %}">
+                Prompts
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'fetch_logs' %}">
+                Logs
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'agentSetup' %}" class="nav-link">
+                API
               </a>
             </li>
             <!-- Add more links as needed -->

@@ -21,9 +21,6 @@ from django.forms import modelformset_factory
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'analyst/index.html')
-
 
 
 
