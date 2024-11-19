@@ -3,27 +3,46 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<!-- dashboard.html -->
+<h1 class="mb-4">Dashboard</h1>
+
+<!-- Combined Form for Data Entry and Custom Field Values -->
 <form method="post">
     {% csrf_token %}
-    {{ form | crispy }}  <!-- Render the form -->
-    <button type="submit">Submit</button>
+    
+    {{ form.name.label_tag }} {{ form.name }}  <!-- Render name -->
+    {{ form.chart_type.label_tag }} {{ form.chart_type }}  <!-- Render chart type -->
+    {{ form.query.label_tag }} {{ form.query }}  <!-- Render query -->
+    
+    <!-- Dropdown for selecting custom fields -->
+    <!--{{ form.field.label_tag }} {{ form.field }}-->  <!-- Render dropdown for custom fields -->
+    
+    <!--<div id="dynamic-input-container">
+        <label for="dynamic-input">Value:</label>
+        <input class="form-control" type="text" name="value" id="dynamic-input" required /> 
+    </div>-->
+    <br>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
 <!-- Include Bokeh CSS -->
 <link href="https://cdn.bokeh.org/bokeh/release/bokeh-3.6.1.min.css" rel="stylesheet" type="text/css">
 
-<h1 class="mb-4">Dashboard</h1>
-
-<div class="row">
+<div class="row mt-4">
     <!-- Matplotlib Chart -->
-    <div class="col-md-6 text-center">
+    <div class="col-md-12 text-center">
         <h2>Chart</h2>
-        <img src="data:image/png;base64,{{ chart_mpl }}" alt="Matplotlib Chart" class="img-fluid rounded">
+        {% if chart_mpl %}
+            <img src="data:image/png;base64,{{ chart_mpl }}" alt="Matplotlib Chart" class="img-fluid rounded">
+        {% elif chart_bokeh_div %}
+            {{ chart_bokeh_div|safe }}  <!-- Render Bokeh plot -->
+        {% else %}
+            <p>No data available for the chart.</p>
+        {% endif %}
     </div>
-    <!-- Bokeh Chart -->
-    <div class="col-md-6 text-center">
-        <h2>Interactive Chart</h2>
-        {{ chart_bokeh_div|safe }}  <!-- Render Bokeh plot -->
+    <div class="col-md-12 text-center">
+    <h2>DataFrame Display</h2>
+        {{ dataframe|safe }}
     </div>
 </div>
 
@@ -31,4 +50,41 @@
 <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.6.1.min.js"></script>
 <!-- Include Bokeh Script -->
 {{ chart_bokeh_script|safe }} <!-- Render Bokeh script -->
+
+<!-- Dynamic Input Script -->
+<script>
+// document.addEventListener('DOMContentLoaded', function() {
+//     const fieldSelect = document.querySelector('select[name="field"]'); // Adjust selector as needed
+    
+//     const dynamicInputContainer = document.getElementById('dynamic-input-container');
+    
+//     if (fieldSelect) {
+//         fieldSelect.addEventListener('change', function() {
+//             const selectedFieldId = this.value;
+
+//             // Fetch data type of selected custom field using AJAX
+//             fetch(`/api/custom-fields/${selectedFieldId}/`)  // Adjust URL as needed
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     // Clear previous input
+//                     dynamicInputContainer.innerHTML = '';
+
+//                     // Create new input based on data type
+//                     if (data.data_type === 'text') {
+//                         dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="text" name="value" required />`;
+//                     } else if (data.data_type === 'number') {
+//                         dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="number" name="value" required />`;
+//                     } else if (data.data_type === 'date') {
+//                         dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="date" name="value" required />`;
+//                     } else if (data.data_type === 'boolean') {
+//                         dynamicInputContainer.innerHTML = `<label>${data.name}</label><input type="checkbox" name="value" value="true" />`;
+//                     } else if (data.data_type === 'json') {
+//                         dynamicInputContainer.innerHTML = `<label>${data.name}</label><textarea name="value" required></textarea>`;
+//                     }
+//                 });
+//         });
+//     }
+// });
+</script>
+
 {% endblock %}

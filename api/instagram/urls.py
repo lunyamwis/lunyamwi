@@ -46,7 +46,6 @@ urlpatterns = [
     path('scrapSiteMaps/', views.ScrapSitemaps.as_view()),
     path('scrapUsers/', views.ScrapUsers.as_view()),
     path('scrapMedia/', views.ScrapMedia.as_view()),
-
     path('scrapInfo/', views.ScrapInfo.as_view()),
     path('insertAndEnrich/', views.InsertAndEnrich.as_view()),
     path('getMediaIds/',views.GetMediaIds.as_view()),
