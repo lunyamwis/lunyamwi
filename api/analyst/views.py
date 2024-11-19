@@ -179,7 +179,7 @@ def plot_bokeh(df):
         x_axis_label='Col1', 
         y_axis_label='Col2', 
         x_range=[str(x)for x in df['col1'].tolist()], 
-        y_range=(0, df['col2'].max() + 1), 
+        y_range=(0, df['col2'].max() + 5), 
         width=800, 
         height=400
     )
