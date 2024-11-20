@@ -89,8 +89,8 @@ def login_user(scout: Scout):
 
         
     # cl.login_by_sessionid()
-    username = os.getenv('PROXY_USERNAME')
-    password = os.getenv('PROXY_PASSWORD')
+    username = os.getenv('PROXY_USERNAME').strip()
+    password = os.getenv('PROXY_PASSWORD').strip()
     proxy = f"http://{username}:{password}@ke.smartproxy.com:45001"
     
     cl.set_proxy(
