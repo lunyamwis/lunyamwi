@@ -3,7 +3,7 @@ import os
 import json
 from .constants import LUNYAMWI_ML_BASE_URL
 
-def dashboard_analysis(payload=None):
+def setup_analysis(payload=None):
     url = LUNYAMWI_ML_BASE_URL + '/api/dashboard/'
     response = None
     try:
