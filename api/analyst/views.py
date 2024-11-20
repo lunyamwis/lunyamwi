@@ -17,10 +17,67 @@ from django.urls import reverse_lazy
 from api.instagram.models import CustomFieldValue
 from api.instagram.forms import CustomFieldValueForm
 from django.forms import modelformset_factory
-
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from sqlalchemy import create_engine
+from .serializers import CombinedDataEntrySerializer
 
 # Create your views here.
+@api_view(['GET', 'POST'])
+def dashboard_api(request):
+    if request.method == 'POST':
+        serializer = CombinedDataEntrySerializer(data=request.data)
+        
+        if serializer.is_valid():
+            entry = serializer.save()
+            df_html = None
+            
+            query = entry.query  # Assuming there's a query field in DataEntry
+            
+            if query:
+                # Database connection parameters
+                db_params = {
+                    'username': os.getenv('POSTGRES_USERNAME'),
+                    'password': os.getenv('POSTGRES_PASSWORD'),
+                    'host': os.getenv('POSTGRES_HOST'),
+                    'port': os.getenv('POSTGRES_PORT'),
+                    'database': os.getenv('POSTGRES_DBNAME')
+                }
 
+                # Create a connection string
+                connection_string = f"postgresql+psycopg2://{db_params['username']}:{db_params['password']}@{db_params['host']}:{db_params['port']}/{db_params['database']}"
+                engine = create_engine(connection_string)
+
+                try:
+                    df_temp = pd.read_sql(query, engine)  # Execute the query
+                    df_html = df_temp.to_html(classes='table table-striped', index=False)
+                
+                except Exception as e:
+                    return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+            chart_data = generate_charts(entry, df_temp)  # Implement this function based on your charting logic
+            
+            return Response({
+                'dataframe': df_html,
+                'charts': chart_data,
+            }, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        return Response({'message': 'GET method not supported for this endpoint.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+def generate_charts(entry, df):
+    """ Generate charts based on entry.chart_type and return chart data. """
+    chart_data = {}
+    
+    if entry.chart_type == 'line':
+        chart_data['mpl'] = plot_matplotlib(df)  # Your existing plotting function for matplotlib
+    elif entry.chart_type == 'bar':
+        chart_data['bokeh_div'], chart_data['bokeh_script'] = plot_bokeh(df)  # Your existing plotting function for bokeh
+    
+    return chart_data
 
 
 

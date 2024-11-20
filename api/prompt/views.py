@@ -3,12 +3,13 @@ from django.shortcuts import render
 from django.db.models import Q
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from datetime import datetime
 from django_tenants.utils import schema_context
 
 from django.shortcuts import redirect, get_object_or_404
-from .serializers import CreatePromptSerializer, CreateRoleSerializer, PromptSerializer, RoleSerializer
+from .serializers import CreatePromptSerializer, CreateRoleSerializer, PromptSerializer, RoleSerializer,RunDataSerializer
 from .factory import PromptFactory
 from .models import Prompt, Role, ChatHistory
 from .forms import PromptForm
@@ -959,3 +960,29 @@ class RoleViewSet(viewsets.ModelViewSet):
         if self.action == "update":
             return CreateRoleSerializer
         return super().get_serializer_class()
+
+
+@api_view(['GET'])
+def fetch_logs_api(request):
+    api = wandb.Api()
+    entity = "lutherlunyamwi"
+    project = "boostedchat"
+    runs = api.runs(f"{entity}/{project}")
+
+    run_data = []
+    for run in runs:
+        if run.state == "finished":
+            timestampobj = run.summary.get('_timestamp')
+            datetime_obj = datetime.fromtimestamp(timestampobj)
+            history = run.history()
+
+            run_data.append({
+                'name': run.name,
+                'summary': run.summary,
+                'datetime_obj': datetime_obj,
+                'history': history.to_dict(orient='records'),
+            })
+
+    serializer = RunDataSerializer(run_data, many=True)
+    
+    return Response(serializer.data, status=status.HTTP_200_OK)

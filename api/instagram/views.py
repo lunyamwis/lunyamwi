@@ -32,7 +32,6 @@ from instagrapi import Client
 
 
 from .models import Score, QualificationAlgorithm, Scheduler, AirflowCreds, InstagramUser, LeadSource,DagModel,SimpleHttpOperatorModel,HttpOperatorConnectionModel, WorkflowModel, Endpoint,CustomField,CustomFieldValue,Media,Scout
-from .serializers import ScoreSerializer, InstagramLeadSerializer,  QualificationAlgorithmSerializer, SchedulerSerializer, LeadSourceSerializer, SimpleHttpOperatorModelSerializer, WorkflowModelSerializer,MediaSerializer
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import WorkflowModelForm
@@ -52,7 +51,66 @@ from .forms import (
 from django.urls import reverse_lazy
 from boostedchatScrapper.spiders.helpers.instagram_login_helper import login_user
 
+# views.py
+from .serializers import (
+    ScoreSerializer, 
+    InstagramLeadSerializer,  
+    QualificationAlgorithmSerializer, 
+    SchedulerSerializer, 
+    LeadSourceSerializer, 
+    SimpleHttpOperatorModelSerializer, WorkflowModelSerializer,
+    MediaSerializer,
+    CustomFieldSerializer,
+    CustomFieldValueSerializer,
+    EndpointSerializer,
+    HttpOperatorConnectionModelSerializer,
+    WorkflowModelSerializer,
+)
 
+# Custom Field API Views
+class CustomFieldListCreateView(generics.ListCreateAPIView):
+    queryset = CustomField.objects.all()
+    serializer_class = CustomFieldSerializer
+
+class CustomFieldRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomField.objects.all()
+    serializer_class = CustomFieldSerializer
+
+# Custom Field Value API Views
+class CustomFieldValueListCreateView(generics.ListCreateAPIView):
+    queryset = CustomFieldValue.objects.all()
+    serializer_class = CustomFieldValueSerializer
+
+class CustomFieldValueRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomFieldValue.objects.all()
+    serializer_class = CustomFieldValueSerializer
+
+# Endpoint API Views
+class EndpointListCreateView(generics.ListCreateAPIView):
+    queryset = Endpoint.objects.all()
+    serializer_class = EndpointSerializer
+
+class EndpointRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Endpoint.objects.all()
+    serializer_class = EndpointSerializer
+
+# Connection API Views
+class ConnectionListCreateView(generics.ListCreateAPIView):
+    queryset = HttpOperatorConnectionModel.objects.all()
+    serializer_class = HttpOperatorConnectionModelSerializer
+
+class ConnectionRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HttpOperatorConnectionModel.objects.all()
+    serializer_class = HttpOperatorConnectionModelSerializer
+
+# Workflow API Views
+class WorkflowListCreateView(generics.ListCreateAPIView):
+    queryset = WorkflowModel.objects.all()
+    serializer_class = WorkflowModelSerializer
+
+class WorkflowRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = WorkflowModel.objects.all()
+    serializer_class = WorkflowModelSerializer
 
 # views.py
 class MediaViewSet(viewsets.ModelViewSet):

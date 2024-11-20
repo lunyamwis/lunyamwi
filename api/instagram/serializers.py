@@ -4,12 +4,37 @@ import json
 import yaml
 from datetime import timedelta
 from rest_framework import serializers
-from .models import Score, InstagramUser, QualificationAlgorithm, Scheduler, LeadSource,SimpleHttpOperatorModel,WorkflowModel,DagModel,Media
+from .models import Score, InstagramUser, QualificationAlgorithm, Scheduler, LeadSource,SimpleHttpOperatorModel,WorkflowModel,DagModel,Media,CustomField, CustomFieldValue, Endpoint, HttpOperatorConnectionModel, WorkflowModel
+
 from django.conf import settings
 from django.db import IntegrityError
 from api.helpers.dag_generator import generate_dag
+ 
+class CustomFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomField
+        fields = '__all__'
 
+class CustomFieldValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomFieldValue
+        fields = '__all__'
 
+class EndpointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Endpoint
+        fields = '__all__'
+
+class HttpOperatorConnectionModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HttpOperatorConnectionModel
+        fields = '__all__'
+
+class WorkflowModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkflowModel
+        fields = '__all__'
+        
 class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media

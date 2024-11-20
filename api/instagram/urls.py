@@ -14,6 +14,20 @@ router.register(r'media',views.MediaViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/custom-fields/', views.CustomFieldListCreateView.as_view(), name='custom-field-list-create'),
+    path('api/custom-fields/<int:pk>/', views.CustomFieldRetrieveUpdateDestroyView.as_view(), name='custom-field-detail'),
+    
+    path('api/custom-field-values/', views.CustomFieldValueListCreateView.as_view(), name='custom-field-value-list-create'),
+    path('api/custom-field-values/<int:pk>/', views.CustomFieldValueRetrieveUpdateDestroyView.as_view(), name='custom-field-value-detail'),
+
+    path('api/endpoints/', views.EndpointListCreateView.as_view(), name='endpoint-list-create'),
+    path('api/endpoints/<int:pk>/', views.EndpointRetrieveUpdateDestroyView.as_view(), name='endpoint-detail'),
+
+    path('api/connections/', views.ConnectionListCreateView.as_view(), name='connection-list-create'),
+    path('api/connections/<int:pk>/', views.ConnectionRetrieveUpdateDestroyView.as_view(), name='connection-detail'),
+
+    path('api/workflows/', views.WorkflowListCreateView.as_view(), name='workflow-list-create'),
+    path('api/workflows/<int:pk>/', views.WorkflowRetrieveUpdateDestroyView.as_view(), name='workflow-detail'),
     path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
     path('endpoints/create/', views.EndpointCreateView.as_view(), name='endpoint_create'),
     path('endpoints/update/<str:pk>/', views.EndpointUpdateView.as_view(), name='endpoint_update'),

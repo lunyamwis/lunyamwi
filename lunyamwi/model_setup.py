@@ -14,3 +14,13 @@ def setup_agent(payload = None):
     except Exception as err:
       print(err)
     return response
+
+def fetch_logs():
+    url = LUNYAMWI_ML_BASE_URL + '/api/fetch-logs/'
+    response = None
+    try:
+        resp = requests.get(url)
+        response = resp.json()
+    except Exception as err:
+        print(err)
+    return response
