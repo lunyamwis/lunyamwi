@@ -193,7 +193,7 @@ line_profiler==4.1.3
 linkify-it-py==2.0.2
 litellm==1.50.2
 lockfile==0.12.2
-lunyamwi==1.0.8
+lunyamwi==1.0.9
 lxml==4.9.3
 Mako==1.3.0
 Markdown==3.5.2
