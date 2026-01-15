@@ -1,0 +1,50 @@
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+env/
+venv/
+*.venv
+
+# Django migrations (optional if you handle them at runtime)
+*/migrations/*.pyc
+*/migrations/__pycache__/
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Logs
+*.log
+*.pot
+*.py[cod]
+
+# Environment / secrets
+.env
+*.env
+*.secret
+
+# VS Code / IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Docker & CI
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Node/npm (if using frontend assets)
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+# Mac / Linux / Windows system files
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
