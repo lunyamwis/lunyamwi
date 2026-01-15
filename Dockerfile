@@ -1,4 +1,4 @@
-# Base image
+# Use official Python image
 FROM python:3.12-slim
 
 # Set environment variables
@@ -12,22 +12,21 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
-    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt .
+# Copy requirements and install Python dependencies
+COPY requirements.txt /app/
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy project
-COPY . .
+# Copy the rest of the project
+COPY . /app/
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# Collect static files (optional, for production)
+# RUN python manage.py collectstatic --noinput
 
-# Expose port
+# Expose port 8000 for Django
 EXPOSE 8000
 
-# Run Gunicorn server
-CMD ["/bin/bash", "+x", "/entrypoint.sh"]
+# Default command to run the Django app
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
