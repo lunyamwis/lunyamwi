@@ -17,7 +17,14 @@ SECRET_KEY = 'k*b$$!%hiswnhp2pad)6(u4x_g)r5w%@&zlv&@2hrz4#f3+#57'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '134.209.224.211']
+ALLOWED_HOSTS = ['127.0.0.1', '134.209.224.211','207.180.226.231','lunyamwi.org','www.lunyamwi.org']
+CSRF_TRUSTED_ORIGINS = [
+    "https://lunyamwi.org",
+    "https://www.lunyamwi.org",
+    "http://207.180.226.231"
+]
+
+
 
 
 # Application definition
