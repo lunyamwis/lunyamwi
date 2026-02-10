@@ -36,13 +36,31 @@ services:
     container_name: lunyamwi_nginx
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - web
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/static:ro
+
+      # --- certbot shared volumes ---
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - ./certbot/www:/var/www/certbot
     restart: always
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: lunyamwi_certbot
+    volumes:
+      - certbot_etc:/etc/letsencrypt
+      - certbot_var:/var/lib/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    # Auto-renew loop (twice daily)
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h; done"
 
 volumes:
   postgres_data:
   static_volume:
+  certbot_etc:
+  certbot_var:
