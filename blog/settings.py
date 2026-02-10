@@ -137,6 +137,13 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = "/app/static"
 
+STATICFILES_DIRS = [
+    "/app/static_in_env",  # (if you use it)
+    "/app/static",         # REMOVE this line if you already have it (STATIC_ROOT must NOT be in STATICFILES_DIRS)
+    "/app/static",         
+]
+
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
