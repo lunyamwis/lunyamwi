@@ -41,7 +41,7 @@ services:
       - web
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/static:ro
+      - ./static:/static:ro
 
       # --- certbot shared volumes ---
       - certbot_etc:/etc/letsencrypt
