@@ -40,6 +40,9 @@ def email_list_signup(request):
             if email_signup_qs.exists():
                 messages.info(request, "You are already subscribed")
             else:
-                subscribe(form.instance.email)
+                try:
+                    subscribe(form.instance.email)
+                except Exception as err:
+                    messages.error(request, f"Alert Sent to Technical team: {err}")
                 form.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
