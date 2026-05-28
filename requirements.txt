@@ -6,6 +6,7 @@ defusedxml
 Django
 django-allauth
 django-crispy-forms
+crispy-bootstrap4
 django-htmx
 gunicorn
 idna
