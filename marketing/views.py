@@ -1,48 +1,41 @@
-from django.conf import settings
+import logging
+
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.views.generic import View
+
 from .forms import EmailSignupForm
 from .models import Signup
 
-import json
-import requests
-
-MAILCHIMP_API_KEY = settings.MAILCHIMP_API_KEY
-MAILCHIMP_DATA_CENTER = settings.MAILCHIMP_DATA_CENTER
-MAILCHIMP_EMAIL_LIST_ID = settings.MAILCHIMP_EMAIL_LIST_ID
-
-api_url = 'https://{dc}.api.mailchimp.com/3.0'.format(dc=MAILCHIMP_DATA_CENTER)
-members_endpoint = '{api_url}/lists/{list_id}/members'.format(
-    api_url=api_url,
-    list_id=MAILCHIMP_EMAIL_LIST_ID
-)
+logger = logging.getLogger(__name__)
 
 
-def subscribe(email):
-    data = {
-        "email_address": email,
-        "status": "subscribed"
-    }
-    r = requests.post(
-        members_endpoint,
-        auth=("", MAILCHIMP_API_KEY),
-        data=json.dumps(data)
-    )
-    return r.status_code, r.json()
+class EmailSignupView(View):
+    """Handle newsletter subscription."""
+
+    def post(self, request, *args, **kwargs):
+        form = EmailSignupForm(request.POST)
+        if not form.is_valid():
+            messages.error(request, "Please enter a valid email address.")
+            logger.warning("Invalid email signup attempt: %s", request.POST.get("email"))
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+
+        email = form.cleaned_data["email"]
+
+        if Signup.objects.filter(email=email).exists():
+            messages.warning(request, "You are already subscribed to the newsletter.")
+            logger.info("Duplicate subscription attempt for: %s", email)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+
+        Signup.objects.create(email=email)
+        messages.success(request, "Welcome aboard! You have successfully subscribed.")
+        logger.info("New newsletter subscription: %s", email)
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
 def email_list_signup(request):
-    form = EmailSignupForm(request.POST or None)
+    """Function-based wrapper kept for URL compatibility."""
     if request.method == "POST":
-        if form.is_valid():
-            email_signup_qs = Signup.objects.filter(email=form.instance.email)
-            if email_signup_qs.exists():
-                messages.info(request, "You are already subscribed")
-            else:
-                try:
-                    subscribe(form.instance.email)
-                except Exception as err:
-                    messages.error(request, f"Alert Sent to Technical team: {err}")
-                form.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return EmailSignupView.as_view()(request)
+    return redirect("home")

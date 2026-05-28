@@ -2,112 +2,124 @@
 {% load static %}
 
 {% block content %}
+<div class="container py-5">
+  <div class="row">
+    <main class="col-lg-8 mb-5">
 
-<style>
-  .post-body img {
-    width: 100%;
-  }
-</style>
+      <article class="de-card overflow-hidden p-0" style="border:1px solid rgba(0,0,0,.06);">
+        {% if post.thumbnail %}
+        <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}"
+             class="img-fluid w-100" style="max-height:420px;object-fit:cover;">
+        {% endif %}
 
-    <div class="container">
-      <div class="row">
-        <!-- Latest Posts -->
-        <main class="post blog-post col-lg-8"> 
-          <div class="container">
-            <div class="post-single">
-              <div class="post-thumbnail"><img src="{{ post.thumbnail.url }}" alt="..." class="img-fluid"></div>
-              <div class="post-details">
-                <div class="post-meta d-flex justify-content-between">
-                  <div class="category">
-                    {% for cat in post.categories.all %}
-                    <a href="#">{{ cat }}</a>
-                    {% endfor %}
-                  </div>
-                  <div>
-                    <a href="{% url 'post-update' pk=post.pk %}">Update</a>
-                    <a href="{% url 'post-delete' pk=post.pk %}">Delete</a>
-                  </div>
-                </div>
-                <h1>{{ post.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
-                <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
-                    <div class="avatar"><img src="{{ post.author.profile_picture.url }}" alt="..." class="img-fluid"></div>
-                    <div class="title"><span>{{ post.author.user.username }}</span></div></a>
-                  <div class="d-flex align-items-center flex-wrap">       
-                    <div class="date"><i class="icon-clock"></i> {{ post.timestamp|timesince }} ago</div>
-                    <div class="views"><i class="icon-eye"></i> {{ post.view_count }}</div>
-                    <div class="comments meta-last"><i class="icon-comment"></i>{{ post.comment_count }}</div>
-                  </div>
-                </div>
-                <div class="post-body">
-                  {{ post.content | safe }}
-                </div>
-                <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
-                {% if post.previous_post %}
-                <a href="{{ post.previous_post.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">
-                    <div class="icon prev"><i class="fa fa-angle-left"></i></div>
-                    <div class="text"><strong class="text-primary">Previous Post </strong>
-                      <h6>{{ post.previous_post.title }}</h6>
-                    </div>
-                </a>
-                {% endif %}
-                {% if post.next_post %}
-                <a href="{{ post.next_post.get_absolute_url }}" class="next-post text-right d-flex align-items-center justify-content-end">
-                    <div class="text"><strong class="text-primary">Next Post </strong>
-                      <h6>{{ post.next_post.title }}</h6>
-                    </div>
-                    <div class="icon next"><i class="fa fa-angle-right">   </i></div>
-                </a>
-                {% endif %}
-                </div>
-                <div class="post-comments">
-                  <header>
-                    <h3 class="h6">Post Comments<span class="no-of-comments">({{ post.comments.count }})</span></h3>
-                  </header>
-                  {% for comment in post.get_comments %}
-                  <div class="comment">
-                    <div class="comment-header d-flex justify-content-between">
-                      <div class="user d-flex align-items-center">
-                        <div class="image">
-                          {% if comment.user.author %}
-                          <img src="{{ comment.user.author.profile_picture.url }}" alt="..." class="img-fluid rounded-circle">
-                          {% else %}
-                          <img src="{% static 'img/user.svg' %}" alt="..." class="img-fluid rounded-circle">
-                          {% endif %}
-                        </div>
-                        <div class="title"><strong>{{ comment.user.username }}</strong><span class="date">{{ comment.timestamp|timesince }} ago</span></div>
-                      </div>
-                    </div>
-                    <div class="comment-body">
-                      <p>{{ comment.content }}</p>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-                {% if request.user.is_authenticated %}
-                <div class="add-comment">
-                  <header>
-                    <h3 class="h6">Leave a reply</h3>
-                  </header>
-                  <form method="POST" action="." class="commenting-form">
-                    {% csrf_token %}
-                    <div class="row">
-                      <div class="form-group col-md-12">
-                        {{ form }}
-                      </div>
-                      <div class="form-group col-md-12">
-                        <button type="submit" class="btn btn-secondary">Submit Comment</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                {% else %}
-                <a href="{% url 'account_login' %}" class="btn btn-primary">Login to comment</a>
-                {% endif %}
-              </div>
+        <div class="p-4 p-md-5">
+          <!-- Categories + actions -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <div>
+              {% for cat in post.categories.all %}
+              <span class="de-tag mr-1">{{ cat }}</span>
+              {% endfor %}
+            </div>
+            {% if request.user.is_staff %}
+            <div class="small">
+              <a href="{% url 'post-update' pk=post.pk %}" class="btn btn-sm btn-outline-secondary mr-1">
+                <i class="fa fa-pencil mr-1"></i>Edit
+              </a>
+              <a href="{% url 'post-delete' pk=post.pk %}" class="btn btn-sm btn-outline-danger">
+                <i class="fa fa-trash mr-1"></i>Delete
+              </a>
+            </div>
+            {% endif %}
+          </div>
+
+          <h1 class="font-weight-bold mb-3" style="line-height:1.25;">{{ post.title }}</h1>
+
+          <!-- Author meta -->
+          <div class="d-flex align-items-center mb-4">
+            {% if post.author.profile_picture %}
+            <img src="{{ post.author.profile_picture.url }}" alt="{{ post.author }}"
+                 class="de-avatar mr-2" style="width:44px;height:44px;">
+            {% endif %}
+            <div class="small text-muted">
+              <span class="font-weight-bold text-dark">{{ post.author.user.username }}</span>
+              &nbsp;·&nbsp;{{ post.timestamp|date:"M d, Y" }}
+              &nbsp;·&nbsp;<i class="fa fa-eye mr-1"></i>{{ post.view_count }} views
+              &nbsp;·&nbsp;<i class="fa fa-comments-o mr-1"></i>{{ post.comment_count }}
             </div>
           </div>
-        </main>
-        {% include 'sidebar.html' with most_recent=most_recent category_count=category_count %}        
+
+          <!-- Post body -->
+          <div class="post-body" style="line-height:1.85;">
+            {{ post.content|safe }}
+          </div>
+
+          <!-- Previous / Next -->
+          {% if post.previous_post or post.next_post %}
+          <div class="d-flex justify-content-between mt-5 flex-wrap" style="gap:.75rem;">
+            {% if post.previous_post %}
+            <a href="{{ post.previous_post.get_absolute_url }}" class="btn de-btn-ghost btn-sm">
+              <i class="fa fa-angle-left mr-1"></i>{{ post.previous_post.title|truncatechars:40 }}
+            </a>
+            {% endif %}
+            {% if post.next_post %}
+            <a href="{{ post.next_post.get_absolute_url }}" class="btn de-btn-ghost btn-sm ml-auto">
+              {{ post.next_post.title|truncatechars:40 }}<i class="fa fa-angle-right ml-1"></i>
+            </a>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </article>
+
+      <!-- Comments -->
+      <div class="de-card mt-4 p-4 p-md-5" style="border:1px solid rgba(0,0,0,.06);">
+        <h4 class="font-weight-bold mb-4">
+          Comments <span class="badge badge-light">{{ post.comment_count }}</span>
+        </h4>
+
+        {% for comment in post.get_comments %}
+        <div class="d-flex mb-4">
+          <div class="mr-3 flex-shrink-0">
+            {% if comment.user.author.profile_picture %}
+            <img src="{{ comment.user.author.profile_picture.url }}" alt="{{ comment.user.username }}"
+                 class="de-avatar" style="width:40px;height:40px;">
+            {% else %}
+            <div class="de-avatar d-flex align-items-center justify-content-center"
+                 style="width:40px;height:40px;background:rgba(99,102,241,.12);color:#6366f1;font-weight:700;font-size:.9rem;">
+              {{ comment.user.username|first|upper }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-baseline mb-1">
+              <strong class="small">{{ comment.user.username }}</strong>
+              <span class="text-muted small">{{ comment.timestamp|timesince }} ago</span>
+            </div>
+            <p class="mb-0 text-muted" style="line-height:1.6;">{{ comment.content }}</p>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No comments yet. Be the first to share your thoughts!</p>
+        {% endfor %}
+
+        {% if request.user.is_authenticated %}
+        <hr class="my-4">
+        <h5 class="font-weight-bold mb-3">Leave a Reply</h5>
+        <form method="POST" action=".">
+          {% csrf_token %}
+          {{ form }}
+          <button type="submit" class="btn de-btn-primary mt-2">Post Comment</button>
+        </form>
+        {% else %}
+        <div class="alert alert-light border mt-4">
+          <a href="{% url 'account_login' %}" class="font-weight-bold">Log in</a> to post a comment.
+        </div>
+        {% endif %}
       </div>
-    </div>
+
+    </main>
+
+    {% include 'sidebar.html' with most_recent=most_recent category_count=category_count %}
+  </div>
+</div>
 {% endblock content %}

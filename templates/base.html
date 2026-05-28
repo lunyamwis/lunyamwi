@@ -1,26 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 {% include "head.html" %}
 
-<body>
+<body class="de-body">
 
-    {% include 'header.html' %}
+  {% include 'header.html' %}
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+  <!-- Toast container -->
+  {% if messages %}
+  <div class="de-toast-container" aria-live="polite" aria-atomic="true">
+    {% for message in messages %}
+    <div class="de-toast {% if message.tags == 'success' %}de-toast--success{% elif message.tags == 'error' %}de-toast--error{% elif message.tags == 'warning' %}de-toast--warning{% else %}de-toast--info{% endif %} show" role="alert">
+      <div class="de-toast__icon">
+        {% if message.tags == 'success' %}<i class="fa fa-check-circle"></i>
+        {% elif message.tags == 'error' %}<i class="fa fa-times-circle"></i>
+        {% elif message.tags == 'warning' %}<i class="fa fa-exclamation-triangle"></i>
+        {% else %}<i class="fa fa-info-circle"></i>{% endif %}
+      </div>
+      <div class="de-toast__body">{{ message }}</div>
+      <button class="de-toast__close" onclick="this.closest('.de-toast').remove()">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 
-    {% block content %}
-    {% endblock content %}
+  {% block content %}{% endblock content %}
 
-    {% include 'footer.html' %}
-    {% include 'scripts.html' %}
+  {% include 'footer.html' %}
+  {% include 'scripts.html' %}
+
+  <script>
+  /* Auto-dismiss toasts after 4 seconds */
+  document.querySelectorAll(".de-toast").forEach(function(t) {
+    setTimeout(function() {
+      t.style.transition = "opacity .4s, transform .4s";
+      t.style.opacity = "0";
+      t.style.transform = "translateX(110%)";
+      setTimeout(function() { t.remove(); }, 420);
+    }, 4000);
+  });
+  </script>
 
 </body>
-
 </html>

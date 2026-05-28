@@ -1,65 +1,87 @@
 {% load static %}
-<footer class="main-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="logo">
-              <h6 class="text-white">Lunyamwi</h6>
-            </div>
-            <div class="contact-details">
-              <p>Musulwa, Kwale, Ukunda</p>
-              <p>Phone: (254) 700701209 </p>
-              <p>Email: <a href="mailto:lutherlunyamwi@gmail.com">lutherlunyamwi@gmail.com</a></p>
-              <ul class="social-menu">
-                <li class="list-inline-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li class="list-inline-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li class="list-inline-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
-                <li class="list-inline-item"><a href="#"><i class="fa fa-behance"></i></a></li>
-                <li class="list-inline-item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="menus d-flex">
-              <ul class="list-unstyled">
-                <li> <a href="#">My Account</a></li>
-                <li> <a href="#">Add Listing</a></li>
-                <li> <a href="#">Pricing</a></li>
-                <li> <a href="#">Privacy &amp; Policy</a></li>
-              </ul>
-              <ul class="list-unstyled">
-                <li> <a href="#">Our Partners</a></li>
-                <li> <a href="#">FAQ</a></li>
-                <li> <a href="#">How It Works</a></li>
-                <li> <a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="latest-posts"><a href="#">
-                <div class="post d-flex align-items-center">
-                  <div class="image"><img src="{% static 'img/small-thumbnail-1.jpg' %}" alt="..." class="img-fluid"></div>
-                  <div class="title"><strong>Health Data</strong><span class="date last-meta">October 26, 2016</span></div>
-                </div></a><a href="#">
-                <div class="post d-flex align-items-center">
-                  <div class="image"><img src="{% static 'img/small-thumbnail-2.jpg' %}" alt="..." class="img-fluid"></div>
-                  <div class="title"><strong>Logistics Data</strong><span class="date last-meta">October 26, 2016</span></div>
-                </div></a><a href="#">
-                <div class="post d-flex align-items-center">
-                  <div class="image"><img src="{% static 'img/small-thumbnail-3.jpg' %}" alt="..." class="img-fluid"></div>
-                  <div class="title"><strong>Economic and Finance Data</strong><span class="date last-meta">October 26, 2016</span></div>
-                </div></a></div>
+<footer class="de-footer">
+  <div class="container">
+    <div class="row py-5">
+
+      <!-- Brand + contact -->
+      <div class="col-lg-4 mb-4">
+        <div class="de-footer__brand mb-3">
+          <span class="de-brand-dot"></span>Data Consultant<span class="de-brand-accent">.</span>
+        </div>
+        <p class="text-white-50 mb-3" style="line-height:1.8;font-size:.9rem;">
+          Senior Data Engineer specialising in cloud pipelines, modern data warehousing,
+          and ML systems. Based in Kwale, Kenya — working globally.
+        </p>
+        <div class="de-footer__contact text-white-50 small mb-3">
+          <div class="mb-1"><i class="fa fa-map-marker mr-2" style="color:#6366f1;"></i>Musulwa, Kwale, Kenya</div>
+          <div class="mb-1"><i class="fa fa-phone mr-2" style="color:#6366f1;"></i>+254 700 701 209</div>
+          <div><i class="fa fa-envelope-o mr-2" style="color:#6366f1;"></i>
+            <a href="mailto:lutherlunyamwi@gmail.com" class="text-white-50">lutherlunyamwi@gmail.com</a>
           </div>
         </div>
-      </div>
-      <div class="copyrights">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <p>&copy; 2025. All rights reserved. Lunyamwi.</p>
-            </div>
-            
-          </div>
+        <div class="de-footer__social">
+          <a href="https://github.com/tutorialcreation" target="_blank" class="de-social-btn" title="GitHub">
+            <i class="fa fa-github"></i>
+          </a>
+          <a href="https://twitter.com/" target="_blank" class="de-social-btn" title="Twitter">
+            <i class="fa fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com/" target="_blank" class="de-social-btn" title="LinkedIn">
+            <i class="fa fa-linkedin"></i>
+          </a>
+          <a href="mailto:lutherlunyamwi@gmail.com" class="de-social-btn" title="Email">
+            <i class="fa fa-envelope-o"></i>
+          </a>
         </div>
       </div>
-    </footer>
+
+      <!-- Quick links -->
+      <div class="col-lg-2 col-md-4 mb-4">
+        <h6 class="de-footer__heading">Navigate</h6>
+        <ul class="list-unstyled de-footer__links">
+          <li><a href="/">Home</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="{% url 'post-list' %}">Blog</a></li>
+          <li><a href="#contact">Newsletter</a></li>
+        </ul>
+      </div>
+
+      <!-- Tech stack -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <h6 class="de-footer__heading">Tech Stack</h6>
+        <ul class="list-unstyled de-footer__links">
+          <li><i class="fa fa-circle mr-2" style="color:#6366f1;font-size:.45rem;vertical-align:middle;"></i>Apache Spark &amp; Airflow</li>
+          <li><i class="fa fa-circle mr-2" style="color:#22d3ee;font-size:.45rem;vertical-align:middle;"></i>dbt Core</li>
+          <li><i class="fa fa-circle mr-2" style="color:#10b981;font-size:.45rem;vertical-align:middle;"></i>BigQuery / Snowflake</li>
+          <li><i class="fa fa-circle mr-2" style="color:#f59e0b;font-size:.45rem;vertical-align:middle;"></i>Python / pandas / scikit-learn</li>
+          <li><i class="fa fa-circle mr-2" style="color:#ec4899;font-size:.45rem;vertical-align:middle;"></i>Docker / Kubernetes</li>
+          <li><i class="fa fa-circle mr-2" style="color:#8b5cf6;font-size:.45rem;vertical-align:middle;"></i>Terraform / IaC</li>
+        </ul>
+      </div>
+
+      <!-- Open source highlights -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <h6 class="de-footer__heading">Open Source</h6>
+        <ul class="list-unstyled de-footer__links">
+          <li><a href="https://github.com/tutorialcreation/trafficELT" target="_blank"><i class="fa fa-github mr-1"></i>trafficELT</a></li>
+          <li><a href="https://github.com/tutorialcreation/abtest-mlops" target="_blank"><i class="fa fa-github mr-1"></i>abtest-mlops</a></li>
+          <li><a href="https://github.com/tutorialcreation/nlp_swahili_amharic" target="_blank"><i class="fa fa-github mr-1"></i>nlp_swahili_amharic</a></li>
+          <li><a href="https://github.com/tutorialcreation/pharm_sales" target="_blank"><i class="fa fa-github mr-1"></i>pharm_sales</a></li>
+          <li><a href="https://github.com/tutorialcreation/causality-module" target="_blank"><i class="fa fa-github mr-1"></i>causality-module</a></li>
+          <li><a href="https://github.com/tutorialcreation" target="_blank" style="color:#6366f1;">View all 40+ repos →</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="de-footer__bar">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center py-3">
+      <span class="text-white-50 small">&copy; 2025 Data Consultant Lunyamwi. All rights reserved.</span>
+      <span class="text-white-50 small">
+        Built with <i class="fa fa-heart" style="color:#ec4899;"></i> using Django &amp; Bootstrap
+      </span>
+    </div>
+  </div>
+</footer>

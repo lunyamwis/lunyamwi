@@ -3,111 +3,215 @@
 
 {% block content %}
 
-<!-- HERO -->
-<section style="background: url({% static 'img/hero.jpg' %}); background-size: cover; background-position: center center" class="hero position-relative">
-  <!-- Dark overlay -->
-  <div class="position-absolute w-100 h-100" style="left:0; top:0; background: rgba(0,0,0,.55);"></div>
-
-  <div class="container position-relative" style="z-index: 2;">
-    <div class="row">
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════════ -->
+<section id="hero" class="de-hero d-flex align-items-center">
+  <div class="container position-relative" style="z-index:3;">
+    <div class="row align-items-center">
       <div class="col-lg-8">
-        <span class="badge badge-pill badge-light px-3 py-2 mb-3 shadow-sm">LUNYAMWI • EXECUTIVE DATA CONSULTING</span>
 
-        <h1 class="display-4 font-weight-bold text-white mb-3">
-          Board-Ready Analytics. Enterprise-Grade Data Platforms.
-        </h1>
+        <div class="mb-3">
+          <span class="de-available-badge">
+            <span class="de-dot-pulse"></span>AVAILABLE FOR CONSULTING
+          </span>
+        </div>
 
-        <p class="lead text-white-50 mb-4" style="max-width: 820px;">
-          Lunyamwi partners with leadership teams to build trusted decision systems: modern data warehousing,
-          executive dashboards, and forecasting models that drive measurable outcomes across Healthcare, Finance,
-          Retail, and Government.
+        <h1 class="de-hero__name text-white mb-1">Data Consultant Lunyamwi</h1>
+        <div class="de-hero__role mb-3">
+          <span class="text-white-50">Senior&nbsp;</span>
+          <span id="typed-text" class="de-typed"></span><span class="de-cursor">|</span>
+        </div>
+
+        <p class="de-hero__sub text-white-50 mb-4">
+          I build <strong class="text-white">production-grade data platforms</strong> that transform raw data into board-ready
+          decisions — from <span class="de-hl">ELT pipelines</span> and <span class="de-hl">cloud warehouses</span>
+          to <span class="de-hl">ML forecasting models</span> and executive dashboards.
         </p>
 
-        <div class="d-flex flex-wrap align-items-center">
-          <a href="#services" class="btn btn-primary btn-lg mr-3 mb-2 shadow">
-            Explore Capabilities
+        <div class="de-tech-pills mb-4">
+          <span class="de-tech-pill">Apache Spark</span>
+          <span class="de-tech-pill">dbt Core</span>
+          <span class="de-tech-pill">Airflow</span>
+          <span class="de-tech-pill">BigQuery</span>
+          <span class="de-tech-pill">Snowflake</span>
+          <span class="de-tech-pill">Python</span>
+          <span class="de-tech-pill">Kafka</span>
+          <span class="de-tech-pill">Terraform</span>
+        </div>
+
+        <div class="d-flex flex-wrap mb-5" style="gap:.75rem;">
+          <a href="#projects" class="btn de-btn-primary btn-lg">
+            <i class="fa fa-code mr-2"></i>View Projects
           </a>
-          <a href="#contact" class="btn btn-outline-light btn-lg mb-2">
-            Request Executive Briefing
+          <a href="#contact" class="btn de-btn-ghost btn-lg">
+            <i class="fa fa-envelope-o mr-2"></i>Get In Touch
+          </a>
+          <a href="https://github.com/tutorialcreation" target="_blank" class="btn de-btn-ghost btn-lg">
+            <i class="fa fa-github mr-2"></i>GitHub
           </a>
         </div>
 
-        <div class="mt-4 d-flex flex-wrap">
-          <div class="mr-4 mb-2 text-white-50">
-            <i class="fa fa-check mr-2"></i>Single Source of Truth
+        <div class="de-stats-row">
+          <div class="de-stat">
+            <div class="de-stat__num" data-target="8">0</div>
+            <div class="de-stat__label">Years Experience</div>
           </div>
-          <div class="mr-4 mb-2 text-white-50">
-            <i class="fa fa-check mr-2"></i>Governed Metrics & KPIs
+          <div class="de-stat">
+            <div class="de-stat__num" data-target="40">0</div>
+            <div class="de-stat__label">OSS Projects</div>
           </div>
-          <div class="mr-4 mb-2 text-white-50">
-            <i class="fa fa-check mr-2"></i>Forecasting & Risk Signals
+          <div class="de-stat">
+            <div class="de-stat__num" data-target="15">0</div>
+            <div class="de-stat__label">Pipelines Built</div>
+          </div>
+          <div class="de-stat">
+            <div class="de-stat__num" data-target="99">0</div>
+            <div class="de-stat__label">% Uptime SLA</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-4 d-none d-lg-block">
+        <div class="de-code-card">
+          <div class="de-code-card__header">
+            <span class="de-wdot" style="background:#ff5f57;"></span>
+            <span class="de-wdot" style="background:#febc2e;"></span>
+            <span class="de-wdot" style="background:#28c840;"></span>
+            <span class="ml-auto text-white-50" style="font-size:.7rem;font-family:monospace;">pipeline.py</span>
+          </div>
+<pre class="de-code-pre"><code><span class="c-kw">import</span> apache_beam <span class="c-kw">as</span> beam
+<span class="c-kw">from</span> dbt.adapters <span class="c-kw">import</span> BigQuery
+
+<span class="c-kw">@</span><span class="c-fn">pipeline</span>(schedule=<span class="c-str">"@daily"</span>)
+<span class="c-kw">def</span> <span class="c-fn">etl_health_data</span>():
+    raw = <span class="c-fn">extract</span>(source=<span class="c-str">"EHR_API"</span>)
+    clean = <span class="c-fn">transform</span>(raw)
+    <span class="c-fn">load</span>(clean, target=<span class="c-str">"BQ.warehouse"</span>)
+    <span class="c-fn">notify_slack</span>(<span class="c-str">"✅ Pipeline done"</span>)
+
+<span class="c-cm"># 99.9% uptime · 12M rows/day</span></code></pre>
+          <div class="de-code-card__footer">
+            <span class="de-live-badge"><span class="de-dot-pulse" style="width:6px;height:6px;"></span>LIVE IN PRODUCTION</span>
           </div>
         </div>
       </div>
     </div>
-
-    <a href=".intro" class="continue link-scroll text-white-50 d-inline-block mt-5">
-      <i class="fa fa-long-arrow-down"></i> Scroll
-    </a>
   </div>
+  <a href="#skills" class="de-scroll-cta">
+    <i class="fa fa-chevron-down"></i>
+  </a>
 </section>
 
-<!-- INTRO -->
-<section class="intro py-5">
+<!-- ═══════════════════════════════════════════════════════════════
+     SKILLS
+════════════════════════════════════════════════════════════════ -->
+<section id="skills" class="de-section-light py-5">
   <div class="container">
+    <div class="text-center mb-5">
+      <span class="de-section-tag">EXPERTISE</span>
+      <h2 class="de-section-title">Data Engineering Stack</h2>
+      <p class="de-section-sub">Battle-tested tools across the modern data ecosystem</p>
+    </div>
+
     <div class="row">
-      <div class="col-lg-9">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4 p-md-5">
-            <h2 class="h3 font-weight-bold mb-3">Executive Intelligence, Built to Scale</h2>
-            <p class="text-muted mb-0" style="font-size: 1.1rem; line-height: 1.8;">
-              Lunyamwi delivers enterprise analytics programs that leadership teams can rely on—weekly, not “someday.”
-              We align stakeholders on definitions, build governed data pipelines and cloud warehouses, and ship dashboards
-              that withstand board scrutiny. When appropriate, we deploy forecasting models to anticipate demand, cashflow,
-              patient volumes, fraud, stock-outs, or operational risk—turning hindsight reporting into forward-looking control.
-            </p>
+      <div class="col-md-6 mb-4">
+        <div class="de-card h-100">
+          <h5 class="de-card-heading">
+            <span class="de-icon-pill" style="--c:#6366f1;"><i class="fa fa-database"></i></span>
+            Pipelines &amp; ELT
+          </h5>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Apache Spark</span><span>92%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="92" style="--bc:#6366f1;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>dbt Core</span><span>95%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="95" style="--bc:#6366f1;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Apache Airflow</span><span>88%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="88" style="--bc:#6366f1;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Apache Kafka</span><span>82%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="82" style="--bc:#6366f1;"></div></div>
+          </div>
+        </div>
+      </div>
 
-            <hr class="my-4">
+      <div class="col-md-6 mb-4">
+        <div class="de-card h-100">
+          <h5 class="de-card-heading">
+            <span class="de-icon-pill" style="--c:#22d3ee;"><i class="fa fa-cloud"></i></span>
+            Cloud &amp; Warehousing
+          </h5>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Google BigQuery</span><span>93%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="93" style="--bc:#22d3ee;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Snowflake</span><span>89%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="89" style="--bc:#22d3ee;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>AWS Redshift</span><span>85%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="85" style="--bc:#22d3ee;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Terraform / IaC</span><span>78%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="78" style="--bc:#22d3ee;"></div></div>
+          </div>
+        </div>
+      </div>
 
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <div class="d-flex">
-                  <div class="mr-3">
-                    <span class="badge badge-primary badge-pill p-2"><i class="fa fa-dashboard"></i></span>
-                  </div>
-                  <div>
-                    <h6 class="font-weight-bold mb-1">Dashboards</h6>
-                    <div class="text-muted small">C-suite scorecards, operational drilldowns, KPI governance</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="d-flex">
-                  <div class="mr-3">
-                    <span class="badge badge-primary badge-pill p-2"><i class="fa fa-database"></i></span>
-                  </div>
-                  <div>
-                    <h6 class="font-weight-bold mb-1">Data Warehousing</h6>
-                    <div class="text-muted small">Cloud pipelines, modeling, access control, cost optimization</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <div class="d-flex">
-                  <div class="mr-3">
-                    <span class="badge badge-primary badge-pill p-2"><i class="fa fa-line-chart"></i></span>
-                  </div>
-                  <div>
-                    <h6 class="font-weight-bold mb-1">ML Forecasting</h6>
-                    <div class="text-muted small">Demand, revenue, risk, capacity planning, anomaly detection</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <div class="col-md-6 mb-4">
+        <div class="de-card h-100">
+          <h5 class="de-card-heading">
+            <span class="de-icon-pill" style="--c:#10b981;"><i class="fa fa-line-chart"></i></span>
+            ML &amp; Analytics
+          </h5>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Python (pandas, scikit-learn)</span><span>96%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="96" style="--bc:#10b981;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>MLflow / MLOps</span><span>84%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="84" style="--bc:#10b981;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>NLP (Swahili / Amharic)</span><span>79%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="79" style="--bc:#10b981;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>A/B Testing &amp; Causal Inference</span><span>86%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="86" style="--bc:#10b981;"></div></div>
+          </div>
+        </div>
+      </div>
 
-            <div class="mt-2 text-muted small">
-              <strong>Industries:</strong> Healthcare • Finance • Retail • Government
-            </div>
+      <div class="col-md-6 mb-4">
+        <div class="de-card h-100">
+          <h5 class="de-card-heading">
+            <span class="de-icon-pill" style="--c:#f59e0b;"><i class="fa fa-cogs"></i></span>
+            DevOps &amp; Delivery
+          </h5>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Docker &amp; Kubernetes</span><span>87%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="87" style="--bc:#f59e0b;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>GitHub Actions / CI-CD</span><span>91%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="91" style="--bc:#f59e0b;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Django / REST APIs</span><span>88%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="88" style="--bc:#f59e0b;"></div></div>
+          </div>
+          <div class="de-skill-item">
+            <div class="de-skill-label"><span>Linux / Bash</span><span>90%</span></div>
+            <div class="progress de-progress"><div class="de-bar" data-w="90" style="--bc:#f59e0b;"></div></div>
           </div>
         </div>
       </div>
@@ -115,158 +219,302 @@
   </div>
 </section>
 
-<!-- FEATURED / CASE STUDIES -->
-<section class="featured-posts no-padding-top py-4" id="services">
+<!-- ═══════════════════════════════════════════════════════════════
+     OPEN SOURCE PROJECTS
+════════════════════════════════════════════════════════════════ -->
+<section id="projects" class="de-section-dark py-5">
   <div class="container">
-    <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap">
-      <div>
-        <h2 class="h3 font-weight-bold mb-1">Capabilities & Case Studies</h2>
-        <p class="text-muted mb-0">Selected work demonstrating measurable impact, governance, and executive readiness.</p>
-      </div>
-      <a href="#contact" class="btn btn-outline-primary mt-2">Discuss Your Use Case</a>
+    <div class="text-center mb-5">
+      <span class="de-section-tag">OPEN SOURCE</span>
+      <h2 class="de-section-title text-white">GitHub Projects</h2>
+      <p class="de-section-sub">Real-world data engineering systems shipped to production</p>
     </div>
 
+    <div class="row">
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#6366f1;"><i class="fa fa-exchange"></i></div>
+          <div class="de-proj-lang">Python · ELT</div>
+          <h5 class="de-proj-title">trafficELT</h5>
+          <p class="de-proj-desc">End-to-end ELT pipeline extracting, loading, and transforming vehicle-traffic data into a data warehouse with dbt models and Airflow DAGs.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">dbt</span><span class="de-tag">Airflow</span><span class="de-tag">PostgreSQL</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/trafficELT" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#22d3ee;"><i class="fa fa-flask"></i></div>
+          <div class="de-proj-lang">Python · MLOps</div>
+          <h5 class="de-proj-title">abtest-mlops</h5>
+          <p class="de-proj-desc">A/B testing framework with MLOps integration — statistical hypothesis testing, feature flagging, and automated model promotion gates.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">MLflow</span><span class="de-tag">Statistics</span><span class="de-tag">CI/CD</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/abtest-mlops" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#10b981;"><i class="fa fa-language"></i></div>
+          <div class="de-proj-lang">Python · NLP</div>
+          <h5 class="de-proj-title">nlp_swahili_amharic</h5>
+          <p class="de-proj-desc">Low-resource NLP pipeline for Swahili and Amharic — tokenisation, NER, and sentiment classification for African languages.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">HuggingFace</span><span class="de-tag">spaCy</span><span class="de-tag">Transformers</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/nlp_swahili_amharic" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#f59e0b;"><i class="fa fa-medkit"></i></div>
+          <div class="de-proj-lang">Python · Forecasting</div>
+          <h5 class="de-proj-title">pharm_sales</h5>
+          <p class="de-proj-desc">Pharmaceutical demand forecasting using time-series ML to prevent stockouts and optimise distribution across healthcare networks.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">Prophet</span><span class="de-tag">Time-Series</span><span class="de-tag">Pandas</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/pharm_sales" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#ec4899;"><i class="fa fa-sitemap"></i></div>
+          <div class="de-proj-lang">Python · Causal ML</div>
+          <h5 class="de-proj-title">causality-module</h5>
+          <p class="de-proj-desc">Causal inference toolkit with DoWhy, Granger causality, and structural equation models for policy-impact analysis in healthcare and finance.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">DoWhy</span><span class="de-tag">Causal ML</span><span class="de-tag">Economics</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/causality-module" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="de-proj-card h-100 d-flex flex-column">
+          <div class="de-proj-icon" style="--ic:#8b5cf6;"><i class="fa fa-signal"></i></div>
+          <div class="de-proj-lang">Python · Analytics</div>
+          <h5 class="de-proj-title">TelComChallenge</h5>
+          <p class="de-proj-desc">Telecom user analytics pipeline — churn prediction, engagement scoring, and network-usage clustering for a major East African carrier.</p>
+          <div class="de-proj-tags mb-3"><span class="de-tag">Spark</span><span class="de-tag">XGBoost</span><span class="de-tag">Dash</span></div>
+          <div class="mt-auto">
+            <a href="https://github.com/tutorialcreation/TelComChallenge" target="_blank" class="de-gh-link"><i class="fa fa-github mr-1"></i>View on GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-2">
+      <a href="https://github.com/tutorialcreation" target="_blank" class="btn de-btn-ghost btn-lg">
+        <i class="fa fa-github mr-2"></i>All 40+ Repositories on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CASE STUDIES (dynamic blog posts)
+════════════════════════════════════════════════════════════════ -->
+{% if object_list %}
+<section id="case-studies" class="de-section-light py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="de-section-tag">CASE STUDIES</span>
+      <h2 class="de-section-title">Client Work &amp; Impact</h2>
+      <p class="de-section-sub">Selected engagements with measurable outcomes</p>
+    </div>
     {% for obj in object_list %}
-    <div class="card border-0 shadow-sm mb-4">
-      <div class="row no-gutters d-flex align-items-stretch">
-        {% if not forloop.first and not forloop.last %}
-        <div class="col-lg-5">
-          <img src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid h-100" style="object-fit: cover;">
+    <div class="de-case-card mb-4">
+      <div class="row no-gutters align-items-stretch">
+        {% if obj.thumbnail %}
+        <div class="col-lg-5 {% if forloop.even %}order-lg-2{% endif %}">
+          <img src="{{ obj.thumbnail.url }}" alt="{{ obj.title }}" class="de-case-img">
         </div>
         {% endif %}
-
-        <div class="col-lg-7">
-          <div class="card-body p-4 p-md-5">
+        <div class="col-lg-{% if obj.thumbnail %}7{% else %}12{% endif %} {% if forloop.even %}order-lg-1{% endif %}">
+          <div class="p-4 p-md-5 h-100 d-flex flex-column">
             <div class="mb-2">
-              {% for cat in obj.categories.all %}
-              <span class="badge badge-light border mr-1">{{ cat }}</span>
-              {% endfor %}
+              {% for cat in obj.categories.all %}<span class="de-tag mr-1">{{ cat }}</span>{% endfor %}
             </div>
-
-            <a href="post.html" class="text-dark text-decoration-none">
-              <h3 class="h4 font-weight-bold mb-2">{{ obj.title }}</h3>
-            </a>
-
-            <p class="text-muted mb-3">{{ obj.overview|linebreaks|truncatechars:220 }}</p>
-
-            <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <h3 class="de-case-title">
+              <a href="{{ obj.get_absolute_url }}" class="text-dark text-decoration-none">{{ obj.title }}</a>
+            </h3>
+            <p class="text-muted mb-4">{{ obj.overview|truncatechars:240 }}</p>
+            <div class="d-flex align-items-center justify-content-between mt-auto flex-wrap">
               <div class="d-flex align-items-center">
-                <div class="avatar mr-2">
-                  <img src="{{ obj.author.profile_picture.url }}" alt="..." class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
-                </div>
+                {% if obj.author.profile_picture %}
+                <img src="{{ obj.author.profile_picture.url }}" class="de-avatar mr-2" alt="{{ obj.author }}">
+                {% endif %}
                 <div class="small">
                   <div class="font-weight-bold">{{ obj.author }}</div>
-                  <div class="text-muted">Updated {{ obj.timestamp|timesince }} ago</div>
+                  <div class="text-muted">{{ obj.timestamp|timesince }} ago</div>
                 </div>
               </div>
-              <div class="small text-muted mt-2 mt-md-0">
-                <span class="mr-3"><i class="icon-comment"></i> {{ obj.comment_count }}</span>
-                <a href="post.html" class="btn btn-sm btn-primary">Read</a>
-              </div>
+              <a href="{{ obj.get_absolute_url }}" class="btn de-btn-primary btn-sm mt-2 mt-md-0">
+                Read Case Study <i class="fa fa-arrow-right ml-1"></i>
+              </a>
             </div>
           </div>
         </div>
-
-        {% if forloop.first or forloop.last %}
-        <div class="col-lg-5">
-          <img src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid h-100" style="object-fit: cover;">
-        </div>
-        {% endif %}
       </div>
     </div>
     {% endfor %}
   </div>
 </section>
+{% endif %}
 
-<!-- DIVIDER / CTA -->
-<section style="background: url({% static 'img/divider-bg.jpg' %}); background-size: cover; background-position: center bottom" class="divider position-relative py-5">
-  <div class="position-absolute w-100 h-100" style="left:0; top:0; background: rgba(0,0,0,.60);"></div>
-  <div class="container position-relative" style="z-index: 2;">
-    <div class="row">
-      <div class="col-lg-9">
-        <h2 class="text-white font-weight-bold mb-3" style="line-height: 1.25;">
-          Align metrics, governance, and forecasting into a single executive narrative—so decisions are fast, defensible, and measurable.
-        </h2>
-        <div class="d-flex flex-wrap">
-          <a href="#contact" class="btn btn-primary btn-lg mr-3 mb-2 shadow">Request Executive Briefing</a>
-          <a href="#services" class="btn btn-outline-light btn-lg mb-2">View Capabilities</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LATEST INSIGHTS -->
-<section class="latest-posts py-5">
+<!-- ═══════════════════════════════════════════════════════════════
+     LATEST INSIGHTS
+════════════════════════════════════════════════════════════════ -->
+{% if latest %}
+<section id="insights" class="de-section-dark py-5">
   <div class="container">
-    <header class="mb-4">
-      <h2 class="h3 font-weight-bold mb-2">Executive Insights</h2>
-      <p class="text-muted mb-0">Practical guidance on analytics engineering, cloud warehousing, and forecasting programs.</p>
-    </header>
-
+    <div class="text-center mb-5">
+      <span class="de-section-tag">WRITING</span>
+      <h2 class="de-section-title text-white">Latest Insights</h2>
+      <p class="de-section-sub">Practical deep-dives on data engineering, warehousing, and ML</p>
+    </div>
     <div class="row">
       {% for obj in latest %}
-      <div class="post col-md-4 mb-4">
-        <div class="card border-0 shadow-sm h-100">
-          <div class="post-thumbnail">
-            <a href="#"><img src="{{ obj.thumbnail.url }}" alt="..." class="img-fluid" style="height: 200px; width: 100%; object-fit: cover;"></a>
+      <div class="col-md-4 mb-4">
+        <div class="de-insight-card h-100 d-flex flex-column">
+          {% if obj.thumbnail %}
+          <div class="de-insight-thumb">
+            <img src="{{ obj.thumbnail.url }}" alt="{{ obj.title }}" class="img-fluid w-100">
           </div>
-          <div class="card-body p-4">
-            <div class="d-flex justify-content-between small text-muted mb-2">
-              <div>{{ obj.timestamp }}</div>
-              <div>
-                {% for cat in obj.categories.all %}
-                <span class="badge badge-light border mr-1">{{ cat }}</span>
-                {% endfor %}
-              </div>
+          {% endif %}
+          <div class="p-4 flex-grow-1 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="text-muted small"><i class="fa fa-calendar-o mr-1"></i>{{ obj.timestamp|date:"M d, Y" }}</span>
+              {% for cat in obj.categories.all %}<span class="de-tag">{{ cat }}</span>{% endfor %}
             </div>
-
-            <a href="#" class="text-dark text-decoration-none">
-              <h3 class="h5 font-weight-bold">{{ obj.title }}</h3>
-            </a>
-            <p class="text-muted mb-0">{{ obj.overview|linebreaks|truncatechars:180 }}</p>
-          </div>
-
-          <div class="card-footer bg-white border-0 px-4 pb-4 pt-0">
-            <a href="#" class="btn btn-outline-primary btn-sm">Read Insight</a>
+            <h5 class="de-insight-title">
+              <a href="{{ obj.get_absolute_url }}" class="text-dark text-decoration-none">{{ obj.title }}</a>
+            </h5>
+            <p class="text-muted small">{{ obj.overview|truncatechars:120 }}</p>
+            <div class="mt-auto pt-2">
+              <a href="{{ obj.get_absolute_url }}" class="de-read-link">
+                Read Article <i class="fa fa-long-arrow-right ml-1"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
+    <div class="text-center mt-3">
+      <a href="{% url 'post-list' %}" class="btn de-btn-ghost btn-lg">View All Articles</a>
+    </div>
   </div>
 </section>
+{% endif %}
 
-<!-- NEWSLETTER / CONTACT -->
-<section class="newsletter no-padding-top py-5" id="contact">
+<!-- ═══════════════════════════════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════════════════════════════ -->
+<section id="contact" class="de-newsletter-section py-5">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h2 class="h3 font-weight-bold mb-2">The Lunyamwi Data Brief</h2>
-        <p class="text-muted mb-0" style="font-size: 1.05rem; line-height: 1.8;">
-          Monthly executive notes on KPI governance, warehouse design, cost controls, and forecasting signals.
-          Built for leaders in Healthcare, Finance, Retail, and Government. No noise—only decision-grade content.
-        </p>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
+    <div class="de-newsletter-box">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <span class="de-section-tag">NEWSLETTER</span>
+          <h2 class="text-white mt-2 mb-3" style="font-size:1.8rem;font-weight:700;">The Data Engineer's Brief</h2>
+          <p class="text-white-50 mb-3" style="line-height:1.8;">
+            Monthly deep-dives on pipeline design, warehouse optimisation, ML in production,
+            and open-source tools worth your time. Written for engineers, not executives.
+          </p>
+          <ul class="list-unstyled text-white-50 mb-0">
+            <li class="mb-2"><i class="fa fa-check-circle mr-2" style="color:#22d3ee;"></i>No spam — unsubscribe anytime</li>
+            <li class="mb-2"><i class="fa fa-check-circle mr-2" style="color:#22d3ee;"></i>Pure technical content</li>
+            <li><i class="fa fa-check-circle mr-2" style="color:#22d3ee;"></i>Managed entirely in-house</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <div class="de-newsletter-form-box">
             <form action="{% url 'email-list-signup' %}" method="POST">
               {% csrf_token %}
-              <div class="form-group mb-3">
-                <label class="small text-muted">Email address</label>
+              <label class="text-white-50 small mb-1 d-block">Your work email</label>
+              <div class="input-group mb-3">
                 {{ form }}
+                <div class="input-group-append">
+                  <button type="submit" class="btn de-btn-primary px-4">
+                    <i class="fa fa-paper-plane"></i> Subscribe
+                  </button>
+                </div>
               </div>
-              <button type="submit" class="btn btn-primary btn-block btn-lg shadow-sm">Subscribe</button>
-              <div class="small text-muted mt-2">We respect privacy. Unsubscribe anytime.</div>
+              <p class="text-white-50 small mb-0"><i class="fa fa-lock mr-1"></i>Your data stays with us — no third parties.</p>
             </form>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
+
+<!-- Page-specific JS -->
+<script>
+/* Typing animation */
+(function () {
+  var words = ["Data Engineer","Pipeline Architect","dbt & Spark Expert","ML Engineer","Cloud Data Specialist","Open-Source Contributor"];
+  var el = document.getElementById("typed-text");
+  if (!el) return;
+  var wi = 0, ci = 0, deleting = false;
+  function tick() {
+    var w = words[wi];
+    el.textContent = deleting ? w.slice(0, --ci) : w.slice(0, ++ci);
+    if (!deleting && ci === w.length) { deleting = true; return setTimeout(tick, 1800); }
+    if (deleting && ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+    setTimeout(tick, deleting ? 40 : 80);
+  }
+  tick();
+})();
+
+/* Animated counters (IntersectionObserver) */
+(function () {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var el = e.target, target = +el.dataset.target, step = Math.ceil(target / 80);
+      var n = 0;
+      var t = setInterval(function () {
+        n = Math.min(n + step, target);
+        el.textContent = n + (el.closest(".de-stat__label") ? "" : "+");
+        if (n >= target) clearInterval(t);
+      }, 16);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll(".de-stat__num").forEach(function (el) { io.observe(el); });
+})();
+
+/* Skill bar animations */
+(function () {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var bar = e.target;
+      bar.style.cssText += ";transition:width 1s cubic-bezier(.4,0,.2,1);width:" + bar.dataset.w + "%;background:" + (getComputedStyle(bar).getPropertyValue("--bc") || "#6366f1");
+      io.unobserve(bar);
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll(".de-bar").forEach(function (b) { io.observe(b); });
+})();
+
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+  a.addEventListener("click", function (e) {
+    var t = document.querySelector(this.getAttribute("href"));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
+  });
+});
+</script>
 
 {% endblock content %}

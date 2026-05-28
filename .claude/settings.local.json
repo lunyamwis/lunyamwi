@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/luther/lunyamwi/posts/**)",
+      "Read(///wsl.localhost/Ubuntu/home/luther/lunyamwi/posts/**)",
+      "Read(//home/luther/lunyamwi/marketing/**)",
+      "Read(///wsl.localhost/Ubuntu/home/luther/lunyamwi/marketing/**)",
+      "Read(//home/luther/lunyamwi/templates/**)",
+      "Read(///wsl.localhost/Ubuntu/home/luther/lunyamwi/templates/**)",
+      "Read(//home/luther/lunyamwi/blog/**)",
+      "Read(///wsl.localhost/Ubuntu/home/luther/lunyamwi/blog/**)",
+      "WebFetch(domain:github.com)",
+      "Bash(find /mnt -maxdepth 5 -name \"manage.py\" 2>/dev/null | head -5)",
+      "Read(///wsl.localhost/Ubuntu//**)",
+      "Bash(ls /mnt/c/Users/ 2>/dev/null || ls /mnt/ 2>/dev/null)",
+      "Read(//mnt/c/**)",
+      "Bash(wsl -d Ubuntu cat /home/luther/lunyamwi/posts/views.py)",
+      "PowerShell(wsl -d Ubuntu -- cat /home/luther/lunyamwi/posts/views.py)",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=2 2>&1 | tail -60\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python -c 'import crispy_forms; print\\(crispy_forms.__version__\\)'\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && pip install crispy-bootstrap4 2>&1 | tail -5\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=1 2>&1 | tail -20\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=1 2>&1 | tail -25\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=2 2>&1 | grep -E '\\(ERROR|FAIL|OK|test_\\)' | head -50\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=1 2>&1 | tail -10\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py test posts marketing --verbosity=1 2>&1 | tail -8\")",
+      "PowerShell(wsl -d Ubuntu -- bash -c \"cd /home/luther/lunyamwi && source env/bin/activate && python manage.py check 2>&1\")"
+    ]
+  }
+}

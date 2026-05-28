@@ -1,45 +1,61 @@
-    <header class="header">
-      <!-- Main Navbar-->
-      <nav class="navbar navbar-expand-lg">
-        <div class="search-area">
-          <div class="search-area-inner d-flex align-items-center justify-content-center">
-            <div class="close-btn"><i class="icon-close"></i></div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-md-8">
-                <form action="{% url 'search' %}">
-                  <div class="form-group">
-                    <input type="search" name="q" id="search" placeholder="What are you looking for?">
-                    <button type="submit" class="submit"><i class="icon-search-1"></i></button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+<header class="de-navbar {% if request.resolver_match.url_name != 'home' %}de-navbar--scrolled{% endif %} {% if request.resolver_match.url_name == 'home' %}de-navbar--home{% endif %}" id="de-navbar">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg p-0">
+
+      <a href="/" class="navbar-brand de-navbar__brand">
+        <span class="de-brand-dot"></span>Data Consultant<span class="de-brand-accent">.</span>
+      </a>
+
+      <button class="navbar-toggler de-navbar__toggler" type="button" data-toggle="collapse" data-target="#deNav"
+              aria-controls="deNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="deNav">
+        <ul class="navbar-nav ml-auto align-items-lg-center">
+          <li class="nav-item">
+            <a href="/" class="nav-link de-nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}#skills" class="nav-link de-nav-link">Skills</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}#projects" class="nav-link de-nav-link">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'post-list' %}" class="nav-link de-nav-link {% if request.resolver_match.url_name == 'post-list' %}active{% endif %}">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'home' %}#contact" class="nav-link de-nav-link">Contact</a>
+          </li>
+          {% if request.user.is_staff %}
+          <li class="nav-item">
+            <a href="{% url 'post-create' %}" class="nav-link de-nav-link">
+              <i class="fa fa-plus-circle mr-1"></i>New Post
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
+        <div class="ml-lg-3 mt-3 mt-lg-0">
+          <form action="{% url 'search' %}" class="d-flex" role="search">
+            <input type="search" name="q" class="de-search-input" placeholder="Search articles…" autocomplete="off">
+            <button type="submit" class="de-search-btn"><i class="fa fa-search"></i></button>
+          </form>
         </div>
-        <div class="container">
-          <!-- Navbar Brand -->
-          <div class="navbar-header d-flex align-items-center justify-content-between">
-            <!-- Navbar Brand --><a href="/" class="navbar-brand">Lunyamwi</a>
-            <!-- Toggle Button-->
-            <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
-          </div>
-          <!-- Navbar Menu -->
-          <div id="navbarcollapse" class="collapse navbar-collapse">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item"><a href="/" class="nav-link ">Home</a>
-              </li>
-              <li class="nav-item"><a href="/blog" class="nav-link active ">Blog</a>
-              </li>
-              <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
-              </li>
-              {% if request.user.is_staff %}
-              <li class="nav-item"><a href="{% url 'post-create' %}" class="nav-link ">Create</a>
-              </li>
-              {% endif %}
-            </ul>
-            <div class="navbar-text"><a href="#" class="search-btn"><i class="icon-search-1"></i></a></div>
-            {% comment %} <ul class="langs navbar-text"><a href="#" class="active">EN</a><span>           </span><a href="#">ES</a></ul> {% endcomment %}
-          </div>
-        </div>
-      </nav>
-    </header>
+      </div>
+
+    </nav>
+  </div>
+</header>
+
+<script>
+/* Home page: transparent until scrolled. All other pages: always solid (set server-side). */
+(function () {
+  var nav = document.getElementById("de-navbar");
+  if (!nav.classList.contains("de-navbar--home")) return;
+  window.addEventListener("scroll", function () {
+    nav.classList.toggle("de-navbar--scrolled", window.scrollY > 60);
+  });
+})();
+</script>

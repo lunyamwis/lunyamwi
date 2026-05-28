@@ -1,7 +1,8 @@
+import logging
+
 from django.db.models import Count, Q
 from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .forms import CommentForm, PostForm
@@ -9,7 +10,7 @@ from .models import Post, Author, PostView
 from marketing.forms import EmailSignupForm
 from marketing.models import Signup
 
-form = EmailSignupForm()
+logger = logging.getLogger(__name__)
 
 
 def get_author(user):
@@ -19,271 +20,155 @@ def get_author(user):
     return None
 
 
+def get_category_count():
+    return Post.objects.values("categories__title").annotate(Count("categories__title"))
+
+
 class SearchView(View):
     def get(self, request, *args, **kwargs):
+        query = request.GET.get("q", "").strip()
         queryset = Post.objects.all()
-        query = request.GET.get('q')
         if query:
             queryset = queryset.filter(
-                Q(title__icontains=query) |
-                Q(overview__icontains=query)
+                Q(title__icontains=query) | Q(overview__icontains=query)
             ).distinct()
-        context = {
-            'queryset': queryset
-        }
-        return render(request, 'search_results.html', context)
+            logger.debug("Search '%s' returned %d results", query, queryset.count())
+        return render(request, "search_results.html", {"queryset": queryset, "query": query})
 
 
-def search(request):
-    queryset = Post.objects.all()
-    query = request.GET.get('q')
-    if query:
-        queryset = queryset.filter(
-            Q(title__icontains=query) |
-            Q(overview__icontains=query)
-        ).distinct()
-    context = {
-        'queryset': queryset
-    }
-    return render(request, 'search_results.html', context)
-
-
-def get_category_count():
-    queryset = Post \
-        .objects \
-        .values('categories__title') \
-        .annotate(Count('categories__title'))
-    return queryset
+# URL alias so 'search' name still works
+search = SearchView.as_view()
 
 
 class IndexView(View):
-    form = EmailSignupForm()
-
     def get(self, request, *args, **kwargs):
         featured = Post.objects.filter(featured=True)
-        latest = Post.objects.order_by('-timestamp')[0:3]
+        latest = Post.objects.order_by("-timestamp")[:3]
         context = {
-            'object_list': featured,
-            'latest': latest,
-            'form': self.form
+            "object_list": featured,
+            "latest": latest,
+            "form": EmailSignupForm(),
         }
-        return render(request, 'index.html', context)
+        return render(request, "index.html", context)
 
     def post(self, request, *args, **kwargs):
-        email = request.POST.get("email")
-        new_signup = Signup()
-        new_signup.email = email
-        new_signup.save()
-        messages.info(request, "Successfully subscribed")
+        form = EmailSignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            if Signup.objects.filter(email=email).exists():
+                messages.warning(request, "You are already subscribed.")
+            else:
+                Signup.objects.create(email=email)
+                messages.success(request, "Welcome aboard! You have successfully subscribed.")
+                logger.info("Newsletter signup from home page: %s", email)
+        else:
+            messages.error(request, "Please enter a valid email address.")
         return redirect("home")
 
 
-def index(request):
-    featured = Post.objects.filter(featured=True)
-    latest = Post.objects.order_by('-timestamp')[0:3]
-
-    if request.method == "POST":
-        email = request.POST["email"]
-        new_signup = Signup()
-        new_signup.email = email
-        new_signup.save()
-
-    context = {
-        'object_list': featured,
-        'latest': latest,
-        'form': form
-    }
-    return render(request, 'index.html', context)
-
-
 class PostListView(ListView):
-    form = EmailSignupForm()
     model = Post
-    template_name = 'blog.html'
-    context_object_name = 'queryset'
-    paginate_by = 1
+    template_name = "blog.html"
+    context_object_name = "queryset"
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
-        category_count = get_category_count()
-        most_recent = Post.objects.order_by('-timestamp')[:3]
         context = super().get_context_data(**kwargs)
-        context['most_recent'] = most_recent
-        context['page_request_var'] = "page"
-        context['category_count'] = category_count
-        context['form'] = self.form
+        context["most_recent"] = Post.objects.order_by("-timestamp")[:3]
+        context["page_request_var"] = "page"
+        context["category_count"] = get_category_count()
+        context["form"] = EmailSignupForm()
         return context
-
-
-def post_list(request):
-    category_count = get_category_count()
-    most_recent = Post.objects.order_by('-timestamp')[:3]
-    post_list = Post.objects.all()
-    paginator = Paginator(post_list, 4)
-    page_request_var = 'page'
-    page = request.GET.get(page_request_var)
-    try:
-        paginated_queryset = paginator.page(page)
-    except PageNotAnInteger:
-        paginated_queryset = paginator.page(1)
-    except EmptyPage:
-        paginated_queryset = paginator.page(paginator.num_pages)
-
-    context = {
-        'queryset': paginated_queryset,
-        'most_recent': most_recent,
-        'page_request_var': page_request_var,
-        'category_count': category_count,
-        'form': form
-    }
-    return render(request, 'blog.html', context)
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'post.html'
-    context_object_name = 'post'
-    form = CommentForm()
+    template_name = "post.html"
+    context_object_name = "post"
 
     def get_object(self):
         obj = super().get_object()
         if self.request.user.is_authenticated:
-            PostView.objects.get_or_create(
-                user=self.request.user,
-                post=obj
-            )
+            PostView.objects.get_or_create(user=self.request.user, post=obj)
+            logger.debug("View recorded: user=%s post=%d", self.request.user.username, obj.pk)
         return obj
 
     def get_context_data(self, **kwargs):
-        category_count = get_category_count()
-        most_recent = Post.objects.order_by('-timestamp')[:3]
         context = super().get_context_data(**kwargs)
-        context['most_recent'] = most_recent
-        context['page_request_var'] = "page"
-        context['category_count'] = category_count
-        context['form'] = self.form
+        context["most_recent"] = Post.objects.order_by("-timestamp")[:3]
+        context["page_request_var"] = "page"
+        context["category_count"] = get_category_count()
+        context["form"] = CommentForm()
         return context
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, "Please log in to post a comment.")
+            return redirect(reverse("account_login"))
         form = CommentForm(request.POST)
         if form.is_valid():
             post = self.get_object()
             form.instance.user = request.user
             form.instance.post = post
             form.save()
-            return redirect(reverse("post-detail", kwargs={
-                'pk': post.pk
-            }))
-
-
-def post_detail(request, id):
-    category_count = get_category_count()
-    most_recent = Post.objects.order_by('-timestamp')[:3]
-    post = get_object_or_404(Post, id=id)
-
-    if request.user.is_authenticated:
-        PostView.objects.get_or_create(user=request.user, post=post)
-
-    form = CommentForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            form.instance.user = request.user
-            form.instance.post = post
-            form.save()
-            return redirect(reverse("post-detail", kwargs={
-                'id': post.pk
-            }))
-    context = {
-        'post': post,
-        'most_recent': most_recent,
-        'category_count': category_count,
-        'form': form
-    }
-    return render(request, 'post.html', context)
+            messages.success(request, "Your comment has been posted.")
+            logger.info("Comment by %s on post %d", request.user.username, post.pk)
+            return redirect(reverse("post-detail", kwargs={"pk": post.pk}))
+        messages.error(request, "Could not post comment. Please try again.")
+        return redirect(reverse("post-detail", kwargs={"pk": self.get_object().pk}))
 
 
 class PostCreateView(CreateView):
     model = Post
-    template_name = 'post_create.html'
+    template_name = "post_create.html"
     form_class = PostForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Create'
+        context["title"] = "Create"
         return context
 
     def form_valid(self, form):
         form.instance.author = get_author(self.request.user)
-        form.save()
-        return redirect(reverse("post-detail", kwargs={
-            'pk': form.instance.pk
-        }))
+        post = form.save()
+        messages.success(self.request, "Post created successfully.")
+        logger.info("Post created: '%s' by %s", post.title, self.request.user.username)
+        return redirect(reverse("post-detail", kwargs={"pk": post.pk}))
 
-
-def post_create(request):
-    title = 'Create'
-    form = PostForm(request.POST or None, request.FILES or None)
-    author = get_author(request.user)
-    if request.method == "POST":
-        if form.is_valid():
-            form.instance.author = author
-            form.save()
-            return redirect(reverse("post-detail", kwargs={
-                'id': form.instance.id
-            }))
-    context = {
-        'title': title,
-        'form': form
-    }
-    return render(request, "post_create.html", context)
+    def form_invalid(self, form):
+        messages.error(self.request, "Please correct the errors below.")
+        return super().form_invalid(form)
 
 
 class PostUpdateView(UpdateView):
     model = Post
-    template_name = 'post_create.html'
+    template_name = "post_create.html"
     form_class = PostForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Update'
+        context["title"] = "Update"
         return context
 
     def form_valid(self, form):
         form.instance.author = get_author(self.request.user)
-        form.save()
-        return redirect(reverse("post-detail", kwargs={
-            'pk': form.instance.pk
-        }))
+        post = form.save()
+        messages.success(self.request, "Post updated successfully.")
+        logger.info("Post updated: '%s' by %s", post.title, self.request.user.username)
+        return redirect(reverse("post-detail", kwargs={"pk": post.pk}))
 
-
-def post_update(request, id):
-    title = 'Update'
-    post = get_object_or_404(Post, id=id)
-    form = PostForm(
-        request.POST or None,
-        request.FILES or None,
-        instance=post)
-    author = get_author(request.user)
-    if request.method == "POST":
-        if form.is_valid():
-            form.instance.author = author
-            form.save()
-            return redirect(reverse("post-detail", kwargs={
-                'id': form.instance.id
-            }))
-    context = {
-        'title': title,
-        'form': form
-    }
-    return render(request, "post_create.html", context)
+    def form_invalid(self, form):
+        messages.error(self.request, "Please correct the errors below.")
+        return super().form_invalid(form)
 
 
 class PostDeleteView(DeleteView):
     model = Post
-    success_url = '/blog'
-    template_name = 'post_confirm_delete.html'
+    success_url = "/blog"
+    template_name = "post_confirm_delete.html"
 
-
-def post_delete(request, id):
-    post = get_object_or_404(Post, id=id)
-    post.delete()
-    return redirect(reverse("post-list"))
+    def form_valid(self, form):
+        post = self.get_object()
+        logger.info("Post deleted: '%s' by %s", post.title, self.request.user.username)
+        messages.success(self.request, "Post deleted successfully.")
+        return super().form_valid(form)
